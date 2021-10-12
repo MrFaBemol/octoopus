@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="composer_tree" model="ir.ui.view">
+            <field name="name">composer.tree</field>
+            <field name="model">composer</field>
+            <field name="arch" type="xml">
+                <tree string="Composers">
+                    <header>
+                        <button string="Ask OpenOpus"
+                                type="object"
+                                name="action_ask_open_opus"
+                                class="oe_highlight" />
+                    </header>
+                    <field name="full_name" />
+                    <field name="birth" />
+                    <field name="death" />
+                    <field name="country_ids" widget="many2many_tags"/>
+                    <field name="period_ids" widget="many2many_tags"/>
+<!--                    <field name="id" />-->
+                    <field name="oo_id" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="composer_form" model="ir.ui.view">
+            <field name="name">composer.form</field>
+            <field name="model">composer</field>
+            <field name="arch" type="xml">
+                <form string="Composer">
+                    <sheet>
+
+                        <group class="oe_read_only">
+                            <h1> <field name="display_name" /> </h1>
+                            <field name="biography_short" nolabel="1" colspan="2" attrs="{'invisible': [('biography', '=', False)]}"/>
+                        </group>
+
+                        <group class="oe_edit_only" string="Main">
+                            <label for="name" string="Name" />
+                            <div class="o_row">
+                                <field name="name" class="oe_inline" />
+                                <field name="first_name" nolabel="1" class="oe_inline" />
+                            </div>
+                            <label for="birth" string="Dates" />
+                            <div class="o_row" modifiers="{}">
+                                <field name="birth" nolabel="1" class="oe_inline" />
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow" modifiers="{}"/>
+                                <field name="death" nolabel="1" class="oe_inline" />
+                            </div>
+                            <field name="biography"/>
+                        </group>
+
+                        <group string="General">
+                            <group>
+                                <field name="period_ids" widget="many2many_tags"/>
+                                <field name="country_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <field name="is_popular" />
+                                <field name="is_essential" />
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Works" name="composer_works">
+                                <group>
+
+                                </group>
+                            </page>
+                            <page string="Web" name="composer_web">
+                                <group>
+                                    <field name="wikipedia_url" />
+                                    <field name="slug_url" />
+                                </group>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" />
+                        <field name="activity_ids" />
+                        <field name="message_ids" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="composer_action" model="ir.actions.act_window">
+            <field name="name">Composers</field>
+            <field name="res_model">composer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="oo_get_works_action" model="ir.actions.server">
+            <field name="name">Ask OpenOpus for works</field>
+            <field name="model_id" ref="music_library.model_composer"/>
+            <field name="binding_model_id" ref="music_library.model_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_oo_get_works()</field>
+        </record>
+
+    </data>
+</odoo>

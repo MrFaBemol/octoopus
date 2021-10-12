@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="open_opus_api" model="ir.config_parameter">
+            <field name="key">open.opus.api</field>
+            <field name="value">https://api.openopus.org</field>
+        </record>
+
+        <record id="oo_api_composer_first_letter" model="ir.config_parameter">
+            <field name="key">oo.api.composer.first.letter</field>
+            <field name="value">/composer/list/name/{{ID}}.json</field>
+        </record>
+        
+        <record id="oo_api_all_works_by_composer_id" model="ir.config_parameter">
+            <field name="key">oo.api.all.works.by.composer.id</field>
+            <field name="value">/work/list/composer/{{ID}}/genre/all.json</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <menuitem name="Music library"
+                    id="music_library_app_menu"
+                    web_icon="music_library,static/description/icon.png" />
+        
+        <menuitem name="Composers"
+                    id="composers_menu" sequence="10"
+                    parent="music_library_app_menu" 
+                    action="composer_action"/>
+
+    </data>
+</odoo>
