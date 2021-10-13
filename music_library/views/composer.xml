@@ -7,18 +7,10 @@
             <field name="model">composer</field>
             <field name="arch" type="xml">
                 <tree string="Composers">
-                    <header>
-                        <button string="Ask OpenOpus"
-                                type="object"
-                                name="action_ask_open_opus"
-                                class="oe_highlight" />
-                    </header>
-                    <field name="full_name" />
-                    <field name="birth" />
-                    <field name="death" />
+                    <field name="display_name" string="Name" />
                     <field name="country_ids" widget="many2many_tags"/>
                     <field name="period_ids" widget="many2many_tags"/>
-<!--                    <field name="id" />-->
+                    <field name="works_count" />
                     <field name="oo_id" />
                 </tree>
             </field>
@@ -66,7 +58,17 @@
                         <notebook>
                             <page string="Works" name="composer_works">
                                 <group>
-
+                                    <field name="work_ids" readonly="1" nolabel="1" colspan="2">
+                                        <tree decoration-bf="is_popular" decoration-success="is_essential" limit="10" default_order="is_popular desc,is_essential desc">
+                                            <field name="is_popular" invisible="1"/>
+                                            <field name="is_essential" invisible="1"/>
+                                            <field name="title" />
+                                            <field name="sub_title" />
+                                            <field name="nickname" />
+                                            <field name="date" />
+                                            <field name="oo_id" />
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                             <page string="Web" name="composer_web">
@@ -93,6 +95,15 @@
             <field name="res_model">composer</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record id="oo_get_composers_action" model="ir.actions.server">
+            <field name="name">Ask OpenOpus for composers</field>
+            <field name="model_id" ref="music_library.model_composer"/>
+            <field name="binding_model_id" ref="music_library.model_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_oo_get_composers()</field>
         </record>
 
         <record id="oo_get_works_action" model="ir.actions.server">

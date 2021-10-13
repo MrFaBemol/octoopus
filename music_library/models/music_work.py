@@ -6,19 +6,21 @@ from odoo.exceptions import UserError, ValidationError
 class MusicWork(models.Model):
     _name = "music.work"
     _description = "A music work that may have multiple versions"
+    
+    active = fields.Boolean()
 
     oo_id = fields.Integer(default=-1)
     oo_genre = fields.Char()
 
-    composer_id = fields.Many2one(comodel_name="composer", required=True)
-    title = fields.Char(required=True)
+    composer_id = fields.Many2one(comodel_name="composer", required=True, tracking=True)
+    title = fields.Char(required=True, tracking=True)
     sub_title = fields.Char()
     nickname = fields.Char()
     catalogue = fields.Char()
     catalogue_number = fields.Integer()
 
     # Stored as a string because it's more convenient. Sometimes we have to write (1849-1852) because composer was lazy
-    date = fields.Char()
+    date = fields.Char(tracking=True)
 
     tonality_key = fields.Selection(
         selection=[
@@ -44,8 +46,8 @@ class MusicWork(models.Model):
         ]
     )
 
-    is_popular = fields.Boolean(default=False)
-    is_essential = fields.Boolean(default=False)
+    is_popular = fields.Boolean(default=False, tracking=True)
+    is_essential = fields.Boolean(default=False, tracking=True)
 
 
 

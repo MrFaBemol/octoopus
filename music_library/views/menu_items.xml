@@ -5,11 +5,30 @@
         <menuitem name="Music library"
                     id="music_library_app_menu"
                     web_icon="music_library,static/description/icon.png" />
-        
+
+<!--    Composers-->
         <menuitem name="Composers"
                     id="composers_menu" sequence="10"
                     parent="music_library_app_menu" 
                     action="composer_action"/>
+
+<!--    Works-->
+        <menuitem name="Works"
+                    id="works_menu" sequence="20"
+                    parent="music_library_app_menu"
+                    action="music_work_action"/>
+
+
+<!--    Technical-->
+        <menuitem name="Technical"
+                    id="technical_menu" sequence="100"
+                    parent="music_library_app_menu" />
+
+        <menuitem name="Ask OpenOpus for composers"
+                    id="technical_menu_oo_get_composers" sequence="10"
+                    parent="technical_menu"
+                    action="oo_get_composers_action" />
+
 
     </data>
 </odoo>

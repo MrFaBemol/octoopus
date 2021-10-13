@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="oo_get_works_wizard_form" model="ir.ui.view">
+            <field name="name">oo.get.works.wizard.form</field>
+            <field name="model">oo.get.works.wizard</field>
+            <field name="arch" type="xml">
+                <form string="New works">
+                    <sheet>
+                        <group>
+                            <field name="works_count" />
+                            <field name="work_ids" string="New works"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Import"
+                                class="btn oe_highlight"
+                                type="object"
+                                name="action_import_works"
+                                attrs="{'invisible': [('work_ids', '=', [])]}" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="oo_get_works_wizard_tree" model="ir.ui.view">
+            <field name="name">open.opus.new.music.work.tree</field>
+            <field name="model">open.opus.new.music.work</field>
+            <field name="arch" type="xml">
+                <tree string="New works" create="0">
+                    <field name="oo_id" />
+                    <field name="composer_id" />
+                    <field name="title" />
+                    <field name="oo_genre" />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>
