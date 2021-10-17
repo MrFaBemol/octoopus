@@ -26,8 +26,8 @@
         </record>
 
         <record id="oo_get_works_wizard_tree" model="ir.ui.view">
-            <field name="name">open.opus.new.music.work.tree</field>
-            <field name="model">open.opus.new.music.work</field>
+            <field name="name">open.opus.new.work.tree</field>
+            <field name="model">open.opus.new.work</field>
             <field name="arch" type="xml">
                 <tree string="New works" create="0">
                     <field name="oo_id" />

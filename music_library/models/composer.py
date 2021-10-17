@@ -27,7 +27,7 @@ class Composer(models.Model):
     is_popular = fields.Boolean(default=False)
     is_essential = fields.Boolean(default=False)
 
-    work_ids = fields.One2many(comodel_name="music.work", inverse_name="composer_id")
+    work_ids = fields.One2many(comodel_name="work", inverse_name="composer_id")
     works_count = fields.Integer(compute="_compute_work_count")
 
 

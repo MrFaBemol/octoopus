@@ -8,7 +8,7 @@ class OOGetWorks(models.TransientModel):
     _description = "A wizard to import works from OpenOpus API"
 
     composer_ids = fields.Many2many(comodel_name="composer")
-    work_ids = fields.One2many(comodel_name="open.opus.new.music.work", inverse_name="wizard_id")
+    work_ids = fields.One2many(comodel_name="open.opus.new.work", inverse_name="wizard_id")
     works_count = fields.Integer(compute="_compute_work_count")
 
     @api.depends('work_ids')
@@ -29,8 +29,8 @@ class OOGetWorks(models.TransientModel):
 
                 if response['status']['success'] == 'true':
                     for work in response['works']:
-                        if not self.env['music.work'].search([('oo_id', '=', work['id'])]):
-                            self.env['open.opus.new.music.work'].create({
+                        if not self.env['work'].search([('oo_id', '=', work['id'])]):
+                            self.env['open.opus.new.work'].create({
                                 'wizard_id': self.id,
                                 'oo_id': work['id'],
                                 'oo_genre': work['genre'],
@@ -45,8 +45,8 @@ class OOGetWorks(models.TransientModel):
         self.work_ids.import_work()
 
 
-class OpenOpusNewMusicWork(models.TransientModel):
-    _name = "open.opus.new.music.work"
+class OpenOpusNewWork(models.TransientModel):
+    _name = "open.opus.new.work"
     _description = "A work suggestion"
 
     wizard_id = fields.Many2one(comodel_name="oo.get.works.wizard")
@@ -62,7 +62,7 @@ class OpenOpusNewMusicWork(models.TransientModel):
 
     def import_work(self):
         for rec in self:
-            self.env['music.work'].create({
+            self.env['work'].create({
                 'composer_id': rec.composer_id.id,
                 'oo_id': rec.oo_id,
                 'oo_genre': rec.oo_genre,

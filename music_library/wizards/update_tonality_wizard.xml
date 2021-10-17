@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="update_tonality_wizard_form" model="ir.ui.view">
+            <field name="name">update.tonality.wizard.form</field>
+            <field name="model">update.tonality.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Update tonality">
+                    <sheet>
+                        <group>
+                            <field name="tonality_note" />
+                            <field name="tonality_mode" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Update"
+                                class="btn oe_highlight"
+                                type="object"
+                                name="action_update_tonality" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+
+    </data>
+</odoo>

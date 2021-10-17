@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="work_tree" model="ir.ui.view">
+            <field name="name">work.tree</field>
+            <field name="model">work</field>
+            <field name="arch" type="xml">
+                <tree string="Music works" decoration-bf="is_popular" decoration-success="is_essential">
+                    <field name="composer_id" />
+                    <field name="title" />
+                    <field name="sub_title" />
+                    <field name="nickname" />
+                    <field name="date" />
+                    <field name="is_popular" invisible="1"/>
+                    <field name="is_essential" invisible="1"/>
+                    <field name="oo_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="work_search" model="ir.ui.view">
+            <field name="name">work.search</field>
+            <field name="model">work</field>
+            <field name="arch" type="xml">
+                <search string="Search music work">
+                    <field name="title" />
+                    <field name="composer_id" />
+                    <filter string="Composers" name="filter_group_by_composer_id" context="{'group_by': 'composer_id'}" />
+                </search>
+            </field>
+        </record>
+
+        <record id="work_action" model="ir.actions.act_window">
+            <field name="name">Music works</field>
+            <field name="res_model">work</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="update_tonality_action" model="ir.actions.server">
+            <field name="name">Update tonality</field>
+            <field name="model_id" ref="music_library.model_work"/>
+            <field name="binding_model_id" ref="music_library.model_work"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_update_tonality()</field>
+        </record>
+
+        <record id="auto_fill_tonality_action" model="ir.actions.server">
+            <field name="name">Auto-fill tonality for works</field>
+            <field name="model_id" ref="music_library.model_work"/>
+            <field name="binding_model_id" ref="music_library.model_work"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_auto_fill_tonality()</field>
+        </record>
+
+
+    </data>
+</odoo>

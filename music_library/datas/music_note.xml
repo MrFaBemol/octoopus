@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="music_note_a" model="music.note">
+            <field name="note">a</field>
+        </record>
+        <record id="music_note_a_sharp" model="music.note">
+            <field name="note">a</field>
+            <field name="alt">sharp</field>
+        </record>
+        <record id="music_note_a_flat" model="music.note">
+            <field name="note">a</field>
+            <field name="alt">flat</field>
+        </record>
+
+        <record id="music_note_b" model="music.note">
+            <field name="note">b</field>
+        </record>
+        <record id="music_note_b_sharp" model="music.note">
+            <field name="note">b</field>
+            <field name="alt">sharp</field>
+        </record>
+        <record id="music_note_b_flat" model="music.note">
+            <field name="note">b</field>
+            <field name="alt">flat</field>
+        </record>
+
+        <record id="music_note_c" model="music.note">
+            <field name="note">c</field>
+        </record>
+        <record id="music_note_c_sharp" model="music.note">
+            <field name="note">c</field>
+            <field name="alt">sharp</field>
+        </record>
+        <record id="music_note_c_flat" model="music.note">
+            <field name="note">c</field>
+            <field name="alt">flat</field>
+        </record>
+
+        <record id="music_note_d" model="music.note">
+            <field name="note">d</field>
+        </record>
+        <record id="music_note_d_sharp" model="music.note">
+            <field name="note">d</field>
+            <field name="alt">sharp</field>
+        </record>
+        <record id="music_note_d_flat" model="music.note">
+            <field name="note">d</field>
+            <field name="alt">flat</field>
+        </record>
+
+        <record id="music_note_e" model="music.note">
+            <field name="note">e</field>
+        </record>
+        <record id="music_note_e_sharp" model="music.note">
+            <field name="note">e</field>
+            <field name="alt">sharp</field>
+        </record>
+        <record id="music_note_e_flat" model="music.note">
+            <field name="note">e</field>
+            <field name="alt">flat</field>
+        </record>
+
+        <record id="music_note_f" model="music.note">
+            <field name="note">f</field>
+        </record>
+        <record id="music_note_f_sharp" model="music.note">
+            <field name="note">f</field>
+            <field name="alt">sharp</field>
+        </record>
+        <record id="music_note_f_flat" model="music.note">
+            <field name="note">f</field>
+            <field name="alt">flat</field>
+        </record>
+
+        <record id="music_note_g" model="music.note">
+            <field name="note">g</field>
+        </record>
+        <record id="music_note_g_sharp" model="music.note">
+            <field name="note">g</field>
+            <field name="alt">sharp</field>
+        </record>
+        <record id="music_note_g_flat" model="music.note">
+            <field name="note">g</field>
+            <field name="alt">flat</field>
+        </record>
+
+
+    </data>
+</odoo>

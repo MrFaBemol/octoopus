@@ -8,23 +8,28 @@
     'author': 'Gautier Casabona',
     'license': 'LGPL-3',
     'category': "Uncategorized",
-    'version': "15.0.1",
+    'version': "15.0.0.1.1",
     'installable': True,
     'sequence': 1,
     
     'author': "Odoo S.A.",
     'website': "http://www.odoo.com",
     
-    'depends': ['web', 'mail'],
+    'depends': ['web', 'mail', 'portal'],
     
     'data': [
         'security/ir.model.access.csv',
+
         'datas/ir_config_parameter.xml',
+        'datas/music_note.xml',
 
         'views/composer.xml',
-        'views/music_work.xml',
+        'views/work.xml',
+        'views/music_note.xml',
+
         'wizards/oo_get_composers_wizard.xml',
         'wizards/oo_get_works_wizard.xml',
+        'wizards/update_tonality_wizard.xml',
 
         'views/menu_items.xml',
     ],

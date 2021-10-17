@@ -2,4 +2,5 @@
 
 from . import period
 from . import composer
-from . import music_work
+from . import work
+from . import music_note

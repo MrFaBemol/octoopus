@@ -16,7 +16,18 @@
         <menuitem name="Works"
                     id="works_menu" sequence="20"
                     parent="music_library_app_menu"
-                    action="music_work_action"/>
+                    action="work_action"/>
+
+
+<!--    Config-->
+        <menuitem name="Configuration"
+                    id="config_menu" sequence="90"
+                    parent="music_library_app_menu" />
+
+        <menuitem name="Music notes"
+                    id="config_menu_music_note" sequence="10"
+                    parent="config_menu"
+                    action="music_note_action" />
 
 
 <!--    Technical-->
@@ -28,6 +39,11 @@
                     id="technical_menu_oo_get_composers" sequence="10"
                     parent="technical_menu"
                     action="oo_get_composers_action" />
+
+        <menuitem name="Auto-fill tonality for works"
+                    id="technical_menu_auto_fill_tonality" sequence="20"
+                    parent="technical_menu"
+                    action="auto_fill_tonality_action" />
 
 
     </data>
