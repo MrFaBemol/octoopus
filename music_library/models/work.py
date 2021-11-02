@@ -16,8 +16,11 @@ class Work(models.Model):
     title = fields.Char(required=True)
     sub_title = fields.Char()
     nickname = fields.Char()
+    name = fields.Char(compute="_compute_name")
+
     catalogue = fields.Char()
-    catalogue_number = fields.Integer()
+    catalogue_number = fields.Integer(default=False)
+    catalogue_piece_number = fields.Integer(default=False)
 
     # Stored as a string because it's more convenient. Sometimes we have to write (1849-1852) because composer was lazy
     date = fields.Char()
@@ -33,6 +36,12 @@ class Work(models.Model):
 
     is_popular = fields.Boolean(default=False)
     is_essential = fields.Boolean(default=False)
+
+    @api.depends('title', 'composer_id')
+    def _compute_name(self):
+        for rec in self:
+            rec.name = "%s: %s" % (rec.composer_id.name, rec.title)
+
 
     def action_update_tonality(self):
         # Todo: Change this for an action record?
@@ -50,9 +59,10 @@ class Work(models.Model):
 
     def action_auto_fill_tonality(self):
         for note in self.env['music.note'].search([]):
-            note_string = " in %s%s" % (note.note, " "+note.alt if note.alt else "")
+            note_string = "%s%s" % (note.note, " "+note.alt if note.alt else "")
+            note_string = "%s%s" % (note.note, " "+note.alt if note.alt else "")
             for mode in ['major', 'minor']:
-                search_string = "%s %s" % (note_string, mode[:3])
+                search_string = " in %s %s" % (note_string, mode[:3])
                 works = self.env['work'].search([('tonality_note', '=', False), ('title', 'ilike', search_string)])
                 works.write({'tonality_note': note.id, 'tonality_mode': mode})
 

@@ -8,7 +8,7 @@
     'author': 'Gautier Casabona',
     'license': 'LGPL-3',
     'category': "Uncategorized",
-    'version': "15.0.0.1.1",
+    'version': "15.0.0.1.2",
     'installable': True,
     'sequence': 1,
     
@@ -25,6 +25,8 @@
 
         'views/composer.xml',
         'views/work.xml',
+        'views/instrument_category.xml',
+        'views/instrument.xml',
         'views/music_note.xml',
 
         'wizards/oo_get_composers_wizard.xml',

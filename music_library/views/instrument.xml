@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="instrument_tree" model="ir.ui.view">
+            <field name="name">instrument.tree</field>
+            <field name="model">instrument</field>
+            <field name="arch" type="xml">
+                <tree string="Instruments">
+                    <field name="name" />
+                    <field name="category_id" />
+                    <field name="key" />
+                    <field name="is_ensemble" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="instrument_form" model="ir.ui.view">
+            <field name="name">instrument.form</field>
+            <field name="model">instrument</field>
+            <field name="arch" type="xml">
+                <form string="Instrument">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="category_id" />
+                            </group>
+                            <group>
+                                <field name="icon"  widget="image" class="oe_avatar oe_right" nolabel="1"/>
+                            </group>
+                        </group>
+                        <group>
+
+                                <field name="key" />
+                                <field name="is_ensemble" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="instrument_action" model="ir.actions.act_window">
+            <field name="name">Instruments</field>
+            <field name="res_model">instrument</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import base64
+
+import requests
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
@@ -19,6 +22,7 @@ class Composer(models.Model):
     birth = fields.Date(required=True, tracking=True)
     death = fields.Date(tracking=True)
 
+    portrait = fields.Binary()
     portrait_url = fields.Char(tracking=True)
     biography = fields.Text()
     biography_short = fields.Text(compute="_compute_biography_short")
@@ -95,4 +99,11 @@ class Composer(models.Model):
             },
         }
 
+    def action_oo_get_portrait(self):
+        for rec in self:
+            if rec.portrait_url:
+                response = requests.get(rec.portrait_url, verify=False)
+                if response.status_code == 200:
+                    img = base64.b64encode(response.content)
+                    rec.write({'portrait': img})
 

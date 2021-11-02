@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="instrument_category_tree" model="ir.ui.view">
+            <field name="name">instrument.category.tree</field>
+            <field name="model">instrument.category</field>
+            <field name="arch" type="xml">
+                <tree string="Instrument categories">
+                    <field name='sequence' widget='handle'/>
+                    <field name="name" />
+                    <field name="parent_id" />
+                    <field name="instrument_count" />
+                    <field name="is_ensemble_category" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="instrument_category_form" model="ir.ui.view">
+            <field name="name">instrument.category.form</field>
+            <field name="model">instrument.category</field>
+            <field name="arch" type="xml">
+                <form string="Instrument category">
+                    <sheet>
+                        <group string="Informations">
+                            <field name="name" />
+                            <field name="parent_id" />
+                            <field name="icon"  widget="image" class="oe_avatar oe_left" />
+                            <field name="is_ensemble_category" string="Is an ensemble" />
+                        </group>
+                        <group string="Instruments">
+                            <field name="instrument_count" string="Count" />
+                            <field name="instrument_ids" colspan="2" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="name" />
+                                    <field name="key" />
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="instrument_category_action" model="ir.actions.act_window">
+            <field name="name">Instrument categories</field>
+            <field name="res_model">instrument.category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

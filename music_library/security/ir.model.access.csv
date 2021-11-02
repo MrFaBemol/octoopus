@@ -3,6 +3,9 @@ period_rule_access,period_rule_access,model_period,base.group_user,1,1,1,1
 composer_rule_access,composer_rule_access,model_composer,base.group_user,1,1,1,1
 work_rule_access,work_rule_access,model_work,base.group_user,1,1,1,1
 music_note_rule_access,music_note_rule_access,model_music_note,base.group_user,1,1,1,1
+instrument_category_rule_access,instrument_category_rule_access,model_instrument_category,base.group_user,1,1,1,1
+instrument_rule_access,instrument_rule_access,model_instrument,base.group_user,1,1,1,1
+
 
 
 open_opus_new_composer_rule_access,open_opus_new_composer_rule_access,model_open_opus_new_composer,base.group_user,1,1,1,1

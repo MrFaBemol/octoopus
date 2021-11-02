@@ -6,17 +6,34 @@
                     id="music_library_app_menu"
                     web_icon="music_library,static/description/icon.png" />
 
-<!--    Composers-->
+        <!--    Composers-->
         <menuitem name="Composers"
                     id="composers_menu" sequence="10"
                     parent="music_library_app_menu" 
                     action="composer_action"/>
 
-<!--    Works-->
+        <!--    Works-->
         <menuitem name="Works"
                     id="works_menu" sequence="20"
                     parent="music_library_app_menu"
                     action="work_action"/>
+
+        <!--    Instruments -->
+        <menuitem name="Instruments"
+                    id="instrument_menu" sequence="30"
+                    parent="music_library_app_menu"/>
+
+        <menuitem name="Instruments List"
+                    id="instrument_menu_instruments_list" sequence="10"
+                    parent="instrument_menu"
+                    action="instrument_action"/>
+
+        <menuitem name="Categories"
+                    id="instrument_menu_categories" sequence="20"
+                    parent="instrument_menu"
+                    action="instrument_category_action"/>
+
+
 
 
 <!--    Config-->

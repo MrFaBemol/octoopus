@@ -19,6 +19,54 @@
             </field>
         </record>
 
+        <record id="work_form" model="ir.ui.view">
+            <field name="name">work.form</field>
+            <field name="model">work</field>
+            <field name="arch" type="xml">
+                <form string="Work">
+                    <sheet>
+
+                        <group>
+                            <field name="title" />
+                            <field name="composer_id" />
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="sub_title" />
+
+                                <label for="catalogue" />
+                                <div class="o_row">
+                                    <field name="catalogue" class="oe_inline" placeholder="Opus" />
+                                    <field name="catalogue_number" class="oe_inline" placeholder="" />
+                                </div>
+
+                                <label for="tonality_note" string="Tonality" />
+                                <div class="o_row">
+                                    <field name="tonality_note" class="oe_inline" />
+                                    <field name="tonality_mode" class="oe_inline" />
+                                </div>
+
+                                <field name="is_popular" />
+                                <field name="is_essential" />
+                            </group>
+
+                            <group>
+                                <field name="nickname" />
+
+                                <label for="catalogue_piece_number" string="n°" />
+                                <field name="catalogue_piece_number" nolabel="1"/>
+
+                                <field name="date" />
+                            </group>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
         <record id="work_search" model="ir.ui.view">
             <field name="name">work.search</field>
             <field name="model">work</field>
@@ -27,6 +75,9 @@
                     <field name="title" />
                     <field name="composer_id" />
                     <filter string="Composers" name="filter_group_by_composer_id" context="{'group_by': 'composer_id'}" />
+                    <filter string="Popular works" name="filter_popular_work" domain="[('is_popular','=',True)]"/>
+                    <filter string="Essential works" name="filter_essential_work" domain="[('is_essential','=',True)]"/>
+
                 </search>
             </field>
         </record>
@@ -35,7 +86,7 @@
             <field name="name">Music works</field>
             <field name="res_model">work</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
         </record>
 
         <record id="update_tonality_action" model="ir.actions.server">
