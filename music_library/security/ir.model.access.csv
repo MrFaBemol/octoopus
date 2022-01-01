@@ -6,6 +6,10 @@ music_note_rule_access,music_note_rule_access,model_music_note,base.group_user,1
 instrument_category_rule_access,instrument_category_rule_access,model_instrument_category,base.group_user,1,1,1,1
 instrument_rule_access,instrument_rule_access,model_instrument,base.group_user,1,1,1,1
 
+api_token_rule_access,api_token_rule_access,model_api_token,music_library_group_admin,1,1,1,1
+api_request_rule_access,api_request_rule_access,model_api_request,music_library_group_admin,1,1,1,1
+
+
 
 
 open_opus_new_composer_rule_access,open_opus_new_composer_rule_access,model_open_opus_new_composer,base.group_user,1,1,1,1

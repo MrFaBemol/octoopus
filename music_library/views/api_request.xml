@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="api_request_tree" model="ir.ui.view">
+            <field name="name">api.request.tree</field>
+            <field name="model">api.request</field>
+            <field name="arch" type="xml">
+                <tree string="Api requests" create="false">
+                    <field name="create_date" />
+                    <field name="url" />
+                    <field name="ip" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="api_request_action" model="ir.actions.act_window">
+            <field name="name">Api requests</field>
+            <field name="res_model">api.request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+    </data>
+</odoo>

@@ -22,6 +22,7 @@
 
         'datas/ir_config_parameter.xml',
         'datas/music_note.xml',
+        'datas/api_token.xml',
 
         'views/composer.xml',
         'views/work.xml',
@@ -29,10 +30,14 @@
         'views/instrument.xml',
         'views/music_note.xml',
 
+        'views/api_token.xml',
+        'views/api_request.xml',
+
         'wizards/oo_get_composers_wizard.xml',
         'wizards/oo_get_works_wizard.xml',
         'wizards/update_tonality_wizard.xml',
 
         'views/menu_items.xml',
+        'security/security.xml',
     ],
 }

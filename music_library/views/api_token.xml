@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="api_token_tree" model="ir.ui.view">
+            <field name="name">api.token.tree</field>
+            <field name="model">api.token</field>
+            <field name="arch" type="xml">
+                <tree string="Api tokens">
+                    <field name="name" />
+                    <field name="token" />
+                    <field name="track_requests" widget="boolean_toggle" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="api_token_form" model="ir.ui.view">
+            <field name="name">api.token.form</field>
+            <field name="model">api.token</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+
+                            <label for="token"/>
+                            <div class="o_row">
+                                <field name="token" />
+                                <button string="Generate new token" class="btn oe_highlight" type="object" name="generate_new_token" />
+                            </div>
+
+                            <field name="track_requests" widget="boolean_toggle" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" />
+                        <field name="activity_ids" />
+                        <field name="message_ids" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="api_token_action" model="ir.actions.act_window">
+            <field name="name">Show api tokens</field>
+            <field name="res_model">api.token</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

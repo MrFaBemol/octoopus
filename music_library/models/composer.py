@@ -32,7 +32,7 @@ class Composer(models.Model):
     is_essential = fields.Boolean(default=False)
 
     work_ids = fields.One2many(comodel_name="work", inverse_name="composer_id")
-    works_count = fields.Integer(compute="_compute_work_count")
+    work_count = fields.Integer(compute="_compute_work_count")
 
 
     slug_url = fields.Char()
@@ -62,7 +62,7 @@ class Composer(models.Model):
     @api.depends('work_ids')
     def _compute_work_count(self):
         for rec in self:
-            rec.works_count = len(rec.work_ids)
+            rec.work_count = len(rec.work_ids)
 
 
     def action_oo_get_composers(self):

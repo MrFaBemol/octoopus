@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="module_category_music_library" model="ir.module.category">
+            <field name="name">Music library</field>
+        </record>
+
+
+        <!-- Access groups-->
+        <record id="music_library_group_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="module_category_music_library" />
+        </record>
+
+    </data>
+</odoo>

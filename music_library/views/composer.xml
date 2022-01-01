@@ -10,7 +10,7 @@
                     <field name="display_name" string="Name" />
                     <field name="country_ids" widget="many2many_tags"/>
                     <field name="period_ids" widget="many2many_tags"/>
-                    <field name="works_count" />
+                    <field name="work_count" />
                     <field name="oo_id" />
                 </tree>
             </field>
@@ -107,11 +107,11 @@
                                 <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('composer', 'portrait', record.id.raw_value, placeholder)})" role="img"/>
 
                                 <div class="oe_kanban_details">
-                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="full_name"/></strong>
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="display_name"/></strong>
                                     <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
                                     <ul>
-                                        <li><field name="birth"/> - <field name="death"/></li>
-                                        <li t-if="record.works_count"><field name="works_count"/> works</li>
+                                        <li><field name="birth" options='{"format": "yyyy"}'/> - <field name="death" options='{"format": "yyyy"}'/></li>
+                                        <li t-if="record.work_count"><field name="work_count"/> works</li>
                                     </ul>
                                 </div>
                             </div>

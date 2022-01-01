@@ -52,14 +52,33 @@
                     id="technical_menu" sequence="100"
                     parent="music_library_app_menu" />
 
+
+
+        <menuitem name="API"
+                    id="technical_menu_sub_api" sequence="10"
+                    parent="technical_menu" />
+
+        <menuitem name="Tokens"
+                    id="technical_menu_api_tokens" sequence="10"
+                    parent="technical_menu_sub_api"
+                    action="api_token_action" />
+        <menuitem name="Requests"
+                    id="technical_menu_api_requests" sequence="20"
+                    parent="technical_menu_sub_api"
+                    action="api_request_action" />
+
+
+        <menuitem name="Batch actions"
+                    id="technical_menu_sub_batch_actions" sequence="20"
+                    parent="technical_menu" />
+
         <menuitem name="Ask OpenOpus for composers"
                     id="technical_menu_oo_get_composers" sequence="10"
-                    parent="technical_menu"
+                    parent="technical_menu_sub_batch_actions"
                     action="oo_get_composers_action" />
-
         <menuitem name="Auto-fill tonality for works"
                     id="technical_menu_auto_fill_tonality" sequence="20"
-                    parent="technical_menu"
+                    parent="technical_menu_sub_batch_actions"
                     action="auto_fill_tonality_action" />
 
 
