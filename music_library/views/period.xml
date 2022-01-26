@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="period_tree" model="ir.ui.view">
+            <field name="name">period.tree</field>
+            <field name="model">period</field>
+            <field name="arch" type="xml">
+                <tree string="Periods list">
+                    <field name="sequence" widget="handle"/>
+                    <field name="date_display"/>
+                    <field name="name" />
+                    <field name="date_start" />
+                    <field name="date_end" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="period_form" model="ir.ui.view">
+            <field name="name">period.form</field>
+            <field name="model">period</field>
+            <field name="arch" type="xml">
+                <form string="Period">
+                    <sheet>
+                        <group class="oe_read_only">
+                            <h1> <field name="name" /> (<field name="date_display" nolabel="1"/>)</h1>
+                        </group>
+
+                        <group class="oe_edit_only">
+                            <field name="name" />
+
+                            <label for="date_start" string="Dates" />
+                            <div class="o_row" modifiers="{}">
+                                <field name="date_start" nolabel="1" class="oe_inline" />
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow" modifiers="{}"/>
+                                <field name="date_end" nolabel="1" class="oe_inline" />
+                            </div>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="period_action" model="ir.actions.act_window">
+            <field name="name">Periods list</field>
+            <field name="res_model">period</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

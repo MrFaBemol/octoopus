@@ -3,25 +3,9 @@ import json
 
 import werkzeug
 import requests
+from ..common.tools.oo_api import call
 from odoo.http import content_disposition, Controller, request, route
 
-# API_TOKEN = "mluQymXlixvqjsfLoCkYFKNAKkkdWrhqWMcSVwOhHabTjFbGYZoOJTVlVUjXkOsA"
-
-def get_token(req):
-    return req.env.ref('music_library.octoopus_standard_api_token').token
-
-def call_api(url, request, post_data):
-    url = request.httprequest.url_root + 'api/' + url
-    headers = {
-        'oo-token': get_token(request),
-        'content-type': 'application/json'
-    }
-    res = requests.post(
-        url,
-        data=json.dumps(post_data),
-        headers=headers,
-    )
-    return res.json()['result']
 
 class WhatController(Controller):
 
@@ -31,7 +15,7 @@ class WhatController(Controller):
             'fields': ['name', 'first_name', 'portrait_url'],
         }
 
-        res = call_api('composer/%s' % composer_id, request, post_data)
+        res = call(request, 'composer/%s' % composer_id, post_data)
 
         if not res['success']:
             return "<h3>Erreur</h1> %s " % res['error_message']
@@ -50,7 +34,7 @@ class WhatController(Controller):
             'search': get_data.get('search', ""),
         }
 
-        res = call_api('search/composer', request, post_data)
+        res = call(request, 'composer/search', post_data)
 
         if not res['success']:
             return "<h3>Erreur</h1> %s " % res['error_message']

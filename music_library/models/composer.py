@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ..common.tools.oo_api import grant_access, call
 import base64
 
 import requests
@@ -12,7 +13,7 @@ class Composer(models.Model):
     _description = "A music composer"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
         
     oo_id = fields.Integer(default=-1, tracking=True, string="OO ID")
     name = fields.Char(required=True, tracking=True)
@@ -27,11 +28,11 @@ class Composer(models.Model):
     biography = fields.Text()
     biography_short = fields.Text(compute="_compute_biography_short")
     country_ids = fields.Many2many(comodel_name="res.country")
-    period_ids = fields.Many2many(comodel_name="period")
+    period_ids = fields.Many2many(comodel_name="period", string="Periods")
     is_popular = fields.Boolean(default=False)
     is_essential = fields.Boolean(default=False)
 
-    work_ids = fields.One2many(comodel_name="work", inverse_name="composer_id")
+    work_ids = fields.One2many(comodel_name="music.work", inverse_name="composer_id")
     work_count = fields.Integer(compute="_compute_work_count")
 
 
@@ -44,6 +45,10 @@ class Composer(models.Model):
         for composer in self:
             res.append((composer.id, composer.full_name))
         return res
+
+    # --------------------------------------------
+    #                   COMPUTE
+    # --------------------------------------------
 
     @api.depends('first_name', 'name', 'birth', 'death')
     def _compute_names(self):
@@ -64,6 +69,10 @@ class Composer(models.Model):
         for rec in self:
             rec.work_count = len(rec.work_ids)
 
+
+    # --------------------------------------------
+    #                   ACTIONS
+    # --------------------------------------------
 
     def action_oo_get_composers(self):
         wizard = self.env['oo.get.composers.wizard'].create({})
@@ -106,4 +115,21 @@ class Composer(models.Model):
                 if response.status_code == 200:
                     img = base64.b64encode(response.content)
                     rec.write({'portrait': img})
+
+
+
+    # --------------------------------------------
+    #                   API
+    # --------------------------------------------
+
+
+    @grant_access
+    def action_api_test(self):
+        post = {
+            'fields': ['name', 'first_name', 'portrait_url'],
+        }
+        res = call(self, 'composer/34', post)
+        print("=====================================================")
+        print(res)
+        print("=====================================================")
 

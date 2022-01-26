@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from ..common.tools import oo_api
 import werkzeug
 import json
 from odoo.http import content_disposition, Controller, request, route, Response
@@ -41,6 +41,8 @@ def _check_api_access(request):
 
 
 
+
+# Contains all the standard model fields (like create_date) and the useless mixin fields
 EXCLUDED_FIELDS = {
     'activity_ids', 'active', 'has_message', 'website_message_ids', 'message_ids', '__last_update', 'message_unread_counter', 'create_uid',
     'message_unread', 'my_activity_date_deadline', 'activity_exception_icon', 'activity_type_id', 'message_needaction_counter', 'message_attachment_count',
@@ -54,7 +56,7 @@ def dict_result(records, returned_fields=None):
         Shortcut for Model.read() picking only a few fields
             :param records: Any records you want
             :param returned_fields: a set/list of field's names you need
-            :return: A list of dict
+            :return: A list[] of dict{}
     """
     res = []
     for rec in records:
@@ -90,8 +92,8 @@ class ApiController(Controller):
             :param composer_id: the id number of the composer in database
             :return: dict with composer infos (specific fields if 'fields' post data is passed)
         """
-        req_data = json.loads(request.httprequest.data)
-        _FIELDS = req_data.get('fields', None)
+        post = json.loads(request.httprequest.data)
+        _FIELDS = post.get('fields', [])
 
         # Access rights
         check = _check_api_access(request)
@@ -107,24 +109,28 @@ class ApiController(Controller):
         return success_result(data)
 
 
-    @route(['/api/search/composer'], type='json', auth="public", website=True, csrf=False)
+    @route(['/api/composer/search'], type='json', auth="public", website=True, csrf=False)
     def api_search_composer(self):
         """
         API Call to search for composers by str in name + others options like birth, etc...
-            :return: list of dict with composer infos (specific fields if 'fields' post data is passed)
+        [POST] The following options are available:
+            - 'fields': a list[] of field names to be returned
+            - 'search': a str to filter composer's names
+
+        :return: list of dict with composer infos (specific fields if 'fields' post data is passed)
         """
         # Access rights
         check = _check_api_access(request)
         if not check.get('success'):
             return check
         # POST data
-        req_data = json.loads(request.httprequest.data)
-        _FIELDS = req_data.get('fields', None)
+        post = json.loads(request.httprequest.data)
+        _FIELDS = post.get('fields', [])
 
-        # We start with all the composers, then we apply filters
+        # --- We start with all the composers, then we apply filters
         result_composers = request.env['composer'].sudo().search([])
 
-        if search := req_data.get('search'):
+        if search := post.get('search'):
             result_composers = result_composers.search(['|', ('name', 'ilike', search), ('first_name', 'ilike', search)])
 
         data = dict_result(result_composers, _FIELDS)

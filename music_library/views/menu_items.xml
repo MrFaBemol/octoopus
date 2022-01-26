@@ -16,7 +16,7 @@
         <menuitem name="Works"
                     id="works_menu" sequence="20"
                     parent="music_library_app_menu"
-                    action="work_action"/>
+                    action="music_work_action"/>
 
         <!--    Instruments -->
         <menuitem name="Instruments"
@@ -41,8 +41,16 @@
                     id="config_menu" sequence="90"
                     parent="music_library_app_menu" />
 
+        <menuitem name="Periods"
+                    id="config_menu_periods" sequence="10"
+                    parent="config_menu"
+                    action="period_action" />
+        <menuitem name="Countries"
+                    id="config_menu_countries" sequence="20"
+                    parent="config_menu"
+                    action="base.action_country" />
         <menuitem name="Music notes"
-                    id="config_menu_music_note" sequence="10"
+                    id="config_menu_music_note" sequence="30"
                     parent="config_menu"
                     action="music_note_action" />
 
@@ -66,6 +74,10 @@
                     id="technical_menu_api_requests" sequence="20"
                     parent="technical_menu_sub_api"
                     action="api_request_action" />
+        <menuitem name="TEST DECORATOR"
+                    id="test_api_requests" sequence="30"
+                    parent="technical_menu_sub_api"
+                    action="api_test_action" />
 
 
         <menuitem name="Batch actions"

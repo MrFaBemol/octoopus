@@ -18,17 +18,16 @@
     'depends': ['web', 'mail', 'portal'],
     
     'data': [
-        'security/ir.model.access.csv',
-
         'datas/ir_config_parameter.xml',
         'datas/music_note.xml',
         'datas/api_token.xml',
 
         'views/composer.xml',
-        'views/work.xml',
+        'views/music_work.xml',
         'views/instrument_category.xml',
         'views/instrument.xml',
         'views/music_note.xml',
+        'views/period.xml',
 
         'views/api_token.xml',
         'views/api_request.xml',
@@ -39,5 +38,6 @@
 
         'views/menu_items.xml',
         'security/security.xml',
+        'security/ir.model.access.csv',
     ],
 }

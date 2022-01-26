@@ -7,7 +7,7 @@ class UpdateTonalityWizard(models.TransientModel):
     _name = "update.tonality.wizard"
     _description = "A wizard used to update tonality in batch"
 
-    work_ids = fields.Many2many(comodel_name="work")
+    work_ids = fields.Many2many(comodel_name="music.work")
 
     tonality_note = fields.Many2one(comodel_name="music.note", required=True)
     tonality_mode = fields.Selection(

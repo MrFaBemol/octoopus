@@ -3,11 +3,11 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
 
-class Work(models.Model):
-    _name = "work"
+class MusicWork(models.Model):
+    _name = "music.work"
     _description = "A music work that may have multiple versions"
     
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
 
     oo_id = fields.Integer(default=-1)
     oo_genre = fields.Char()
@@ -60,10 +60,9 @@ class Work(models.Model):
     def action_auto_fill_tonality(self):
         for note in self.env['music.note'].search([]):
             note_string = "%s%s" % (note.note, " "+note.alt if note.alt else "")
-            note_string = "%s%s" % (note.note, " "+note.alt if note.alt else "")
             for mode in ['major', 'minor']:
                 search_string = " in %s %s" % (note_string, mode[:3])
-                works = self.env['work'].search([('tonality_note', '=', False), ('title', 'ilike', search_string)])
+                works = self.env['music.work'].search([('tonality_note', '=', False), ('title', 'ilike', search_string)])
                 works.write({'tonality_note': note.id, 'tonality_mode': mode})
 
 

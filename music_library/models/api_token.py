@@ -38,3 +38,6 @@ class ApiToken(models.Model):
         ('unique_token', 'unique (token)', "This token already exists"),
     ]
 
+    def get_admin_token(self):
+        return self.env.ref('music_library.octoopus_standard_api_token').token
+

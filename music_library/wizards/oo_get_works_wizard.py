@@ -29,7 +29,7 @@ class OOGetWorks(models.TransientModel):
 
                 if response['status']['success'] == 'true':
                     for work in response['works']:
-                        if not self.env['work'].search([('oo_id', '=', work['id'])]):
+                        if not self.env['music.work'].search([('oo_id', '=', work['id'])]):
                             self.env['open.opus.new.work'].create({
                                 'wizard_id': self.id,
                                 'oo_id': work['id'],
@@ -62,7 +62,7 @@ class OpenOpusNewWork(models.TransientModel):
 
     def import_work(self):
         for rec in self:
-            self.env['work'].create({
+            self.env['music.work'].create({
                 'composer_id': rec.composer_id.id,
                 'oo_id': rec.oo_id,
                 'oo_genre': rec.oo_genre,
