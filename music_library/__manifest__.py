@@ -5,14 +5,14 @@
     'description': """
        An app to manage composers and music works
     """,
-    'author': 'Gautier Casabona',
+
     'license': 'LGPL-3',
     'category': "Uncategorized",
-    'version': "15.0.0.1.2",
+    'version': "15.0.0.1.3",
     'installable': True,
     'sequence': 1,
     
-    'author': "Odoo S.A.",
+    'author': "MrFaBemol",
     'website': "http://www.odoo.com",
     
     'depends': ['web', 'mail', 'portal'],
