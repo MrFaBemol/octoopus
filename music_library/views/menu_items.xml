@@ -15,15 +15,25 @@
         <!--    Works-->
         <menuitem name="Works"
                     id="works_menu" sequence="20"
-                    parent="music_library_app_menu"
+                    parent="music_library_app_menu"/>
+
+        <menuitem name="Works list"
+                    id="works_menu_works_list" sequence="10"
+                    parent="works_menu"
                     action="music_work_action"/>
+        <menuitem name="Versions list"
+                    id="works_menu_versions" sequence="20"
+                    parent="works_menu"
+                    action="music_work_version_action"/>
+
+
 
         <!--    Instruments -->
         <menuitem name="Instruments"
                     id="instrument_menu" sequence="30"
                     parent="music_library_app_menu"/>
 
-        <menuitem name="Instruments List"
+        <menuitem name="Instruments list"
                     id="instrument_menu_instruments_list" sequence="10"
                     parent="instrument_menu"
                     action="instrument_action"/>

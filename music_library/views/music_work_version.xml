@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="music_work_version_tree" model="ir.ui.view">
+            <field name="name">music.work.version.tree</field>
+            <field name="model">music.work.version</field>
+            <field name="arch" type="xml">
+                <tree string="Work versions">
+                    <field name="work_id" />
+                    <field name="composer_id" />
+                    <field name="instrument_ids" widget="many2many_tags" />
+                    <field name="soloist_qty" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="music_work_version_form" model="ir.ui.view">
+            <field name="name">music.work.version.form</field>
+            <field name="model">music.work.version</field>
+            <field name="arch" type="xml">
+                <form string="Work version">
+                    <sheet>
+                        <group string="Version infos">
+                            <field name="work_id" />
+                            <field name="composer_id" readonly="1" />
+                        </group>
+                        <group string="Instruments">
+                            <group><field name="soloist_qty" /></group>
+                            <group attrs="{'invisible': [('accompanist_qty', '=', 0)]}"><field name="accompanist_qty" /></group>
+                            <separator />
+                            <field name="instrument_ids" readonly="1" nolabel="1" colspan="2" />
+                        </group>
+
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="music_work_version_search" model="ir.ui.view">
+            <field name="name">music.work.version.search</field>
+            <field name="model">music.work.version</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="work_id" />
+                    <field name="composer_id" />
+                    <filter string="Composers" name="filter_group_by_composer_id" context="{'group_by': 'composer_id'}" />
+                </search>
+            </field>
+        </record>
+
+        <record id="music_work_version_action" model="ir.actions.act_window">
+            <field name="name">Works versions</field>
+            <field name="res_model">music.work.version</field>
+            <field name="context">{'search_default_filter_group_by_composer_id': 1}</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+    </data>
+</odoo>

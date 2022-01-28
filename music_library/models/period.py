@@ -12,9 +12,7 @@ class Period(models.Model):
     def _get_default_color(self):
         return randint(1, 11)
 
-
-    
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
     date_start = fields.Date(required=True)
     date_end = fields.Date()
     date_display = fields.Char(compute="_compute_date_display")

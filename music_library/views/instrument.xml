@@ -6,11 +6,12 @@
             <field name="name">instrument.tree</field>
             <field name="model">instrument</field>
             <field name="arch" type="xml">
-                <tree string="Instruments">
+                <tree string="Instruments" default_order="category_id">
                     <field name="name" />
                     <field name="category_id" />
                     <field name="key" />
                     <field name="is_ensemble" />
+                    <field name="is_accompaniment" />
                 </tree>
             </field>
         </record>
@@ -34,9 +35,22 @@
 
                                 <field name="key" />
                                 <field name="is_ensemble" />
+                                <field name="is_accompaniment" />
+                                <field name="accompanist_qty" attrs="{'invisible': [('is_accompaniment', '!=', True)], 'required': [('is_accompaniment', '=', True)]}"/>
                         </group>
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <record id="instrument_search" model="ir.ui.view">
+            <field name="name">instrument.search</field>
+            <field name="model">instrument</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <filter string="Category" name="filter_group_by_category_id" context="{'group_by': 'category_id'}" />
+                </search>
             </field>
         </record>
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="music_work_version_instrument_tree" model="ir.ui.view">
+            <field name="name">music.work.version.instrument.tree</field>
+            <field name="model">music.work.version.instrument</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="instrument_id" />
+                    <field name="instrument_category_id" />
+                    <field name="quantity" />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

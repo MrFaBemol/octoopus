@@ -12,6 +12,7 @@
                     <field name="parent_id" />
                     <field name="instrument_count" />
                     <field name="is_ensemble_category" />
+                    <field name="is_accompaniment_category" />
                 </tree>
             </field>
         </record>
@@ -26,13 +27,15 @@
                             <field name="name" />
                             <field name="parent_id" />
                             <field name="icon"  widget="image" class="oe_avatar oe_left" />
-                            <field name="is_ensemble_category" string="Is an ensemble" />
+                            <field name="is_ensemble_category" />
+                            <field name="is_accompaniment_category" />
                         </group>
                         <group string="Instruments">
                             <field name="instrument_count" string="Count" />
-                            <field name="instrument_ids" colspan="2" nolabel="1">
-                                <tree editable="bottom">
+                            <field name="all_instrument_ids" colspan="2" nolabel="1">
+                                <tree editable="bottom" limit="12">
                                     <field name="name" />
+                                    <field name="category_id" />
                                     <field name="key" />
                                 </tree>
                             </field>

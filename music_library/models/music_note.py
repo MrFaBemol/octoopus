@@ -21,12 +21,13 @@ class MusicNote(models.Model):
         ],
         default='a',
         required=True,
+        translate=True,
     )
     alt = fields.Selection(
         selection=[
             ('sharp', '#'),
             ('flat', '♭'),
-        ]
+        ],
     )
 
     def get_selection_label(self, obj, field_name, field_value):

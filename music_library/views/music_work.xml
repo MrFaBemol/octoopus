@@ -25,7 +25,14 @@
             <field name="arch" type="xml">
                 <form string="Work">
                     <sheet>
-
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="action_open_versions_list" icon="fa-copy" attrs="{'invisible': [('version_qty', '&lt;', 2)]}">
+                                <field name="version_qty" widget="statinfo" string="Versions" />
+                            </button>
+                            <button class="oe_stat_button" type="object" name="action_open_version_form" icon="fa-file-text-o" attrs="{'invisible': [('version_qty', '!=', 1)]}">
+                                Go to version
+                            </button>
+                        </div>
                         <group>
                             <field name="title" />
                             <field name="composer_id" />
@@ -74,10 +81,11 @@
                 <search string="Search music work">
                     <field name="title" />
                     <field name="composer_id" />
-                    <filter string="Composers" name="filter_group_by_composer_id" context="{'group_by': 'composer_id'}" />
+
                     <filter string="Popular works" name="filter_popular_work" domain="[('is_popular','=',True)]"/>
                     <filter string="Essential works" name="filter_essential_work" domain="[('is_essential','=',True)]"/>
 
+                    <filter string="Composers" name="filter_group_by_composer_id" context="{'group_by': 'composer_id'}" />
                 </search>
             </field>
         </record>
@@ -85,6 +93,7 @@
         <record id="music_work_action" model="ir.actions.act_window">
             <field name="name">Music works</field>
             <field name="res_model">music.work</field>
+            <field name="context">{'search_default_filter_group_by_composer_id': 1}</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
         </record>
@@ -97,10 +106,17 @@
             <field name="code">action = records.action_update_tonality()</field>
         </record>
 
+        <record id="create_version_action" model="ir.actions.server">
+            <field name="name">Create work version</field>
+            <field name="model_id" ref="music_library.model_music_work"/>
+            <field name="binding_model_id" ref="music_library.model_music_work"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_create_version()</field>
+        </record>
+
         <record id="auto_fill_tonality_action" model="ir.actions.server">
             <field name="name">Auto-fill tonality for works</field>
             <field name="model_id" ref="music_library.model_music_work"/>
-            <field name="binding_model_id" ref="music_library.model_music_work"/>
             <field name="state">code</field>
             <field name="code">action = model.action_auto_fill_tonality()</field>
         </record>

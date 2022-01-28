@@ -11,6 +11,11 @@
             <field name="key">oo.api.composer.first.letter</field>
             <field name="value">/composer/list/name/{{ID}}.json</field>
         </record>
+
+        <record id="oo_api_composer_by_id" model="ir.config_parameter">
+            <field name="key">oo.api.composer.by.id</field>
+            <field name="value">/composer/list/ids/{{ID}}.json</field>
+        </record>
         
         <record id="oo_api_all_works_by_composer_id" model="ir.config_parameter">
             <field name="key">oo.api.all.works.by.composer.id</field>

@@ -6,7 +6,7 @@ import requests
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-
+# Todo: Add an action to update values with OpenOpus API + Get popular/essential composers
 
 class Composer(models.Model):
     _name = "composer"
@@ -25,7 +25,7 @@ class Composer(models.Model):
 
     portrait = fields.Binary()
     portrait_url = fields.Char(tracking=True)
-    biography = fields.Text()
+    biography = fields.Text(translate=True)
     biography_short = fields.Text(compute="_compute_biography_short")
     country_ids = fields.Many2many(comodel_name="res.country")
     period_ids = fields.Many2many(comodel_name="period", string="Periods")
@@ -35,7 +35,8 @@ class Composer(models.Model):
     work_ids = fields.One2many(comodel_name="music.work", inverse_name="composer_id")
     work_count = fields.Integer(compute="_compute_work_count")
 
-
+    oo_infos_url = fields.Char(compute="_compute_oo_infos_url")
+    oo_works_url = fields.Char(compute="_compute_oo_works_url")
     slug_url = fields.Char()
     wikipedia_url = fields.Char()
 
@@ -52,22 +53,39 @@ class Composer(models.Model):
 
     @api.depends('first_name', 'name', 'birth', 'death')
     def _compute_names(self):
-        for rec in self:
-            full_name = rec.name
-            if rec.first_name:
-                full_name += ", %s" % rec.first_name
-            rec.full_name = full_name
-            rec.display_name = "%s (%s - %s)" % (full_name, rec.birth.year if rec.birth else "", rec.death.year if rec.death else "")
+        for composer in self:
+            full_name = composer.name
+            if composer.first_name:
+                full_name += ", %s" % composer.first_name
+            composer.full_name = full_name
+            composer.display_name = "%s (%s - %s)" % (full_name, composer.birth.year if composer.birth else "", composer.death.year if composer.death else "")
             
     @api.depends('biography')
     def _compute_biography_short(self):
-        for rec in self:
-            rec.biography_short = rec.biography[:500] + " [...]" if rec.biography else ""
+        for composer in self:
+            composer.biography_short = composer.biography[:500] + " [...]" if composer.biography else ""
 
     @api.depends('work_ids')
     def _compute_work_count(self):
-        for rec in self:
-            rec.work_count = len(rec.work_ids)
+        for composer in self:
+            composer.work_count = len(composer.work_ids)
+
+    @api.depends('oo_id')
+    def _compute_oo_infos_url(self):
+        for composer in self:
+            composer.oo_infos_url = "%s%s" % (
+                self.env['ir.config_parameter'].sudo().get_param('open.opus.api'),
+                self.env['ir.config_parameter'].sudo().get_param('oo.api.composer.by.id').replace("{{ID}}", str(composer.oo_id)),
+            )
+
+    @api.depends('oo_id')
+    def _compute_oo_works_url(self):
+        for composer in self:
+            composer.oo_works_url = "%s%s" % (
+                self.env['ir.config_parameter'].sudo().get_param('open.opus.api'),
+                self.env['ir.config_parameter'].sudo().get_param('oo.api.all.works.by.composer.id').replace("{{ID}}", str(composer.oo_id)),
+            )
+
 
 
     # --------------------------------------------
@@ -109,12 +127,12 @@ class Composer(models.Model):
         }
 
     def action_oo_get_portrait(self):
-        for rec in self:
-            if rec.portrait_url:
-                response = requests.get(rec.portrait_url, verify=False)
+        for composer in self:
+            if composer.portrait_url:
+                response = requests.get(composer.portrait_url, verify=False)
                 if response.status_code == 200:
                     img = base64.b64encode(response.content)
-                    rec.write({'portrait': img})
+                    composer.write({'portrait': img})
 
 
 

@@ -2,6 +2,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 composer_rule_access,composer_rule_access,model_composer,base.group_user,1,1,1,1
 music_work_rule_access,music_work_rule_access,model_music_work,base.group_user,1,1,1,1
 music_work_version_rule_access,music_work_version_rule_access,model_music_work_version,base.group_user,1,1,1,1
+music_work_version_instrument_rule_access,music_work_version_instrument_rule_access,model_music_work_version_instrument,base.group_user,1,1,1,1
+
 
 
 period_rule_access,period_rule_access,model_period,base.group_user,1,1,1,1
@@ -20,4 +22,7 @@ oo_get_composers_wizard_rule_access,oo_get_composers_wizard_rule_access,model_oo
 open_opus_new_work_rule_access,open_opus_new_work_rule_access,model_open_opus_new_work,base.group_user,1,1,1,1
 oo_get_works_wizard_rule_access,oo_get_works_wizard_rule_access,model_oo_get_works_wizard,base.group_user,1,1,1,1
 update_tonality_wizard_rule_access,update_tonality_wizard_rule_access,model_update_tonality_wizard,base.group_user,1,1,1,1
+create_work_version_wizard_rule_access,create_work_version_wizard_rule_access,model_create_work_version_wizard,base.group_user,1,1,1,1
+create_work_version_wizard_performer_rule_access,create_work_version_wizard_performer_rule_access,model_create_work_version_wizard_performer,base.group_user,1,1,1,1
+
 

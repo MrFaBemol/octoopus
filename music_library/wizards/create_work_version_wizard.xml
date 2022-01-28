@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="create_work_version_wizard_form" model="ir.ui.view">
+            <field name="name">create.work.version.wizard.form</field>
+            <field name="model">create.work.version.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create new version">
+                    <sheet>
+                        <notebook>
+                            <page string="Instruments">
+                                <group>
+                                    <field name="performer_ids" nolabel="1" colspan="2">
+                                        <tree editable="bottom">
+                                            <field name="instrument_id" />
+                                            <field name="instrument_category_id" />
+                                            <field name="quantity" />
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Works">
+                                <group>
+                                    <field name="work_ids" nolabel="1" colspan="2" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button string="Create versions"
+                                class="btn oe_highlight"
+                                type="object"
+                                name="action_create_versions" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

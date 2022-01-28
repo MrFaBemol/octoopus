@@ -3,8 +3,15 @@ body {
     color: #666666;
 }
 .o_main_navbar {
-    border-bottom: 1px solid #68465f;
-    background-color: #875A7B;
+    border-bottom: 1px solid #0A193D;
+    background-color: #1C294A;
+}
+
+
+/******* TREE ********/
+a {
+    /* PINK */
+    color: #eb2768;
 }
 
 
@@ -27,6 +34,9 @@ body {
     background: none;
     background-color: #f9f9f9;
 }
+.o_form_view .o_horizontal_separator {
+    color: #0A193D;
+}
 
 
 /******* INPUTS ********/
@@ -47,21 +57,21 @@ body {
 /******* CHECKBOX ********/
 .custom-control-input:checked ~ .custom-control-label::before {
     color: #e9ecef;
-    border-color: #00A09D;
-    background-color: #00A09D;
+    border-color: #2b2f72;
+    background-color: #2b2f72;
 }
 
 
 /******* BUTTONS ********/
 .btn-primary {
     color: #FFFFFF;
-    background-color: #00A09D;
-    border-color: #00A09D;
+    background-color: #2b2f72;
+    border-color: #2b2f72;
 }
 .btn-primary:hover {
     color: #FFFFFF;
-    background-color: #007a77;
-    border-color: #006d6b;
+    background-color: #1C294A;
+    border-color: #0A193D;
 }
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.2rem rgb(38 174 172 / 50%);

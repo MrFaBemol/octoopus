@@ -24,8 +24,10 @@
 
         'views/composer.xml',
         'views/music_work.xml',
-        'views/instrument_category.xml',
+        'views/music_work_version.xml',
+        'views/music_work_version_instrument.xml',
         'views/instrument.xml',
+        'views/instrument_category.xml',
         'views/music_note.xml',
         'views/period.xml',
 
@@ -35,6 +37,7 @@
         'wizards/oo_get_composers_wizard.xml',
         'wizards/oo_get_works_wizard.xml',
         'wizards/update_tonality_wizard.xml',
+        'wizards/create_work_version_wizard.xml',
 
         'views/menu_items.xml',
         'security/security.xml',

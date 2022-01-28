@@ -75,9 +75,15 @@
                             </page>
                             <page string="Web" name="composer_web">
                                 <group>
-                                    <field name="portrait_url" widget="url" />
-                                    <field name="wikipedia_url" widget="url" />
-                                    <field name="slug_url" widget="url" />
+                                    <group string="Misc">
+                                        <field name="portrait_url" widget="url" />
+                                        <field name="wikipedia_url" widget="url" />
+                                        <field name="slug_url" widget="url" />
+                                    </group>
+                                    <group string="OpenOpus">
+                                        <field name="oo_infos_url" widget="url" />
+                                        <field name="oo_works_url" widget="url" />
+                                    </group>
                                 </group>
                             </page>
                         </notebook>
