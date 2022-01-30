@@ -12,6 +12,7 @@
                     <field name="name" />
                     <field name="date_start" />
                     <field name="date_end" />
+                    <field name="composer_qty" />
                 </tree>
             </field>
         </record>
@@ -22,6 +23,11 @@
             <field name="arch" type="xml">
                 <form string="Period">
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="action_open_composers_kanban" icon="fa-users" attrs="{'invisible': [('composer_qty', '=', 0)]}">
+                                <field name="composer_qty" widget="statinfo" string="Composers" />
+                            </button>
+                        </div>
                         <group class="oe_read_only">
                             <h1> <field name="name" /> (<field name="date_display" nolabel="1"/>)</h1>
                         </group>
@@ -35,6 +41,8 @@
                                 <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow" modifiers="{}"/>
                                 <field name="date_end" nolabel="1" class="oe_inline" />
                             </div>
+
+
                         </group>
                     </sheet>
                 </form>

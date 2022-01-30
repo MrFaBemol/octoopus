@@ -11,6 +11,9 @@
                         <notebook>
                             <page string="Instruments">
                                 <group>
+                                    <field name="is_original" />
+                                </group>
+                                <group>
                                     <field name="performer_ids" nolabel="1" colspan="2">
                                         <tree editable="bottom">
                                             <field name="instrument_id" />

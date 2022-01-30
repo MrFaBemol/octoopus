@@ -10,6 +10,8 @@ class CreateWorkVersionWizard(models.TransientModel):
     work_ids = fields.Many2many(comodel_name="music.work")
     performer_ids = fields.One2many(comodel_name="create.work.version.wizard.performer", inverse_name="wizard_id")
 
+    is_original = fields.Boolean(default=True)
+
     def action_create_versions(self):
         self.ensure_one()
         if not self.performer_ids:
@@ -25,6 +27,7 @@ class CreateWorkVersionWizard(models.TransientModel):
                     'instrument_id': performer.instrument_id.id,
                     'instrument_category_id': performer.instrument_category_id.id,
                     'quantity': performer.quantity,
+                    'is_original': self.is_original,
                 })
 
 

@@ -24,6 +24,7 @@
                         <group string="Version infos">
                             <field name="work_id" />
                             <field name="composer_id" readonly="1" />
+                            <field name="is_original" widget="boolean_toggle"/>
                         </group>
                         <group string="Instruments">
                             <group><field name="soloist_qty" /></group>

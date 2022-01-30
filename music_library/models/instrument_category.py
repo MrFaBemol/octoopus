@@ -19,6 +19,9 @@ class InstrumentCategory(models.Model):
     all_instrument_ids = fields.Many2many(comodel_name="instrument", compute="_compute_all_instrument_ids")
     instrument_count = fields.Integer(compute="_compute_all_instrument_ids")
 
+    work_version_ids = fields.Many2many(comodel_name="music.work.version", relation="instrument_category_version_rel", compute="_compute_work_version_ids")
+    work_version_qty = fields.Integer(compute="_compute_work_version_ids")
+
 
     @api.depends('child_ids', 'instrument_ids')
     def _compute_all_instrument_ids(self):
@@ -28,9 +31,23 @@ class InstrumentCategory(models.Model):
             cat.all_instrument_ids = cat.child_ids.all_instrument_ids | cat.instrument_ids
             cat.instrument_count = len(cat.all_instrument_ids)
 
-    # @api.depends('instrument_ids')
-    # def _compute_instrument_count(self):
-    #     for rec in self:
-    #         if rec.child_ids:
-    #             rec.child_ids._compute_instrument_count()
-    #         rec.instrument_count = len(rec.instrument_ids) + sum(rec.child_ids.mapped('instrument_count'))
+
+    def _compute_work_version_ids(self):
+        for rec in self:
+            rec.work_version_ids = self.env['music.work.version.instrument'].search([('instrument_id', 'in', rec.all_instrument_ids.ids)]).work_version_id.ids
+            rec.work_version_qty = len(rec.work_version_ids)
+
+    def action_open_versions_list(self):
+        self.ensure_one()
+        return {
+            "name": _("All works versions for %s" % self.name),
+            "type": 'ir.actions.act_window',
+            "res_model": 'music.work.version',
+            "views": [[False, "tree"], [False, "form"]],
+            "target": 'self',
+            "domain": [('id', 'in', self.work_version_ids.ids)],
+            "context": {
+                **self.env.context,
+                'search_default_filter_group_by_composer_id': 0,
+            },
+        }

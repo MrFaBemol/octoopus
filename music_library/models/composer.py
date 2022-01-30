@@ -4,7 +4,6 @@ import base64
 
 import requests
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
 
 # Todo: Add an action to update values with OpenOpus API + Get popular/essential composers
 
@@ -28,7 +27,7 @@ class Composer(models.Model):
     biography = fields.Text(translate=True)
     biography_short = fields.Text(compute="_compute_biography_short")
     country_ids = fields.Many2many(comodel_name="res.country")
-    period_ids = fields.Many2many(comodel_name="period", string="Periods")
+    period_ids = fields.Many2many(comodel_name="period", relation="composer_period_rel", string="Periods")
     is_popular = fields.Boolean(default=False)
     is_essential = fields.Boolean(default=False)
 

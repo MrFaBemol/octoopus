@@ -8,12 +8,12 @@
 
     'license': 'LGPL-3',
     'category': "Uncategorized",
-    'version': "15.0.0.1.3",
+    'version': "15.0.0.1.4",
     'installable': True,
     'sequence': 1,
     
     'author': "MrFaBemol",
-    'website': "http://www.odoo.com",
+    'website': "http://www.octoopus.com",
     
     'depends': ['web', 'mail', 'portal'],
     
