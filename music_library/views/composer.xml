@@ -166,6 +166,5 @@
             <field name="state">code</field>
             <field name="code">action = model.action_api_test()</field>
         </record>
-
     </data>
 </odoo>

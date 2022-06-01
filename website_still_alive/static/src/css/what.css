@@ -1,0 +1,114 @@
+.oo_what_composers_filters {
+  padding: 10px;
+  min-width: auto;
+}
+
+.oo_what_composer_top_bar, .oo_what_composer_bottom_bar {
+  padding: 10px;
+  font-size: 1.1rem;
+}
+
+.oo_what_composer_bottom_bar {
+  width: 100%;
+}
+
+.oo_what_composer_top_bar_results {
+  display: flex;
+  align-items: center;
+  width: 250px;
+}
+.oo_what_composer_top_bar_results span:is(.results_min_page, .results_max_page) {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.oo_what_composer_top_bar_pagination {
+  display: flex;
+  align-items: center;
+}
+.oo_what_composer_top_bar_pagination span:is(.results_count, .current_page, .total_page), .oo_what_composer_top_bar_pagination a:is(.prev_page, .next_page) {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.oo_what_composer_top_bar_pagination a:is(.prev_page, .next_page) {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.oo_what_composer_top_bar_order_by {
+  font-size: 1rem;
+}
+.oo_what_composer_top_bar_order_by span.label {
+  font-size: 1.2rem;
+}
+
+.oo_what_composer_grid {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 175px));
+  padding: 10px 5px;
+  justify-content: center;
+  border: 1px solid black;
+}
+
+.oo_composer_card {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 175px;
+  border-radius: 8px;
+  background-size: cover;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.3s;
+  transition-timing-function: ease;
+}
+.oo_composer_card:hover {
+  box-shadow: 0 4px 16px 4px rgba(0, 0, 0, 0.8);
+}
+.oo_composer_card:hover .oo_composer_card_infos {
+  height: 80px;
+}
+.oo_composer_card .oo_composer_card_link {
+  background-color: transparent;
+}
+
+.oo_composer_card_infos {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 40px 40px;
+  background: rgba(0, 0, 0, 0.7);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: white;
+  cursor: auto;
+  height: 40px;
+  transition: height 0.3s;
+  transition-timing-function: ease;
+}
+.oo_composer_card_infos div.name {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  font-family: "Lato";
+}
+.oo_composer_card_infos div.infos {
+  display: grid;
+  place-items: center;
+  height: 40px;
+}
+
+.input-min-max {
+  display: grid;
+  grid-template-columns: 40% auto auto;
+  grid-gap: 5px;
+  margin-bottom: 5px;
+  align-items: center;
+}
+
+.input-min-max input {
+  padding: 1px 10px;
+  height: 35px;
+}
+
+/*# sourceMappingURL=what.css.map */

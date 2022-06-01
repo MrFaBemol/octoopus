@@ -1,0 +1,34 @@
+/************** GRID ***************/
+
+/************ Columns *************/
+.oo_row{display: grid;}
+
+.oo_col_aa{grid-template-columns: auto auto;}
+.oo_col_aaa{grid-template-columns: auto auto auto;}
+.oo_col_50-50{grid-template-columns: 50% 50%;}
+
+/* more right */
+.oo_col_25-75{grid-template-columns: 25% 75%;}
+.oo_col_15-85{grid-template-columns: 15% 85%;}
+.oo_col_max-right{grid-template-columns: auto 1fr;}
+/* more left */
+.oo_col_75-25{grid-template-columns: 75% 25%;}
+.oo_col_85-15{grid-template-columns: 85% 15%;}
+.oo_col_max-left{grid-template-columns: 1fr auto;}
+
+
+
+
+// gap
+.gap1{grid-gap: 1rem;}
+.gap2{grid-gap: 2rem;}
+
+
+// center
+.oo_center_vertical{align-items: center;}
+.oo_center_horizontal{justify-content: center;}
+
+
+
+/************ FLEX *************/
+.flex-gap{display: flex; justify-content: space-between;}

@@ -58,7 +58,7 @@ class MusicWork(models.Model):
             "type": 'ir.actions.act_window',
             "res_model": 'music.work.version',
             "views": [[False, "tree"], [False, "form"]],
-            "target": 'self',
+            "target": 'current',
             "domain": [('work_id', '=', self.id)],
             "context": {
                 **self.env.context,
@@ -74,7 +74,7 @@ class MusicWork(models.Model):
             "res_model": 'music.work.version',
             'res_id': self.work_version_ids[:1].id,
             "views": [[False, "form"]],
-            "target": 'self',
+            "target": 'current',
             "context": {
                 **self.env.context,
             },
