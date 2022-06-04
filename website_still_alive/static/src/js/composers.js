@@ -1,23 +1,55 @@
-const { Component, mount } = owl;
-const { xml } = owl.tags;
-const { whenReady } = owl.utils;
-const { onMounted, useState } = owl.hooks;
-
-
-
-
 // Setup code
-function setup() {
-    let test = $('ComposerPanel');
-    for (let i=0; i<test.length; i++){
-        mount(ComposerPanel, { target: test[i] });
-    }
+function composerPanelSetup() {
+    const env = { store: createComposerStore() };
+    mount(ComposerPanel, $('ComposerPanel')[0], { env: env });
 }
 
-whenReady(setup);
+whenReady(composerPanelSetup);
 
 
+// -------------------------------------------------------------------------
+// Store
+// -------------------------------------------------------------------------
+function createComposerStore() {
+  return reactive(new ComposerList());
+}
 
+
+class ComposerList {
+    composers = [];
+    active_composers = [];
+
+    results_count = 0;
+    results_min = 0;
+    results_max = 0;
+
+    page_limit = 30;
+    page_current = 0;
+    page_max = 0;
+
+    changePage(delta){
+        this.page_current = Math.max(Math.min(this.page_current+delta, this.page_max), 1);
+        this.active_composers = this.composers.slice(this.page_limit*(this.page_current-1), this.page_limit*this.page_current);
+        this.results_min = 1 + (this.page_limit * (this.page_current-1));
+        this.results_max = this.results_min + this.active_composers.length - 1;
+    }
+    nextPage() { this.changePage(1); }
+    prevPage() { this.changePage(-1); }
+
+    async fetchComposerList(){
+        let res = await callApi(
+            '/api/composer/search',
+            {"fields": ['id', 'slug_url', 'name', 'first_name', 'birth', 'death', 'portrait_url', 'work_count']},
+        );
+        console.log(res);
+        let page_ratio = res.result.data_count/this.page_limit;
+        this.page_max += Number.isInteger(page_ratio) ? page_ratio : Math.floor(page_ratio)+1;
+        this.composers = res.result.data;
+        this.results_count = res.result.data_count;
+        this.nextPage();
+    }
+
+}
 
 
 
@@ -26,16 +58,22 @@ whenReady(setup);
 class ComposerCard extends Component{
     static template = xml`
 <div class="oo_composer_card" t-attf-style="background-image:url('{{props.composer.portrait_url}}');">
-    <a href="https://www.google.com"><span class="oo_composer_card_link" /></a>
+    <a t-attf-href="/what/composer/{{props.composer.slug_url}}"><span class="oo_composer_card_link" /></a>
     <div class="oo_composer_card_infos">
-        <div class="name"><t t-esc="props.composer.name"/>, <t t-esc="props.composer.first_name"/></div>
+        <div class="name" >
+            <a t-attf-href="/what/composer/{{props.composer.slug_url}}" class="oo_composer_card_link">
+                <t t-esc="props.composer.name"/>, <t t-esc="props.composer.first_name"/>
+            </a>
+        </div>
         <div class="infos">#<t t-esc="props.composer.id"/> - <t t-esc="props.composer.work_count"/> works</div>
     </div>
-<!--    <span>  (<t t-esc="props.composer.birth"/> - <t t-esc="props.composer.death"/>)</span>-->
 </div>
 `;
 
     static props = ["composer"];
+    setup(){
+        this.store = useStore()
+    }
 }
 
 
@@ -46,7 +84,7 @@ class ComposerCard extends Component{
 class ComposerGrid extends Component {
     static template = xml`
 <div class="oo_what_composer_grid">
-    <t t-foreach="composers" t-as="composer" t-key="composer.id">
+    <t t-foreach="store.active_composers" t-as="composer" t-key="composer.id">
         <ComposerCard composer="composer" />
     </t>
 </div>
@@ -54,28 +92,12 @@ class ComposerGrid extends Component {
 
     static components = { ComposerCard };
 
-    composers = useState([]);
-
 
     setup(){
-        onMounted((e) => {
-            self = this;
-            let apiToken = "NUjFlyIsJMWfAnICZAGWFHfCKLSOEPGDmogRVUgzaBXHkIxdWAMcGhOtJHRxyqba";
+        this.store = useStore()
 
-            $.ajax({
-                url: '/api/composer/search',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {"oo-token": apiToken},
-                data: JSON.stringify({
-                    "fields": ['id', 'name', 'first_name', 'birth', 'death', 'portrait_url', 'work_count'],
-                }),
-                success: (res) => {
-                    this.composers.push(...res.result.data);
-                    // console.log(self.composers);
-                },
-            });
+        onMounted((e) => {
+            this.store.fetchComposerList()
         });
     }
 
@@ -99,13 +121,16 @@ class ComposerOrderingTopBar extends Component{
     static template = xml`
 <div class="row oo_what_composer_top_bar flex-gap">
     <div class="oo_what_composer_top_bar_results col-2">
-        Results: <span class="results_min_page">0</span> - <span class="results_max_page">0</span> / <span class="results_count">0</span>
+        Results: 
+        <span class="results_min_page"><t t-esc="store.results_min" /></span> -
+        <span class="results_max_page"><t t-esc="store.results_max" /></span> /
+        <span class="results_count"><t t-esc="store.results_count" /></span>
     </div>
 
     <div class="col oo_center_horizontal oo_what_composer_top_bar_pagination">
-        <a href="#" class="prev_page">&lt;</a>
-        Page: <span class="current_page">-</span> / <span class="total_page">-</span>
-        <a href="#" class="next_page">&gt;</a>
+        <a href="#" class="prev_page" t-on-click="() => store.prevPage()">&lt;</a>
+        Page: <span class="current_page"><t t-esc="store.page_current" /></span> / <span class="total_page"><t t-esc="store.page_max" /></span>
+        <a href="#" class="next_page" t-on-click="() => store.nextPage()">&gt;</a>
     </div>
 
     <div class="col-4">
@@ -133,6 +158,9 @@ class ComposerOrderingTopBar extends Component{
     </div>
 </div>
 `;
+    setup(){
+        this.store = useStore()
+    }
 }
 class ComposerOrderingBottomBar extends Component{
     static template = xml`
@@ -154,14 +182,9 @@ class ComposerOrderingBottomBar extends Component{
 
 
 
-
-
-
-
-
 class ComposerPanel extends Component{
     static template = xml`
-<div class="row">
+<div class="oo_row">
     <ComposerFilter />
     <div class="col">
         <ComposerOrderingTopBar />
@@ -172,6 +195,9 @@ class ComposerPanel extends Component{
 `;
 
     static components = { ComposerFilter, ComposerOrderingTopBar, ComposerOrderingBottomBar, ComposerGrid };
-
 }
+
+
+
+
 

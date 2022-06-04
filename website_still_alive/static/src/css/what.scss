@@ -1,3 +1,39 @@
+
+/**********************************************
+****                WORKS
+***********************************************/
+
+.oo_what_work_mode_buttons{
+    padding: 10px;
+    //background: red;
+
+    & button{
+        width: 200px;
+        margin: 5px;
+        padding: 5px;
+        border: 1px solid grey;
+        border-radius: 5px;
+
+        &:hover{
+            border: 2px solid var(--color-pink);
+            margin: 4px 5px 4px 5px;    // Anti "move" effect
+        }
+
+        &.active_mode{
+            border: 2px solid var(--color-pink);
+            background: var(--color-pink-a20);
+            margin: 4px;
+        }
+    }
+}
+
+
+
+
+/**********************************************
+****                COMPOSERS
+***********************************************/
+
 .oo_what_composers_filters{
   padding: 10px;
   min-width: auto;
@@ -49,8 +85,6 @@
     grid-template-columns: repeat(auto-fit, minmax(175px, 175px));
     padding: 10px 5px;
     justify-content: center;
-
-    border:1px solid black;
 }
 
 
@@ -73,12 +107,17 @@
         box-shadow: 0 4px 16px 4px rgba(0,0,0,0.8);
 
         & .oo_composer_card_infos{
-            height: 80px;
+            height: 50px;
         }
     }
 
     & .oo_composer_card_link{
         background-color: transparent;
+        color: white;
+
+        &:hover{
+            color: var(--color-pink);
+        }
     }
 }
 
@@ -86,7 +125,7 @@
     flex: 1;
 
     display: grid;
-    grid-template-rows: 40px 40px;
+    grid-template-rows: 30px 20px;
 
     background: rgba(0, 0, 0, 0.7);
     border-bottom-left-radius: 8px;
@@ -94,20 +133,20 @@
     color: white;
     cursor: auto;
 
-    height: 40px;
+    height: 30px;
     transition: height 0.3s;
     transition-timing-function: ease;
 
     & div.name{
         display:grid;
         place-items:center;
-        height: 40px;
+        height: 30px;
         font-family: 'Lato';
     }
     & div.infos{
         display:grid;
         place-items:center;
-        height: 40px;
+        height: 20px;
     }
 }
 

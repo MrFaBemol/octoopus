@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 from odoo import _
 from odoo.exceptions import UserError, ValidationError
 import requests
@@ -8,13 +7,26 @@ import werkzeug
 
 
 def grant_access(f):
+    """
+        A decorator to add before a method to grant a access to api
+        Not sure is useful............
+    """
     def _grant_access(*self, **kwargs):
         f(self[0].with_context(grant_api_access=True), **kwargs)
     return _grant_access
 
-def call(self, url, post_data=None):
-    # Todo: stop using LocalProxy, instead always call
-    if self.env.context.get('grant_api_access', False) or type(self) == werkzeug.local.LocalProxy:
+def call_api(self, url, post_data=None):
+    """
+        This method allows a user to call the api in a python method (using the @grant_access decorator)
+        Not very useful for now, but can be used to check what API returns, simulate a behaviour, etc...
+
+        :param self: The recordset, mainly used to get access to env (& etc...)
+        :param url: The url to call (ex: "composer/34")
+        :param post_data: A dict{} with post data
+
+        :return: a dict{} with api result
+    """
+    if self.env.context.get('grant_api_access', False):
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + '/api/' + url
         headers = {
             'oo-token': self.env['api.token'].get_admin_token(),

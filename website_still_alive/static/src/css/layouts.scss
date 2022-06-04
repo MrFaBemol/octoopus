@@ -1,7 +1,11 @@
 /************** GRID ***************/
 
 /************ Columns *************/
-.oo_row{display: grid;}
+.oo_row{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
 
 .oo_col_aa{grid-template-columns: auto auto;}
 .oo_col_aaa{grid-template-columns: auto auto auto;}
@@ -15,7 +19,6 @@
 .oo_col_75-25{grid-template-columns: 75% 25%;}
 .oo_col_85-15{grid-template-columns: 85% 15%;}
 .oo_col_max-left{grid-template-columns: 1fr auto;}
-
 
 
 

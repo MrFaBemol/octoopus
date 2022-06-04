@@ -27,7 +27,6 @@ class CreateWorkVersionWizard(models.TransientModel):
                     'instrument_id': performer.instrument_id.id,
                     'instrument_category_id': performer.instrument_category_id.id,
                     'quantity': performer.quantity,
-                    'is_original': self.is_original,
                 })
 
 

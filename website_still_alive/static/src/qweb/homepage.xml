@@ -11,13 +11,7 @@
         </template>
 
 
-        <template id="what_composers" name="Home">
-            <t t-call="website.layout">
 
-                <ComposerPanel />
-
-            </t>
-        </template>
 
     </data>
 </odoo>

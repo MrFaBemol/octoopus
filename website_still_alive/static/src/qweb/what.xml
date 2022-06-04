@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="what_composers" name="Composers">
+            <t t-call="website.layout">
+                <ComposerPanel />
+            </t>
+        </template>
+
+
+        <template id="what_composer" name="Composer infos">
+            <t t-call="website.layout">
+                <t t-if="not composer">
+                    <p>You can't see this page, sorry</p>
+                </t>
+                <t t-else="">
+                    <h1><t t-esc="composer.display_name"/></h1>
+                </t>
+            </t>
+        </template>
+
+
+
+
+        <template id="what_works" name="Works">
+            <t t-call="website.layout">
+                <WorkSearchPanel />
+            </t>
+        </template>
+
+
+
+    </data>
+</odoo>

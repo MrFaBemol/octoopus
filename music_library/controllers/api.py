@@ -3,7 +3,7 @@ from ..common.tools import oo_api
 import werkzeug
 import json
 from odoo.http import content_disposition, Controller, request, route, Response
-
+from odoo import api, fields, models, _
 
 # Some success / error messages
 SUCCESS_VALID_TOKEN = {
@@ -30,6 +30,12 @@ def _check_api_access(request):
             :return: a dict with success status and an error message if needed
     """
     headers = request.httprequest.headers
+
+    # If the request comes directly from the server
+    if headers.environ.get("HTTP_ORIGIN") == request.env['ir.config_parameter'].sudo().get_param('web.base.url'):
+        return SUCCESS_VALID_TOKEN
+
+    # Else we need a token (because it's an external request)
     if token := headers.get('oo-token'):
         if token_id := request.env['api.token'].sudo().search([('token', '=', token)]):
             if token_id.track_requests:
@@ -38,6 +44,12 @@ def _check_api_access(request):
         else:
             return ERROR_TOKEN_INVALID
     return ERROR_NO_TOKEN
+
+
+
+def extract_post_data(data):
+    post = json.loads(data)
+    return post, post.get('fields', []), post.get('related_fields', {})
 
 
 
@@ -51,11 +63,12 @@ EXCLUDED_FIELDS = {
     'message_partner_ids', 'message_has_error', 'activity_user_id', 'message_has_sms_error'
 }
 
-def dict_result(records, returned_fields=None):
+def dict_result(records, returned_fields=None, related_fields=None):
     """
         Shortcut for Model.read() picking only a few fields
             :param records: Any records you want
             :param returned_fields: a set/list of field's names you need
+            :param related_fields: a dict{} of list[] to get infos on related fields (override the id
             :return: A list[] of dict{}
     """
     res = []
@@ -63,13 +76,17 @@ def dict_result(records, returned_fields=None):
         d = dict()
         if not returned_fields:
             returned_fields = set(rec._fields.keys()) - EXCLUDED_FIELDS
+
         for f in returned_fields:
-            if f not in ['id', 'oo_id'] and f[-3:] == "_id":
-                data = rec[f].id
-            elif f[-4:] == "_ids":
-                data = rec[f].ids
+            if isinstance(rec[f], models.BaseModel):
+                data = rec[f].ids if f[-4:] == "_ids" else rec[f].id
+                if rf := related_fields.get(f):
+                    rf.append("id")
+                    rf_res = dict_result(rec[f], set(rf))
+                    data = rf_res if f[-4:] == "_ids" else rf_res[0]
             else:
                 data = rec[f]
+
             d[f] = data
         res.append(d)
     return res
@@ -85,32 +102,33 @@ def success_result(data):
 # ------------- CONTROLLER CLASS FOR API ---------------- #
 class ApiController(Controller):
 
-    @route(['/api/composer/<int:composer_id>'], type='json', auth="public", website=True, csrf=False)
+    @route(['/api/composer/', '/api/composer/<int:composer_id>'], type='json', auth="public", website=True, csrf=False)
     def api_composer(self, composer_id=0):
         """
-        API Call for precisely ONE composer by id
-            :param composer_id: the id number of the composer in database
+        API Call for one or more composer by id
+        In case of multiple records, the ids must be passed as an array in POST data (key=ids)
+            :param composer_id: the id of the composer (used if call for 1 composer)
             :return: dict with composer infos (specific fields if 'fields' post data is passed)
         """
-        post = json.loads(request.httprequest.data)
-        _FIELDS = post.get('fields', [])
+        post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
 
         # Access rights
         check = _check_api_access(request)
         if not check.get('success'):
             return check
 
-        composer = request.env['composer'].sudo().browse(composer_id)
+        # POST data has the priority
+        ids = post.get('ids', [composer_id])
+        composer = request.env['composer'].sudo().browse(ids)
         if not composer.exists():
             return ERROR_RECORD_DOES_NOT_EXIST
 
-        # We return a dict here, as there is only one composer by id
-        data = dict_result(composer, _FIELDS)[0]
+        data = dict_result(composer, _FIELDS, _RELATED_FIELDS)
         return success_result(data)
 
 
     @route(['/api/composer/search'], type='json', auth="public", website=True, csrf=False)
-    def api_search_composer(self):
+    def api_composer_search(self):
         """
         API Call to search for composers by str in name + others options like birth, etc...
         [POST] The following options are available:
@@ -124,16 +142,64 @@ class ApiController(Controller):
         if not check.get('success'):
             return check
         # POST data
-        post = json.loads(request.httprequest.data)
-        _FIELDS = post.get('fields', [])
+        post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
 
-        # --- We start with all the composers, then we apply filters
-        result_composers = request.env['composer'].sudo().search([])
+        # --- We start with an empty domain, then we apply filters
+        domain = []
 
         if search := post.get('search'):
-            result_composers = result_composers.search(['|', ('name', 'ilike', search), ('first_name', 'ilike', search)])
+            domain.extend(['|', ('name', 'ilike', search), ('first_name', 'ilike', search)])
 
-        data = dict_result(result_composers, _FIELDS)
+        composers = request.env['composer'].sudo().search(domain)
+        data = dict_result(composers, _FIELDS, _RELATED_FIELDS)
         return success_result(data)
 
+    # @route(['/api/work/<int:composer_id>'], type='json', auth="public", website=True, csrf=False)
+    # def api_work(self, work_id=0):
+    #     """
+    #     API Call for precisely ONE work by id
+    #         :param work_id: the id number of the work in database
+    #         :return: dict with work infos (specific fields if 'fields' post data is passed)
+    #     """
+    #     # Access rights
+    #     check = _check_api_access(request)
+    #     if not check.get('success'):
+    #         return check
+    #     # POST data
+    #     post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
+    #
+    #     work = request.env['music.work'].sudo().browse(work_id)
+    #     if not work.exists():
+    #         return ERROR_RECORD_DOES_NOT_EXIST
+    #
+    #
+    #     data = dict_result(work, _FIELDS, _RELATED_FIELDS)
+    #     return success_result(data)
 
+
+    @route(['/api/work/search'], type='json', auth="public", website=True, csrf=False)
+    def api_work_search(self):
+        """
+        API Call to search for composers by str in name + others options like birth, etc...
+        [POST] The following options are available:
+            - 'fields': a list[] of field names to be returned
+            - 'search': a str to filter composer's names
+
+        :return: list of dict with composer infos (specific fields if 'fields' post data is passed)
+        """
+        # Access rights
+        check = _check_api_access(request)
+        if not check.get('success'):
+            return check
+        # POST data
+        post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
+
+        # --- We start with an empty domain, then we apply filters
+        domain = []
+
+        if search := post.get('search'):
+            domain.extend(['|', '|', ('title', 'ilike', search), ('sub_title', 'ilike', search), ('nickname', 'ilike', search)])
+
+        works = request.env['music.work'].sudo().search(domain)
+        data = dict_result(works, _FIELDS, _RELATED_FIELDS)
+        return success_result(data)

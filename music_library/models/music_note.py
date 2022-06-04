@@ -21,7 +21,6 @@ class MusicNote(models.Model):
         ],
         default='a',
         required=True,
-        translate=True,
     )
     alt = fields.Selection(
         selection=[

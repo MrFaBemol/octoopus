@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="website_menu_composers" model="website.menu">
+            <field name="name">Composers</field>
+            <field name="url">/what/composers</field>
+        </record>
+
+        <record id="website_menu_works" model="website.menu">
+            <field name="name">Works</field>
+            <field name="url">/what/works</field>
+        </record>
+
+    </data>
+</odoo>

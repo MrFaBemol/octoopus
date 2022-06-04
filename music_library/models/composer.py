@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..common.tools.oo_api import grant_access, call
+from ..common.tools.oo_api import grant_access, call_api
 import base64
 
 import requests
 from odoo import api, fields, models, _
+from odoo.addons.http_routing.models.ir_http import slug
 
 # Todo: Add an action to update values with OpenOpus API + Get popular/essential composers
 
@@ -36,7 +37,7 @@ class Composer(models.Model):
 
     oo_infos_url = fields.Char(compute="_compute_oo_infos_url")
     oo_works_url = fields.Char(compute="_compute_oo_works_url")
-    slug_url = fields.Char()
+    slug_url = fields.Char(compute="_compute_slug_url")
     wikipedia_url = fields.Char()
 
 
@@ -84,6 +85,11 @@ class Composer(models.Model):
                 self.env['ir.config_parameter'].sudo().get_param('open.opus.api'),
                 self.env['ir.config_parameter'].sudo().get_param('oo.api.all.works.by.composer.id').replace("{{ID}}", str(composer.oo_id)),
             )
+
+    @api.depends('name', 'first_name', 'birth', 'death')
+    def _compute_slug_url(self):
+        for composer in self:
+            composer.slug_url = slug(composer) if composer.id else ""
 
 
 
@@ -145,7 +151,7 @@ class Composer(models.Model):
         post = {
             'fields': ['name', 'first_name', 'portrait_url'],
         }
-        res = call(self, 'composer/34', post)
+        res = call_api(self, 'composer/34', post)
         print("=====================================================")
         print(res)
         print("=====================================================")
