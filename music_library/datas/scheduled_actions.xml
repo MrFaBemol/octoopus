@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="ir_cron_imslp_composer" model="ir.cron">
+            <field name="name">Check IMSLP api for composers</field>
+            <field name="model_id" ref="music_library.model_imslp_composer"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_fetch_imslp_composers()</field>
+            <field name="interval_type">days</field>
+            <field name="interval_number">7</field>
+            <field name="numbercall">-1</field>
+        </record>
+
+    </data>
+</odoo>

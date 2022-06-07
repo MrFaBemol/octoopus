@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from ..common.tools.oo_api import grant_access, call_api
-import base64
-
 import requests
 from odoo import api, fields, models, _
 from odoo.addons.http_routing.models.ir_http import slug
+
+from ..common.tools.oo_api import grant_access, call_api
+import base64
+
 
 # Todo: Add an action to update values with OpenOpus API + Get popular/essential composers
 
@@ -152,7 +153,5 @@ class Composer(models.Model):
             'fields': ['name', 'first_name', 'portrait_url'],
         }
         res = call_api(self, 'composer/34', post)
-        print("=====================================================")
-        print(res)
-        print("=====================================================")
+        # print(res)
 

@@ -8,7 +8,7 @@
 
     'license': 'LGPL-3',
     'category': "Uncategorized",
-    'version': "15.0.0.1.4",
+    'version': "15.0.0.1.5",
     'installable': True,
     'sequence': 1,
     
@@ -19,6 +19,7 @@
     
     'data': [
         'datas/ir_config_parameter.xml',
+        'datas/scheduled_actions.xml',
         'datas/music_note.xml',
         'datas/api_token.xml',
 
@@ -33,6 +34,7 @@
 
         'views/api_token.xml',
         'views/api_request.xml',
+        'views/imslp_composer.xml',
 
         'wizards/oo_get_composers_wizard.xml',
         'wizards/oo_get_works_wizard.xml',

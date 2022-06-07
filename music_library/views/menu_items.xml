@@ -90,6 +90,14 @@
                     action="api_test_action" />
 
 
+        <menuitem name="IMSLP"
+                    id="technical_menu_sub_imslp" sequence="15"
+                    parent="technical_menu" />
+        <menuitem name="Composers"
+                    id="technical_menu_imslp_composers" sequence="10"
+                    parent="technical_menu_sub_imslp"
+                    action="imslp_composer_action" />
+
         <menuitem name="Batch actions"
                     id="technical_menu_sub_batch_actions" sequence="20"
                     parent="technical_menu" />

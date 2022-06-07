@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="imslp_composer_tree" model="ir.ui.view">
+            <field name="name">imslp.composer.tree</field>
+            <field name="model">imslp.composer</field>
+            <field name="arch" type="xml">
+                <tree create="0" edit="1" editable="bottom">
+                    <field name="name" />
+                    <button name="action_open_url" type="object" icon="fa-external-link" />
+                    <field name="url" />
+                    <field name="composer_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="imslp_composer_action" model="ir.actions.act_window">
+            <field name="name">IMSLP Composers</field>
+            <field name="res_model">imslp.composer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+    </data>
+</odoo>
