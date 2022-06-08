@@ -35,6 +35,7 @@
         'views/api_token.xml',
         'views/api_request.xml',
         'views/imslp_composer.xml',
+        'views/imslp_work.xml',
 
         'wizards/oo_get_composers_wizard.xml',
         'wizards/oo_get_works_wizard.xml',

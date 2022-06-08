@@ -11,6 +11,8 @@
                     <button name="action_open_url" type="object" icon="fa-external-link" />
                     <field name="url" />
                     <field name="composer_id" />
+                    <button name="action_view_imslp_works" type="object" string="View works" icon="fa-edit" class="btn-primary"></button>
+                    <field name="imslp_work_qty" optional="hide" />
                 </tree>
             </field>
         </record>

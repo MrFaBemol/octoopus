@@ -8,7 +8,17 @@
             <field name="state">code</field>
             <field name="code">model._cron_fetch_imslp_composers()</field>
             <field name="interval_type">days</field>
-            <field name="interval_number">7</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+        </record>
+
+        <record id="ir_cron_imslp_work" model="ir.cron">
+            <field name="name">Check IMSLP api for works</field>
+            <field name="model_id" ref="music_library.model_imslp_work"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_fetch_imslp_works()</field>
+            <field name="interval_type">days</field>
+            <field name="interval_number">1</field>
             <field name="numbercall">-1</field>
         </record>
 

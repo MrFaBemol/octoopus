@@ -13,6 +13,13 @@ class ImslpComposer(models.Model):
     name = fields.Char(required=True, readonly=True)
     url = fields.Char(required=True, readonly=True)
     composer_id = fields.Many2one(comodel_name="composer")
+    imslp_work_ids = fields.One2many(comodel_name="imslp.work", inverse_name="imslp_composer_id")
+    imslp_work_qty = fields.Integer(compute="_compute_imslp_work_qty", store=True)
+
+    @api.depends('imslp_work_ids')
+    def _compute_imslp_work_qty(self):
+        for composer in self:
+            composer.imslp_work_qty = len(composer.imslp_work_ids)
 
     def action_open_url(self):
         self.ensure_one()
@@ -21,6 +28,21 @@ class ImslpComposer(models.Model):
                 'type': 'ir.actions.act_url',
                 'target': 'new',
                 'url': self.url,
+            }
+
+    def action_view_imslp_works(self):
+        self.ensure_one()
+        if self.imslp_work_ids:
+            return {
+                "name": _("Imslp works for %s", self.name),
+                "type": 'ir.actions.act_window',
+                "res_model": 'imslp.work',
+                "views": [[False, "tree"]],
+                "target": 'new',
+                "domain": [('id', 'in', self.imslp_work_ids.ids)],
+                "context": {
+                    **self.env.context,
+                },
             }
 
 
@@ -35,7 +57,7 @@ class ImslpComposer(models.Model):
 
     def _cron_fetch_imslp_composers(self):
         url = self.env['ir.config_parameter'].sudo().get_param('imslp.api').replace("{{TYPE}}", "1")
-        start = int(self.env['ir.config_parameter'].sudo().get_param('imslp.composer.start'))
+        first_request_start = start = int(self.env['ir.config_parameter'].sudo().get_param('imslp.composer.start'))
 
         clock = time.perf_counter()
         while time.perf_counter() - clock < 840:
@@ -64,7 +86,7 @@ class ImslpComposer(models.Model):
 
                     if res:
                         _logger.info("%s records created!" % len(res))
-                    if start == 0:
+                    if start == first_request_start:
                         break
 
             except Exception as e:

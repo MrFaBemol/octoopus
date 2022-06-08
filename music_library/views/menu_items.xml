@@ -97,6 +97,10 @@
                     id="technical_menu_imslp_composers" sequence="10"
                     parent="technical_menu_sub_imslp"
                     action="imslp_composer_action" />
+        <menuitem name="Works"
+                    id="technical_menu_imslp_works" sequence="20"
+                    parent="technical_menu_sub_imslp"
+                    action="imslp_work_action" />
 
         <menuitem name="Batch actions"
                     id="technical_menu_sub_batch_actions" sequence="20"
