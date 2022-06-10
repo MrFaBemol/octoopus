@@ -79,6 +79,8 @@
                                         <field name="portrait_url" widget="url" />
                                         <field name="wikipedia_url" widget="url" />
                                         <field name="slug_url" widget="url" />
+                                        <field name="imslp_composer_id" invisible="1" />
+                                        <field name="imslp_url" widget="url" attrs="{'invisible': [('imslp_composer_id', '=', False)]}" />
                                     </group>
                                     <group string="OpenOpus">
                                         <field name="oo_infos_url" widget="url" />

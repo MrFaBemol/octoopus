@@ -6,14 +6,46 @@
             <field name="name">imslp.work.tree</field>
             <field name="model">imslp.work</field>
             <field name="arch" type="xml">
-                <tree create="0" edit="1" editable="bottom">
+                <tree create="0" edit="1" editable="bottom"
+                      decoration-bf="work_id != False and state == 'parsed'"
+                      decoration-warning="next_update &lt; current_date"
+                      decoration-danger="state == 'error'"
+                      decoration-muted="state == 'deleted'" >
+                    <field name="state" invisible="0" optional="hide" />
+                    <field name="infos_ids" invisible="1" />
+                    <field name="next_update" invisible="1" />
+                    <field name="id" optional="hide"/>
                     <field name="name" />
                     <button name="action_open_url" type="object" icon="fa-external-link" />
                     <field name="url" />
                     <field name="imslp_composer_id" />
                     <field name="work_id" />
+                    <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" class="btn-primary" />
+                    <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" class="btn-secondary" />
+
                 </tree>
             </field>
+        </record>
+
+        <record id="imslp_work_search" model="ir.ui.view">
+            <field name="name">imslp.work.search</field>
+            <field name="model">imslp.work</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <field name="imslp_composer_id"  />
+                    <field name="work_id" />
+
+                </search>
+            </field>
+        </record>
+
+        <record id="get_webpage_infos_action" model="ir.actions.server">
+            <field name="name">Get webpage infos</field>
+            <field name="model_id" ref="music_library.model_imslp_work"/>
+            <field name="binding_model_id" ref="music_library.model_imslp_work"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_get_webpage_infos()</field>
         </record>
 
         <record id="imslp_work_action" model="ir.actions.act_window">

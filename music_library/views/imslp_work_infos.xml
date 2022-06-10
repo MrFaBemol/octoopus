@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="imslp_work_infos_tree" model="ir.ui.view">
+            <field name="name">imslp.work.infos.tree</field>
+            <field name="model">imslp.work.infos</field>
+            <field name="arch" type="xml">
+                <tree create="0" edit="1" editable="bottom">
+                    <field name="key" />
+                    <field name="value" />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

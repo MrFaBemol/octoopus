@@ -6,14 +6,41 @@
             <field name="name">imslp.composer.tree</field>
             <field name="model">imslp.composer</field>
             <field name="arch" type="xml">
-                <tree create="0" edit="1" editable="bottom">
+                <tree create="0" edit="1" editable="bottom"
+                      decoration-bf="composer_id != False and state == 'parsed'"
+                      decoration-warning="next_update &lt; current_date"
+                      decoration-danger="state == 'error'"
+                      decoration-muted="state == 'deleted'" >
+                    <field name="state" invisible="0" optional="hide" />
+                    <field name="infos_ids" invisible="1"/>
+                    <field name="next_update" invisible="1"/>
+
+                    <field name="id" optional="hide"/>
                     <field name="name" />
                     <button name="action_open_url" type="object" icon="fa-external-link" />
                     <field name="url" />
                     <field name="composer_id" />
-                    <button name="action_view_imslp_works" type="object" string="View works" icon="fa-edit" class="btn-primary"></button>
+                    <button name="action_view_imslp_works" attrs="{'invisible': [('imslp_work_qty', '=', 0)]}" type="object" string="View works" icon="fa-edit" class="btn-primary" />
+                    <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" class="btn-primary" />
+                    <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" class="btn-secondary" />
+
                     <field name="imslp_work_qty" optional="hide" />
                 </tree>
+            </field>
+        </record>
+
+        <record id="imslp_composer_search" model="ir.ui.view">
+            <field name="name">imslp.composer.search</field>
+            <field name="model">imslp.composer</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <field name="composer_id" />
+
+                    <filter string="Valid IMSLP webpage" name="valid_imslp_webpage" domain="[('state', '!=', 'deleted')]" />
+                    <filter string="Has linked composer" name="has_linked_composer" domain="[('composer_id', '!=', False)]" />
+
+                </search>
             </field>
         </record>
 
@@ -22,6 +49,15 @@
             <field name="res_model">imslp.composer</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree</field>
+            <field name="context">{"search_default_has_linked_composer":1}</field>
+        </record>
+
+        <record id="get_webpage_infos_action" model="ir.actions.server">
+            <field name="name">Get webpage infos</field>
+            <field name="model_id" ref="music_library.model_imslp_composer"/>
+            <field name="binding_model_id" ref="music_library.model_imslp_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_get_webpage_infos()</field>
         </record>
 
     </data>

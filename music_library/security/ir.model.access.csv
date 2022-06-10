@@ -15,7 +15,10 @@ api_token_rule_access,api_token_rule_access,model_api_token,music_library.music_
 api_request_rule_access,api_request_rule_access,model_api_request,music_library.music_library_group_admin,1,1,1,1
 
 imslp_composer_rule_access,imslp_composer_rule_access,model_imslp_composer,base.group_user,1,1,1,1
+imslp_composer_infos_rule_access,imslp_composer_infos_rule_access,model_imslp_composer_infos,base.group_user,1,1,1,1
 imslp_work_rule_access,imslp_work_rule_access,model_imslp_work,base.group_user,1,1,1,1
+imslp_work_infos_rule_access,imslp_work_infos_rule_access,model_imslp_work_infos,base.group_user,1,1,1,1
+
 
 
 open_opus_new_composer_rule_access,open_opus_new_composer_rule_access,model_open_opus_new_composer,base.group_user,1,1,1,1

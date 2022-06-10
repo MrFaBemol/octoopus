@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
+
 from odoo import api, fields, models, _
 from odoo.addons.http_routing.models.ir_http import slug
 
@@ -18,7 +19,7 @@ class Composer(models.Model):
         
     oo_id = fields.Integer(default=-1, tracking=True, string="OO ID")
     name = fields.Char(required=True, tracking=True)
-    first_name = fields.Char()
+    first_name = fields.Char(tracking=True)
     full_name = fields.Char(compute='_compute_names')
     display_name = fields.Char(compute='_compute_names')
     birth = fields.Date(required=True, tracking=True)
@@ -36,10 +37,13 @@ class Composer(models.Model):
     work_ids = fields.One2many(comodel_name="music.work", inverse_name="composer_id")
     work_count = fields.Integer(compute="_compute_work_count")
 
+    # Web
+    imslp_composer_id = fields.Many2one(comodel_name="imslp.composer", compute="_compute_imslp_composer_id", search="_search_imslp_composer")
     oo_infos_url = fields.Char(compute="_compute_oo_infos_url")
     oo_works_url = fields.Char(compute="_compute_oo_works_url")
     slug_url = fields.Char(compute="_compute_slug_url")
     wikipedia_url = fields.Char()
+    imslp_url = fields.Char(related="imslp_composer_id.url")
 
 
     def name_get(self):
@@ -47,6 +51,11 @@ class Composer(models.Model):
         for composer in self:
             res.append((composer.id, composer.full_name))
         return res
+
+    def _search_imslp_composer(self, operator, value):
+        op = "not in" if not value and operator == "=" else "in"
+        domain = [("name", "ilike", value)] if value else []
+        return [('id', op, self.env['imslp.composer'].search(domain).composer_id.ids)]
 
     # --------------------------------------------
     #                   COMPUTE
@@ -92,6 +101,10 @@ class Composer(models.Model):
         for composer in self:
             composer.slug_url = slug(composer) if composer.id else ""
 
+
+    def _compute_imslp_composer_id(self):
+        for composer in self:
+            composer.imslp_composer_id = self.env['imslp.composer'].search([('composer_id', '=', composer.id)], limit=1)
 
 
     # --------------------------------------------
@@ -154,4 +167,20 @@ class Composer(models.Model):
         }
         res = call_api(self, 'composer/34', post)
         # print(res)
+
+        # response = urlopen(self.env['composer'].browse(15).imslp_url)
+        # html = response.read().decode("utf-8")
+        # soup = BeautifulSoup(html, "html.parser")
+        #
+        # header = soup.find_all("div", attrs={'class': "cp_firsth"})
+        # header[0].script.extract()
+        # header[0].h2.extract()
+        # if header[0].span:
+        #     header[0].span.extract()
+        # date_str = header[0].text.replace("\n", "").replace("(", "").replace(")", "").split(" — ")
+        #
+        # dates = [datetime.datetime.strptime(d, "%d %B %Y") for d in date_str]
+        # print("=====================================================")
+        # print(dates)
+        # print("=====================================================")
 

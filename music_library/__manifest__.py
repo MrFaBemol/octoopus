@@ -16,6 +16,7 @@
     'website': "http://www.octoopus.com",
     
     'depends': ['web', 'mail', 'portal'],
+    'external_dependencies': {'python': ['beautifulsoup4']},
     
     'data': [
         'datas/ir_config_parameter.xml',
@@ -35,7 +36,9 @@
         'views/api_token.xml',
         'views/api_request.xml',
         'views/imslp_composer.xml',
+        'views/imslp_composer_infos.xml',
         'views/imslp_work.xml',
+        'views/imslp_work_infos.xml',
 
         'wizards/oo_get_composers_wizard.xml',
         'wizards/oo_get_works_wizard.xml',
