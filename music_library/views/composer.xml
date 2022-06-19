@@ -6,11 +6,12 @@
             <field name="name">composer.tree</field>
             <field name="model">composer</field>
             <field name="arch" type="xml">
-                <tree string="Composers">
+                <tree string="Composers" decoration-muted="not published">
+                    <field name="published" invisible="1"/>
                     <field name="display_name" string="Name" />
                     <field name="country_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <field name="period_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                    <field name="work_count" />
+                    <field name="work_qty" />
                     <field name="oo_id" />
                 </tree>
             </field>
@@ -22,7 +23,26 @@
             <field name="model">composer</field>
             <field name="arch" type="xml">
                 <form string="Composer">
+                    <field name="published" invisible="1"/>
                     <sheet>
+                        
+                        <div class="oe_button_box" name="button_box">
+                            <!-- WORKS -->
+                            <button type="object" name="action_show_works" icon="fa-music"
+                                attrs="{'invisible': [('work_qty', '=', 0)]}" class="oe_stat_button">
+                                <field name="work_qty" string="Works" widget="statinfo" />
+                            </button>
+                            <button type="object" name="action_show_imslp_pending_works" icon="fa-clock-o"
+                                attrs="{'invisible': [('imslp_pending_works_qty', '=', 0)]}" class="oe_stat_button">
+                                <field name="imslp_pending_works_qty" string="Pending works" widget="statinfo" />
+                            </button>
+
+                            <!-- PUBLISHED -->
+                            <button type="object" name="action_switch_published" icon="fa-globe" string="Unpublished"
+                                attrs="{'invisible': [('published', '=', True)]}" class="oe_stat_button danger text-danger text-bf"  />
+                            <button type="object" name="action_switch_published" icon="fa-globe" string="Published"
+                                attrs="{'invisible': [('published', '=', False)]}" class="oe_stat_button success text-success"  />
+                        </div>
 
                         <group class="oe_read_only">
                             <group><h1> <field name="display_name" /> </h1></group>
@@ -67,8 +87,8 @@
                                             <field name="title" />
                                             <field name="sub_title" />
                                             <field name="nickname" />
-                                            <field name="date" />
-                                            <field name="oo_id" />
+                                            <field name="date_composition" optional="hide"/>
+                                            <field name="oo_id" optional="hide"/>
                                         </tree>
                                     </field>
                                 </group>
@@ -107,9 +127,10 @@
                 <kanban records_draggable="false">
                     <field name="portrait" />
                     <field name="id" />
+                    <field name="published" />
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <div t-attf-class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban #{record.published.raw_value == 0 ? 'opacity-50' : ''}">
 
                                 <t t-set="placeholder" t-value="'/base/static/img/avatar_grey.png'"/>
                                 <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('composer', 'portrait', record.id.raw_value, placeholder)})" role="img"/>
@@ -118,7 +139,7 @@
                                     <strong class="o_kanban_record_title oe_partner_heading"><field name="display_name"/></strong>
                                     <div class="o_kanban_tags_section oe_kanban_partner_categories" />
                                     <ul>
-                                        <li t-if="record.work_count"><b><field name="work_count"/> works</b></li>
+                                        <li t-if="record.work_qty"><b><field name="work_qty"/> works</b></li>
                                         <li t-if="record.period_ids"><field name="period_ids" widget="many2many_tags" options="{'color_field': 'color'}" /></li>
                                     </ul>
                                 </div>
@@ -129,12 +150,27 @@
             </field>
         </record>
 
+        <record id="composer_search" model="ir.ui.view">
+            <field name="name">composer.search</field>
+            <field name="model">composer</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="search_name" string="Name" />
+
+                    <filter string="Published" name="published" domain="[('published', '=', True)]" />
+                    <filter string="Unpublished" name="unpublished" domain="[('published', '=', False)]" />
+
+                </search>
+            </field>
+        </record>
+
 
         <record id="composer_action" model="ir.actions.act_window">
             <field name="name">Composers</field>
             <field name="res_model">composer</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">kanban,form,tree</field>
+            <field name="context">{'search_default_published': 1}</field>
         </record>
 
 
@@ -159,6 +195,14 @@
             <field name="binding_model_id" ref="music_library.model_composer"/>
             <field name="state">code</field>
             <field name="code">action = records.action_oo_get_portrait()</field>
+        </record>
+
+        <record id="switch_published_action" model="ir.actions.server">
+            <field name="name">Switch "Published"</field>
+            <field name="model_id" ref="music_library.model_composer"/>
+            <field name="binding_model_id" ref="music_library.model_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_switch_published()</field>
         </record>
 
         <record id="api_test_action" model="ir.actions.server">

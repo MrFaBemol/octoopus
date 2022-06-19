@@ -10,7 +10,7 @@
                     <field name="sequence" widget="handle"/>
                     <field name="date_display"/>
                     <field name="name" />
-                    <field name="date_start" />
+                    <field name="date_start" required="1" />
                     <field name="date_end" />
                     <field name="composer_qty" />
                 </tree>

@@ -16,7 +16,13 @@
     'website': "http://www.octoopus.com",
     
     'depends': ['web', 'mail', 'portal'],
-    'external_dependencies': {'python': ['beautifulsoup4']},
+    'external_dependencies': {'python': ['beautifulsoup4', 'unidecode']},
+
+    "assets": {
+        "web.assets_common": [
+            'music_library/static/src/css/style.scss',
+        ],
+    },
     
     'data': [
         'datas/ir_config_parameter.xml',

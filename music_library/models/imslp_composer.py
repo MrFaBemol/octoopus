@@ -107,6 +107,7 @@ class ImslpComposer(models.Model):
 
             # Sub-methods are called to get infos
             vals.update(self._parse_dates(soup))
+            vals.update(self._parse_portrait(soup))
 
         except HTTPError as e:
             if e.code == 404:
@@ -125,6 +126,17 @@ class ImslpComposer(models.Model):
 
         # Log update
         self.next_update = fields.Datetime.now() + relativedelta.relativedelta(days=7)
+
+
+    def _parse_portrait(self, soup):
+        res = {}
+        try:
+            portrait = soup.find("div", attrs={'class': "cp_img"}).find("div", attrs={'class': "floatnone"}).find("img")
+            if portrait_url := portrait.get('src', ""):
+                res['portrait_url'] = "https://imslp.org%s" % portrait_url
+        except Exception as e:
+            self._log_exception("Wrong parsing of url portrait for %s" % self.name)
+        return res
 
 
     def _parse_dates(self, soup):

@@ -7,5 +7,5 @@ class ImslpWorkInfos(models.Model):
     _description = "Some infos with key/value on an imslp work"
 
     key = fields.Char(required=True)
-    value = fields.Char()
+    value = fields.Text()
     work_id = fields.Many2one(comodel_name="imslp.work", required=True)

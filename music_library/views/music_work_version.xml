@@ -25,12 +25,17 @@
                             <field name="work_id" />
                             <field name="composer_id" readonly="1" />
                             <field name="is_original" widget="boolean_toggle"/>
+                            <label for="tonality_note" string="Tonality" />
+                                <div class="o_row">
+                                    <field name="tonality_note" class="oe_inline" options="{'no_open': True}"/>
+                                    <field name="tonality_mode" class="oe_inline" />
+                                </div>
                         </group>
                         <group string="Instruments">
                             <group><field name="soloist_qty" /></group>
                             <group attrs="{'invisible': [('accompanist_qty', '=', 0)]}"><field name="accompanist_qty" /></group>
                             <separator />
-                            <field name="instrument_ids" readonly="1" nolabel="1" colspan="2" />
+                            <field name="instrument_ids" readonly="0" nolabel="1" colspan="2" />
                         </group>
 
 
@@ -48,6 +53,7 @@
                 <search>
                     <field name="work_id" />
                     <field name="composer_id" />
+                    <field name="instrument_ids" />
                     <filter string="Composers" name="filter_group_by_composer_id" context="{'group_by': 'composer_id'}" />
                 </search>
             </field>

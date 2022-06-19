@@ -37,6 +37,21 @@ class InstrumentCategory(models.Model):
             rec.work_version_ids = self.env['music.work.version.instrument'].search([('instrument_id', 'in', rec.all_instrument_ids.ids)]).work_version_id.ids
             rec.work_version_qty = len(rec.work_version_ids)
 
+
+    def write(self, vals):
+        res = super(InstrumentCategory, self).write(vals)
+        if 'name' in vals:
+            self.env['music.work.version.instrument'].search([('instrument_category_id', 'in', self.ids)])._compute_name()
+        return res
+
+
+    def get_from_string(self, string, check_plural=True):
+        category = self.search([('name', '=ilike', string)]).exists()
+        if not category and check_plural:
+            pl_string = string[:-1] if string[-1].lower() == "s" else string+"s"
+            category = self.search([('name', '=ilike', pl_string)]).exists()
+        return category
+
     def action_open_versions_list(self):
         self.ensure_one()
         return {

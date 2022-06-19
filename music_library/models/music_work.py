@@ -8,9 +8,17 @@ class MusicWork(models.Model):
     _order = "title"
     
     active = fields.Boolean(default=True)
+    """
+        to_check is mainly used for automatic creation, when infos might not be consistent.
+        Ex: if two instruments are found when creating a version (ex clarinet in A/B-flat), choose the default (or a random one) and flag the record
+    """
+    to_check = fields.Boolean(default=False)
+    to_check_reason = fields.Char()
 
     oo_id = fields.Integer(default=-1)
     oo_genre = fields.Char()
+
+    imslp_work_id = fields.Many2one(comodel_name="imslp.work")
 
     composer_id = fields.Many2one(comodel_name="composer", required=True, ondelete='restrict')
     title = fields.Char(required=True, translate=True)
@@ -22,8 +30,12 @@ class MusicWork(models.Model):
     catalogue_number = fields.Integer(default=False)
     catalogue_piece_number = fields.Integer(default=False)
 
-    # Stored as a string because it's more convenient. Sometimes we have to write (1849-1852) because composer was lazy
-    date = fields.Char()
+    # Stored as a string because it's more convenient. Sometimes we have to write "1849-1852" because composer was lazy
+    date_composition = fields.Char(string="Composition date")
+    date_first_publication = fields.Char(string="First publication date")
+    period_id = fields.Many2one(comodel_name="period")
+    duration = fields.Char()
+    dedication = fields.Char()
 
     tonality_note = fields.Many2one(comodel_name="music.note")
     tonality_mode = fields.Selection(
@@ -40,6 +52,10 @@ class MusicWork(models.Model):
     work_version_ids = fields.One2many(comodel_name="music.work.version", inverse_name="work_id")
     version_qty = fields.Integer(compute="_compute_version_qty")
 
+    # --------------------------------------------
+    #                   COMPUTE
+    # --------------------------------------------
+
     @api.depends('title', 'composer_id')
     def _compute_name(self):
         for rec in self:
@@ -49,6 +65,56 @@ class MusicWork(models.Model):
     def _compute_version_qty(self):
         for work in self:
             work.version_qty = len(work.work_version_ids)
+
+    # TODO: ajouter une action pour voir les infos d'imslp depuis la vue de ce modèle
+
+    # --------------------------------------------
+    #                MISC METHODS
+    # --------------------------------------------
+
+
+    def _create_version(self, instrumentation, is_original=False):
+        for work in self:
+            new_version = self.env['music.work.version'].create({'work_id': work.id, 'is_original': is_original})
+            vals_list = [{
+                'work_version_id': new_version.id,
+                'instrument_id': instrument.id if instrument._name == 'instrument' else False,
+                'instrument_category_id': instrument.id if instrument._name == 'instrument.category' else False,
+                'quantity': qty,
+            } for instrument, qty in instrumentation.items()]
+            self.env['music.work.version.instrument'].create(vals_list)
+
+
+    # --------------------------------------------
+    #                   STANDARD
+    # --------------------------------------------
+
+
+    @api.model
+    def create(self, vals):
+        original_instrumentation = vals.pop('original_instrumentation', None)
+        res = super(MusicWork, self).create(vals)
+
+        # Create music.work.version if instrumentation was passed in vals
+        if original_instrumentation:
+            res._create_version(original_instrumentation, is_original=True)
+
+        # Add work period to composer if new
+        if res.period_id and res.period_id not in res.composer_id.period_ids:
+            res.composer_id.write({'period_ids': [4, res.period_id.id]})
+        return res
+
+
+    def write(self, vals):
+        if 'active' in vals:
+            self.work_version_ids.write({'active': vals.get('active')})
+        return super(MusicWork, self).write(vals)
+
+
+    # --------------------------------------------
+    #                   ACTIONS
+    # --------------------------------------------
+
 
     def action_open_versions_list(self):
         self.ensure_one()

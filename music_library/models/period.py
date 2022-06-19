@@ -14,7 +14,7 @@ class Period(models.Model):
 
     name = fields.Char(required=True, translate=True)
     description = fields.Char(translate=True)
-    date_start = fields.Date(required=True)
+    date_start = fields.Date()      # required in view
     date_end = fields.Date()
     date_display = fields.Char(compute="_compute_date_display")
     sequence = fields.Integer()
@@ -33,6 +33,10 @@ class Period(models.Model):
     def _compute_composer_qty(self):
         for rec in self:
             rec.composer_qty = len(rec.composer_ids)
+
+
+    def search_or_create_by_name(self, name, exact_match=True):
+        return self.search([('name', '=ilike' if exact_match else 'ilike', name)]) or self.create([{'name': name}])
 
 
     def action_open_composers_kanban(self):

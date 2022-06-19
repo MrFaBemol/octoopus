@@ -20,7 +20,7 @@ class CreateWorkVersionWizard(models.TransientModel):
         self.performer_ids.check_required_field()
 
         for work in self.work_ids:
-            new_version = self.env['music.work.version'].create({'work_id': work.id})
+            new_version = self.env['music.work.version'].create({'work_id': work.id, 'is_original': self.is_original})
             for performer in self.performer_ids:
                 self.env['music.work.version.instrument'].create({
                     'work_version_id': new_version.id,
@@ -43,6 +43,4 @@ class CreateWorkVersionWizardPerformer(models.TransientModel):
         for rec in self:
             if (not rec.instrument_id and not rec.instrument_category_id) or (rec.instrument_id and rec.instrument_category_id):
                 raise UserError(_("You must choose either an instrument or a category"))
-            if rec.quantity < 1:
-                raise UserError(_("Quantity must be at least 1 for %s" % rec.instrument_id if rec.instrument_id else rec.instrument_category_id))
 

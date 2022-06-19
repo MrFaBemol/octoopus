@@ -11,10 +11,11 @@
                     <field name="title" />
                     <field name="sub_title" />
                     <field name="nickname" />
-                    <field name="date" />
+                    <field name="date_composition" />
                     <field name="is_popular" invisible="1"/>
                     <field name="is_essential" invisible="1"/>
-                    <field name="oo_id" />
+                    <field name="imslp_work_id" optional="hide" />
+                    <field name="oo_id" optional="hide" />
                 </tree>
             </field>
         </record>
@@ -42,11 +43,12 @@
                             <group>
                                 <field name="sub_title" />
 
-                                <label for="catalogue" />
-                                <div class="o_row">
-                                    <field name="catalogue" class="oe_inline" placeholder="Opus" />
-                                    <field name="catalogue_number" class="oe_inline" placeholder="" />
-                                </div>
+                                <field name="catalogue" placeholder="Opus" />
+<!--                                <label for="catalogue" />-->
+<!--                                <div class="o_row">-->
+<!--                                    <field name="catalogue" class="oe_inline" placeholder="Opus" />-->
+<!--                                    <field name="catalogue_number" class="oe_inline" placeholder="" />-->
+<!--                                </div>-->
 
                                 <label for="tonality_note" string="Tonality" />
                                 <div class="o_row">
@@ -61,10 +63,12 @@
                             <group>
                                 <field name="nickname" />
 
-                                <label for="catalogue_piece_number" string="n°" />
-                                <field name="catalogue_piece_number" nolabel="1"/>
+<!--                                <label for="catalogue_piece_number" string="n°" />-->
+<!--                                <field name="catalogue_piece_number" nolabel="1"/>-->
 
-                                <field name="date" />
+                                <field name="date_composition" />
+
+                                <field name="duration" />
                             </group>
 
                         </group>

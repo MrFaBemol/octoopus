@@ -15,9 +15,9 @@ class MusicWorkVersion(models.Model):
 
     # Essential infos
     work_id = fields.Many2one(comodel_name="music.work", readonly=True, required=True, ondelete='cascade')
-    instrument_ids = fields.One2many(comodel_name="music.work.version.instrument", inverse_name="work_version_id")
-    soloist_qty = fields.Integer(compute="_compute_performer_qty", string="Soloists")
-    accompanist_qty = fields.Integer(compute="_compute_performer_qty", string="Accompanists")
+    instrument_ids = fields.One2many(comodel_name="music.work.version.instrument", inverse_name="work_version_id", string="Instruments")
+    soloist_qty = fields.Integer(compute="_compute_performer_qty", string="Soloists", store=True)
+    accompanist_qty = fields.Integer(compute="_compute_performer_qty", string="Accompanists", store=True)
 
     is_original = fields.Boolean(default=True)
     arranger_id = fields.Many2one(comodel_name="composer", ondelete="set null")
@@ -37,7 +37,7 @@ class MusicWorkVersion(models.Model):
         default="major"
     )
 
-
+    # TODO: ajouter une action pour voir les infos d'imslp depuis la vue de ce modèle
 
     @api.depends('instrument_ids')
     def _compute_performer_qty(self):

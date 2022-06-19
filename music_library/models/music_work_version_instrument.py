@@ -7,16 +7,33 @@ class MusicWorkVersionInstrument(models.Model):
     _name = "music.work.version.instrument"
     _description = "An instrument or an instrument category with a quantity for a work version"
 
+    name = fields.Char(compute="_compute_name", store=True)
     work_version_id = fields.Many2one(comodel_name="music.work.version", required=True, ondelete="cascade")
-    instrument_id = fields.Many2one(comodel_name="instrument", ondelete="cascade")
-    instrument_category_id = fields.Many2one(comodel_name="instrument.category", ondelete="cascade")
+    instrument_id = fields.Many2one(comodel_name="instrument", ondelete="restrict")
+    instrument_category_id = fields.Many2one(comodel_name="instrument.category", ondelete="restrict")
     quantity = fields.Integer(default=1)
 
-    def name_get(self):
-        res = []
-        for rec in self:
-            res.append((rec.id, "%s%s" % ("" if rec.quantity == 1 else "%s " % rec.quantity, rec.instrument_id.name)))
-        return res
+    _sql_constraints = [
+        ('check_quantity_gt_zero', 'CHECK(quantity > 0)', 'The instrument quantity should be greater than 0'),
+    ]
+
+
+    @api.depends('instrument_id', 'instrument_category_id', 'quantity')
+    def _compute_name(self):
+        for ins in self:
+            ins.name = "%s%s" % (
+                "" if ins.quantity == 1 else str(ins.quantity) + " ",
+                ins.instrument_id.name or str(ins.instrument_category_id.name) + "*"
+            )
+
+    # def name_get(self):
+    #     res = []
+    #     for ins in self:
+    #         res.append((ins.id, "%s%s" % (
+    #             "" if ins.quantity == 1 else str(ins.quantity) + " ",
+    #             ins.instrument_id.name or str(ins.instrument_category_id.name) + "*"
+    #         )))
+    #     return res
 
     @api.model
     def create(self, vals):

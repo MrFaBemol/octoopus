@@ -17,8 +17,9 @@
                     <field name="id" optional="hide"/>
                     <field name="name" />
                     <button name="action_open_url" type="object" icon="fa-external-link" />
-                    <field name="url" />
+                    <field name="url" optional="hide" />
                     <field name="imslp_composer_id" />
+                    <field name="composer_id" optional="hide" />
                     <field name="work_id" />
                     <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" class="btn-primary" />
                     <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" class="btn-secondary" />
@@ -36,6 +37,11 @@
                     <field name="imslp_composer_id"  />
                     <field name="work_id" />
 
+                    <filter string="Pending" name="filter_pending" domain="[('work_id', '=', False)]" />
+                    <filter string="Created" name="filter_created" domain="[('work_id', '!=', False)]" />
+                    <separator />
+                    <filter string="Checked" name="filter_checked" domain="[('state', '=', 'parsed')]" />
+                    <filter string="To check" name="filter_to_check" domain="[('state', '!=', 'parsed')]" />
                 </search>
             </field>
         </record>
@@ -47,6 +53,14 @@
             <field name="state">code</field>
             <field name="code">action = records.action_get_webpage_infos()</field>
         </record>
+        <record id="create_update_work_action" model="ir.actions.server">
+            <field name="name">Create/update work in database</field>
+            <field name="model_id" ref="music_library.model_imslp_work"/>
+            <field name="binding_model_id" ref="music_library.model_imslp_work"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_create_update_work()</field>
+        </record>
+
 
         <record id="imslp_work_action" model="ir.actions.act_window">
             <field name="name">Imslp Works</field>

@@ -2,12 +2,11 @@
 from odoo import http, models, fields, _
 from odoo.http import request, Controller, route
 import werkzeug.utils
-
 from odoo.addons.website.controllers.main import Website
-# from music_library.common.tools.oo_api import call
+
 
 class WhatController(Website):
-
+    # Todo: Move this to a root controller
     @http.route('/', type='http', auth="public", website=True)
     def index(self, **kw):
         res = super(WhatController, self).index(**kw)
@@ -23,12 +22,19 @@ class WhatController(Website):
 
     @route(['/what/composer/<int:composer_id>'], type='http', auth="public", website=True)
     def what_composer_by_id(self, composer_id=0):
-        composer = request.env['composer'].sudo().browse(composer_id).exists()
-        return werkzeug.utils.redirect('/what/composer/%s' % composer.slug_url if composer else '')
+        """
+        This controller only redirect with a proper url
+            :param composer_id: int (id of composer in DB)
+        """
+        if composer := request.env['composer'].sudo().browse(composer_id).exists():
+            return werkzeug.utils.redirect('/what/composer/%s' % composer.slug_url)
+        return werkzeug.utils.redirect('/what/composers/')
 
-    @route(['/what/composer/<int:composer_id>', '/what/composer/<model("composer"):composer>'], type='http', auth="public", website=True)
-    def what_composer(self, composer_id=0, composer=None):
-        values = {'composer': composer or request.env['composer'].sudo().browse(composer_id).exists()}
+    @route(['/what/composer/<model("composer"):composer>'], type='http', auth="public", website=True)
+    def what_composer(self, composer=None):
+        if not composer.published:
+            return werkzeug.utils.redirect('/what/composers/')
+        values = {'composer': composer}
         return request.render('website_still_alive.what_composer', values)
 
 

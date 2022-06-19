@@ -32,17 +32,27 @@
                             <group>
                                 <field name="name" />
                                 <field name="category_id" />
+                                <field name="extra_name_ids">
+                                    <tree editable="bottom">
+                                        <field name="name" />
+                                    </tree>
+                                </field>
                             </group>
                             <group>
                                 <field name="icon"  widget="image" class="oe_avatar oe_right" nolabel="1"/>
                             </group>
                         </group>
                         <group>
-
+                            <group>
                                 <field name="key" />
                                 <field name="is_ensemble" />
-                                <field name="is_accompaniment" />
                                 <field name="accompanist_qty" attrs="{'invisible': [('is_accompaniment', '!=', True)], 'required': [('is_accompaniment', '=', True)]}"/>
+                            </group>
+                            <group>
+                                <field name="is_default" />
+                                <field name="is_accompaniment" />
+                            </group>
+
                         </group>
                     </sheet>
                 </form>

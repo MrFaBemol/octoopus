@@ -4,6 +4,8 @@ import werkzeug
 import json
 from odoo.http import content_disposition, Controller, request, route, Response
 from odoo import api, fields, models, _
+import logging
+_logger = logging.getLogger(__name__)
 
 # Some success / error messages
 SUCCESS_VALID_TOKEN = {
@@ -145,11 +147,12 @@ class ApiController(Controller):
         post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
 
         # --- We start with an empty domain, then we apply filters
-        domain = []
+        domain = [('published', '=', bool(post.get('published', True)))]
 
         if search := post.get('search'):
-            domain.extend(['|', ('name', 'ilike', search), ('first_name', 'ilike', search)])
+            domain.extend([('search_name', 'ilike', search)])
 
+        _logger.info("Search composers via api with domain: %s" % domain)
         composers = request.env['composer'].sudo().search(domain)
         data = dict_result(composers, _FIELDS, _RELATED_FIELDS)
         return success_result(data)
