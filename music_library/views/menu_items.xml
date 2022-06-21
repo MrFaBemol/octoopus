@@ -38,10 +38,10 @@
                     parent="instrument_menu"
                     action="instrument_action"/>
 
-        <menuitem name="Categories"
-                    id="instrument_menu_categories" sequence="20"
-                    parent="instrument_menu"
-                    action="instrument_category_action"/>
+<!--        <menuitem name="Categories"-->
+<!--                    id="instrument_menu_categories" sequence="20"-->
+<!--                    parent="instrument_menu"-->
+<!--                    action="instrument_category_action"/>-->
 
 
 

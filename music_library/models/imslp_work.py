@@ -223,9 +223,7 @@ class ImslpWork(models.Model):
                 if m := re.match(r"^(\d+)?\s?([a-zA-Z]+):?\s?(.*)", instrument):
                     m = (m.groups())
                     qty = max(int(m[0]), 1) if m[0] else 1
-                    instrument_id = self.env['instrument'].get_from_string(m[1]) or \
-                                    self.env['instrument'].get_from_string("%s %s" % (m[1], m[2])) or \
-                                    self.env['instrument.category'].get_from_string(m[1])
+                    instrument_id = self.env['instrument'].get_from_string(m[1]) or self.env['instrument'].get_from_string("%s %s" % (m[1], m[2]))
 
                     # Handle the 3rd part of the string
                     # If it's a piano piece for "X-hands"

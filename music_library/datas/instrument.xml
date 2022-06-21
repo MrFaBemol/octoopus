@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="instrument_all" model="instrument">
+            <field name="name">All</field>
+        </record>
+
+    </data>
+</odoo>

@@ -8,7 +8,6 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="instrument_id" />
-                    <field name="instrument_category_id" />
                     <field name="quantity" />
                 </tree>
             </field>

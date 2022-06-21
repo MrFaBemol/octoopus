@@ -79,7 +79,6 @@ class MusicWork(models.Model):
             vals_list = [{
                 'work_version_id': new_version.id,
                 'instrument_id': instrument.id if instrument._name == 'instrument' else False,
-                'instrument_category_id': instrument.id if instrument._name == 'instrument.category' else False,
                 'quantity': qty,
             } for instrument, qty in instrumentation.items()]
             self.env['music.work.version.instrument'].create(vals_list)

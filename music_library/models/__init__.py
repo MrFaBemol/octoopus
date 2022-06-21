@@ -10,7 +10,6 @@ from . import period
 
 from . import instrument
 from . import instrument_extra_name
-from . import instrument_category
 
 from . import api_token
 from . import api_request

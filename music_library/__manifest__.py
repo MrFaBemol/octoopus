@@ -28,6 +28,7 @@
         'datas/ir_config_parameter.xml',
         'datas/scheduled_actions.xml',
         'datas/music_note.xml',
+        'datas/instrument.xml',
         'datas/api_token.xml',
 
         'views/composer.xml',
@@ -35,7 +36,6 @@
         'views/music_work_version.xml',
         'views/music_work_version_instrument.xml',
         'views/instrument.xml',
-        'views/instrument_category.xml',
         'views/music_note.xml',
         'views/period.xml',
 

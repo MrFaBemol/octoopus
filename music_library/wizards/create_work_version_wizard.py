@@ -16,8 +16,8 @@ class CreateWorkVersionWizard(models.TransientModel):
         self.ensure_one()
         if not self.performer_ids:
             raise UserError(_("You must add at least an instrument or a category!"))
-
-        self.performer_ids.check_required_field()
+        if self.performer_ids.filtered(lambda p: p.quantity < 1):
+            raise UserError(_("Quantity must be greater than 0"))
 
         for work in self.work_ids:
             new_version = self.env['music.work.version'].create({'work_id': work.id, 'is_original': self.is_original})
@@ -25,22 +25,16 @@ class CreateWorkVersionWizard(models.TransientModel):
                 self.env['music.work.version.instrument'].create({
                     'work_version_id': new_version.id,
                     'instrument_id': performer.instrument_id.id,
-                    'instrument_category_id': performer.instrument_category_id.id,
                     'quantity': performer.quantity,
                 })
 
 
 class CreateWorkVersionWizardPerformer(models.TransientModel):
     _name = "create.work.version.wizard.performer"
-    _description = "An instrument or category used in the version"
+    _description = "An instrument used in the version"
 
     wizard_id = fields.Many2one(comodel_name="create.work.version.wizard")
-    instrument_id = fields.Many2one(comodel_name="instrument")
-    instrument_category_id = fields.Many2one(comodel_name="instrument.category")
+    instrument_id = fields.Many2one(comodel_name="instrument", required=True)
     quantity = fields.Integer(default=1)
 
-    def check_required_field(self):
-        for rec in self:
-            if (not rec.instrument_id and not rec.instrument_category_id) or (rec.instrument_id and rec.instrument_category_id):
-                raise UserError(_("You must choose either an instrument or a category"))
 

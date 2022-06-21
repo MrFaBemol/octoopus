@@ -17,7 +17,6 @@
                                     <field name="performer_ids" nolabel="1" colspan="2">
                                         <tree editable="bottom">
                                             <field name="instrument_id" />
-                                            <field name="instrument_category_id" />
                                             <field name="quantity" />
                                         </tree>
                                     </field>
