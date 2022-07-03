@@ -1,10 +1,16 @@
 import itertools
+import logging
+_logger = logging.getLogger(__name__)
 
+# Constants
+SEPARATOR_MAIN = "@"
+SEPARATOR_SECOND = "-"
+SEPARATOR_THIRD = ":"
 
-def generate_all_ensembles(instruments_slots):
+def generate_all_ensembles(instruments_slots: list):
     """
         Generate all possible combinations with instruments slots
-        :return: list[] of dict{}: key = instrument_id, value = qty
+        :return: list[] of dict{}: instrument_id: qty
     """
     # Generate all combinations
     all_combinations = list(itertools.product(*instruments_slots))
@@ -20,7 +26,7 @@ def generate_all_ensembles(instruments_slots):
             all_ensembles.append(ensemble_dict)
     return all_ensembles
 
-def get_search_key(instrument_slots, performer_qty=0):
+def get_search_key(instrument_slots: list, min_instrument_qty: int = 0, max_instrument_qty: int = 0):
     """
         Generated a search key as follow :
             performers_quantity@
@@ -34,43 +40,50 @@ def get_search_key(instrument_slots, performer_qty=0):
             Output :    6@0-0-1-2:3-2:3-2:4
     """
 
-    if performer_qty and performer_qty < len(instrument_slots):
-        raise IndexError("Not enough performers (passed: %s, expected: %s min)" % (performer_qty, len(instrument_slots)))
+    min_instrument_qty = max(min_instrument_qty, len(instrument_slots))
+    if max_instrument_qty and max_instrument_qty < min_instrument_qty:
+        _logger.warning("Max performers qty is lower than min (passed: %s, min: %s). Automatic update has been made" % (max_instrument_qty, min_instrument_qty))
+    max_instrument_qty = max(min_instrument_qty, max_instrument_qty)
 
-    performers_quantity = max(performer_qty, len(instrument_slots))
-    instrument_slots += [[0] for i in range(performers_quantity - len(instrument_slots))]
 
     # We sort the id of possible instruments for each slot, then the slots themself
     instruments_slots = sorted(map(lambda slot: sorted(slot), instrument_slots))
 
-    key = "%s@%s" % (
-        performers_quantity,
-        "-".join([":".join([str(ins) for ins in slot]) for slot in instruments_slots])
+    key = "%s%s%s" % (
+        "%s%s%s" % (min_instrument_qty, SEPARATOR_SECOND, max_instrument_qty),
+        SEPARATOR_MAIN,
+        SEPARATOR_SECOND.join([SEPARATOR_THIRD.join([str(ins) for ins in slot]) for slot in instruments_slots])
     )
     return key
 
-def get_ensemble_search_key(ensemble_dict, performer_qty=0):
+def get_ensemble_search_key(ensemble_dict: dict, instrument_qty: int = 0):
     """
         Generated an ensemble search key as follow :
             performers_quantity@
             => instrument_id ":" quantity         for each entry
             each entry separated by "-"
 
-        Example :
+        Example:
             Input  :    {0: 2, 1: 1, 2: 2, 4: 1}
             Output :    6@0:2-1:1-2:2-4:1
     """
-    if performer_qty and performer_qty < sum(ensemble_dict.values()):
-        raise IndexError("Not enough performers (passed: %s, expected: %s min)" % (performer_qty, sum(ensemble_dict.values())))
+    if instrument_qty and instrument_qty < sum(ensemble_dict.values()):
+        raise IndexError("Not enough performers (passed: %s, expected: %s min)" % (instrument_qty, sum(ensemble_dict.values())))
 
-    performers_quantity = max(performer_qty, sum(ensemble_dict.values()))
-    key = "%s@%s" % (
+    performers_quantity = max(instrument_qty, sum(ensemble_dict.values()))
+    key = "%s%s%s" % (
         performers_quantity,
-        "-".join(["%s:%s" % (instrument_id, qty) for instrument_id, qty in ensemble_dict.items()])
+        SEPARATOR_MAIN,
+        SEPARATOR_SECOND.join(["%s%s%s" % (instrument_id, SEPARATOR_THIRD, qty) for instrument_id, qty in ensemble_dict.items()])
     )
     return key
 
 
+
+
+
+def get_ensemble_domain(ensemble_key):
+    pass
 
 # ------------------------------------------
 

@@ -6,7 +6,7 @@
             <field name="name">music.work.version.instrument.tree</field>
             <field name="model">music.work.version.instrument</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree editable="bottom">
                     <field name="instrument_id" />
                     <field name="quantity" />
                 </tree>

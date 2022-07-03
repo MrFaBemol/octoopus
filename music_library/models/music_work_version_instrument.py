@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
 
 
 class MusicWorkVersionInstrument(models.Model):
@@ -19,7 +18,7 @@ class MusicWorkVersionInstrument(models.Model):
 
     @api.depends('instrument_id', 'quantity')
     def _compute_name(self):
-        for ins in self:
+        for ins in self.filtered('instrument_id'):
             ins.name = "%s%s" % (
                 "" if ins.quantity == 1 else str(ins.quantity) + " ",
                 ins.instrument_id.name + ("*" if ins.instrument_id.is_category else "")

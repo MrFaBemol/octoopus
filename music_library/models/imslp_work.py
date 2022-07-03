@@ -73,11 +73,11 @@ class ImslpWork(models.Model):
         keys = set(self.infos_ids.mapped('key'))
 
         # Todo: GET ALL KEYS
-        print("=====================================================")
-        for key in keys:
-            works = self.env['imslp.work.infos'].search([('key', '=', key)]).work_id.filtered(lambda w: w.id in self.ids)
-            print("%s => %s" % (key, len(works)))
-        print("=====================================================")
+        # print("=====================================================")
+        # for key in keys:
+        #     works = self.env['imslp.work.infos'].search([('key', '=', key)]).work_id.filtered(lambda w: w.id in self.ids)
+        #     print("%s => %s" % (key, len(works)))
+        # print("=====================================================")
 
         # Todo: GET POSSIBLE VALUES BY KEY
         """
@@ -90,17 +90,17 @@ class ImslpWork(models.Model):
             [OK] "First Publication"            => Récup la date (premiers char jusqu'à l'espace) NOUVEAU CHAMP
             "Movements/Sections"                => NEW MODEL
         """
-        key = "Name Aliases"
-        res = self.env['imslp.work.infos'].search([('key', '=', key), ('work_id', 'in', self.ids)])
-        print("=====================================================")
+        # key = "Name Aliases"
+        # res = self.env['imslp.work.infos'].search([('key', '=', key), ('work_id', 'in', self.ids)])
+        # print("=====================================================")
         # print("\n".join(set(res.mapped('value'))))
         # print("\n".join(["%s => %s" % (i.value, i.work_id.name) for i in res]))
-        print("=====================================================")
+        # print("=====================================================")
 
-        print("=====================================================")
+        # print("=====================================================")
         for work in self:
             work._create_update_work()
-        print("=====================================================")
+        # print("=====================================================")
 
 
 
@@ -135,15 +135,18 @@ class ImslpWork(models.Model):
                 raise ValidationError("%s (%s) is not linked to an existing composer!" % (self.name, self.composer_name))
             _logger.info("Creating new work from imslp (%s - %s)" % (self.composer_name, self.name))
 
-            vals = {'imslp_work_id': self.id}
-            vals.update(self._get_tonality())
-            vals.update(self._get_date_composition())
-            vals.update(self._get_sub_title())
-            vals.update(self._get_catalogue())
-            vals.update(self._get_duration())
-            vals.update(self._get_dedication())
-            vals.update(self._get_date_first_publication())
-            vals.update(self._get_composer_period())
+            vals = {
+                'imslp_work_id': self.id,
+                **self._get_tonality(),
+                **self._get_date_composition(),
+                **self._get_sub_title(),
+                **self._get_catalogue(),
+                **self._get_duration(),
+                **self._get_dedication(),
+                **self._get_date_first_publication(),
+                **self._get_composer_period(),
+            }
+
 
             if not self.work_id:
                 """
@@ -152,13 +155,15 @@ class ImslpWork(models.Model):
                     - Title
                     - Original instrumentation
                 """
-                vals.update({'composer_id': self.composer_id.id, 'title': self.name})
-                vals.update(self._get_instrumentation())
+                vals.update({
+                    'composer_id': self.composer_id.id,
+                    'title': self.name,
+                    **self._get_instrumentation(),
+                })
                 self.write({'work_id': self.env['music.work'].create(vals).id})
             else:
                 self.work_id.write(vals)
 
-            # print("[%s]\n%s" % (self.work_id, vals))
             return self.work_id
         except Exception as e:
             self._log_exception("[%s] Create/update error for %s: %s" % (type(e).__name__, self.name, e))

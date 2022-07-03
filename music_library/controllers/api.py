@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from ..common.tools import oo_api
-import werkzeug
-import json
 from odoo.http import content_disposition, Controller, request, route, Response
 from odoo import api, fields, models, _
+from collections import defaultdict
+import werkzeug
+import json
+from ..common.tools import oo_api
+from ..common.tools.search import get_search_key, get_ensemble_search_key, generate_all_ensembles
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -22,6 +24,10 @@ ERROR_NO_TOKEN = {
 ERROR_RECORD_DOES_NOT_EXIST = {
     'success': False,
     'error_message': "Error: this record doesn't exist",
+}
+ERROR_MISSING_POST_DATA = {
+    'success': False,
+    'error_message': "Error: your request misses required post data",
 }
 
 
@@ -54,8 +60,6 @@ def extract_post_data(data):
     return post, post.get('fields', []), post.get('related_fields', {})
 
 
-
-
 # Contains all the standard model fields (like create_date) and the useless mixin fields
 EXCLUDED_FIELDS = {
     'activity_ids', 'active', 'has_message', 'website_message_ids', 'message_ids', '__last_update', 'message_unread_counter', 'create_uid',
@@ -70,7 +74,7 @@ def dict_result(records, returned_fields=None, related_fields=None):
         Shortcut for Model.read() picking only a few fields
             :param records: Any records you want
             :param returned_fields: a set/list of field's names you need
-            :param related_fields: a dict{} of list[] to get infos on related fields (override the id
+            :param related_fields: a dict{} of list[] to get infos on related fields (override the id, so result is a dict instead of int)
             :return: A list[] of dict{}
     """
     res = []
@@ -103,6 +107,10 @@ def success_result(data):
 
 # ------------- CONTROLLER CLASS FOR API ---------------- #
 class ApiController(Controller):
+
+    # --------------------------------------------
+    #                COMPOSERS
+    # --------------------------------------------
 
     @route(['/api/composer/', '/api/composer/<int:composer_id>'], type='json', auth="public", website=True, csrf=False)
     def api_composer(self, composer_id=0):
@@ -153,9 +161,17 @@ class ApiController(Controller):
             domain.extend([('search_name', 'ilike', search)])
 
         _logger.info("Search composers via api with domain: %s" % domain)
-        composers = request.env['composer'].sudo().search(domain)
-        data = dict_result(composers, _FIELDS, _RELATED_FIELDS)
-        return success_result(data)
+        try:
+            composers = request.env['composer'].sudo().search(domain)
+            data = dict_result(composers, _FIELDS, _RELATED_FIELDS)
+            return success_result(data)
+        except Exception as e:
+            _logger.error("[%s] Error during API request: %s" % (type(e), e))
+
+
+    # --------------------------------------------
+    #                   WORKS
+    # --------------------------------------------
 
     # @route(['/api/work/<int:composer_id>'], type='json', auth="public", website=True, csrf=False)
     # def api_work(self, work_id=0):
@@ -183,12 +199,12 @@ class ApiController(Controller):
     @route(['/api/work/search'], type='json', auth="public", website=True, csrf=False)
     def api_work_search(self):
         """
-        API Call to search for composers by str in name + others options like birth, etc...
+        API Call to search for works by str in name + others options like period, etc...
         [POST] The following options are available:
             - 'fields': a list[] of field names to be returned
-            - 'search': a str to filter composer's names
+            - 'search': a str to filter works names
 
-        :return: list of dict with composer infos (specific fields if 'fields' post data is passed)
+        :return: list of dict with works infos (specific fields if 'fields' post data is passed)
         """
         # Access rights
         check = _check_api_access(request)
@@ -206,3 +222,148 @@ class ApiController(Controller):
         works = request.env['music.work'].sudo().search(domain)
         data = dict_result(works, _FIELDS, _RELATED_FIELDS)
         return success_result(data)
+
+    @route(['/api/workversion/search'], type='json', auth="public", website=True, csrf=False)
+    def api_workversion_search(self):
+        """
+        API Call to search for works by instrumentation
+        [POST] The following options are available:
+            - 'fields': a list[] of field names to be returned
+            - 'instrument_qty': int
+            - 'instrument_slots': a list[] of list[]
+
+        :return: list of dict with works infos (specific fields if 'fields' post data is passed)
+        """
+        # Access rights
+        check = _check_api_access(request)
+        if not check.get('success'):
+            return check
+        # POST data
+        post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
+
+        print("=====================================================")
+
+        # ------------------------------------------------- Main informations for the search:
+        instrument_slots = post.get('instrument_slots')
+        if not instrument_slots:
+            return ERROR_MISSING_POST_DATA
+        min_soloists_qty = max(post.get('min_soloists_qty', 0), len(instrument_slots))
+
+        # First, we create a domain for the initial search
+        domain = [('soloist_qty', '>=', min_soloists_qty)]
+
+        # Todo: add the max in the domain also
+        if max_soloists_qty := post.get('max_soloists_qty'):
+            max_soloists_qty = max(min_soloists_qty, max_soloists_qty)      # Anti-dumb datas
+            domain.extend([('soloist_qty', '<=', max_soloists_qty)])
+
+        # ------------------------------------------------- The main request
+        res = request.env['music.work.version']
+        work_version_with_domain = request.env['music.work.version'].search(domain)
+
+
+        # Recast to int
+        instrument_slots = [[int(i_id) for i_id in slot] for slot in instrument_slots]
+        search_key = get_search_key(instrument_slots, min_instrument_qty=min_soloists_qty, max_instrument_qty=post.get('max_soloists_qty', 0))
+
+        fixed_slots = list()
+        variable_slots = list()
+        for slot in instrument_slots:
+            if len(slot) == 1:
+                fixed_slots.append(slot)
+            elif len(slot) > 1:
+                variable_slots.append(slot)
+
+        fixed_ensemble = defaultdict(int)
+        for slot in fixed_slots:
+            fixed_ensemble[slot[0]] += 1
+
+        # fixed_instrument_count = {201: 2, 203: 1}
+
+        print(search_key)
+        print(fixed_slots)
+        print(fixed_ensemble)
+        print(variable_slots)
+        print(generate_all_ensembles(variable_slots))
+
+        """
+        This is the common recordset from which we will start the filtering
+        We filter on instrument_ids which has to validate all fixed slots
+        """
+        fixed_slots_works = work_version_with_domain.filtered(
+            lambda v: all([v.instrument_ids.filtered(
+                lambda i: i_id in i.instrument_id._get_ids_with_parents() and i.quantity >= qty
+            ) for i_id, qty in fixed_ensemble.items()])
+        )
+
+        """
+        Here we search for works by ensemble, starting from the fixed_slots_works
+        """
+        works_by_ensemble = dict()
+
+        for ensemble in generate_all_ensembles(variable_slots):
+            complete_ensemble = fixed_ensemble.copy()
+            for ins_id, qty in ensemble.items():
+                complete_ensemble[ins_id] += qty
+
+            ensemble_key = get_ensemble_search_key(complete_ensemble)
+
+            works_by_ensemble[ensemble_key] = fixed_slots_works.filtered(
+                lambda v: all([v.instrument_ids.filtered(
+                    lambda i: i_id in i.instrument_id._get_ids_with_parents() and i.quantity >= qty + fixed_ensemble.get(i_id, 0)
+                ) for i_id, qty in ensemble.items()])
+            )
+
+        for k, w in works_by_ensemble.items():
+            print(k)
+            print(w.mapped('name'))
+
+
+
+
+        print("=====================================================")
+        data = {}
+        return success_result(data)
+
+
+
+    # --------------------------------------------
+    #                INSTRUMENTS
+    # --------------------------------------------
+
+
+    @route(['/api/instrument/search'], type='json', auth="public", website=True, csrf=False)
+    def api_instrument_search(self):
+        """
+        API Call to search for instruments
+        [POST] The following options are available:
+            - 'fields': a list[] of field names to be returned
+            - 'search': a str to filter instrument's names
+
+        :return: list of dict with instruments infos (specific fields if 'fields' post data is passed)
+        """
+        # Access rights
+        check = _check_api_access(request)
+        if not check.get('success'):
+            return check
+        # POST data
+        post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
+
+        # --- We start with an empty domain, then we apply filters
+        domain = []
+
+        # Todo: add key, etc......
+        if search := post.get('search'):
+            domain.extend([('name', 'ilike', search)])
+        if post.get('ignore_all_category', True):
+            domain.extend([('id', '!=', request.env.ref('music_library.instrument_all').id)])
+        if post.get('ignore_accompaniment', True):
+            domain.extend([('is_accompaniment', '=', False)])
+        if post.get('ignore_category', False):
+            domain.extend([('is_category', '=', False)])
+
+        works = request.env['instrument'].sudo().search(domain)
+        data = dict_result(works, _FIELDS, _RELATED_FIELDS)
+        return success_result(data)
+
+

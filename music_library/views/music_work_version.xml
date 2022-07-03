@@ -32,10 +32,13 @@
                                 </div>
                         </group>
                         <group string="Instruments">
-                            <group><field name="soloist_qty" /></group>
+                            <group>
+                                <field name="soloist_qty" />
+                                <field name="search_key" />
+                            </group>
                             <group attrs="{'invisible': [('accompanist_qty', '=', 0)]}"><field name="accompanist_qty" /></group>
                             <separator />
-                            <field name="instrument_ids" readonly="0" nolabel="1" colspan="2" />
+                            <field name="instrument_ids" nolabel="1" colspan="2" />
                         </group>
 
 

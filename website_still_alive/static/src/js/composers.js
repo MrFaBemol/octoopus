@@ -1,7 +1,10 @@
 // Setup code
 function composerPanelSetup() {
-    const env = { store: createComposerStore() };
-    mount(ComposerPanel, $('ComposerPanel')[0], { env: env });
+    let node = $('ComposerPanel')[0];
+    if (node){
+        const env = { store: createComposerStore() };
+        mount(ComposerPanel, node, { env: env });
+    }
 }
 
 whenReady(composerPanelSetup);
@@ -39,7 +42,7 @@ class ComposerList {
     async fetchComposerList(){
         let res = await callApi(
             '/api/composer/search',
-            {"fields": ['id', 'slug_url', 'name', 'first_name', 'birth', 'death', 'portrait_url', 'work_count']},
+            {"fields": ['id', 'slug_url', 'name', 'first_name', 'birth', 'death', 'portrait_url', 'work_qty']},
         );
         console.log(res);
         let page_ratio = res.result.data_count/this.page_limit;
@@ -128,9 +131,9 @@ class ComposerOrderingTopBar extends Component{
     </div>
 
     <div class="col oo_center_horizontal oo_what_composer_top_bar_pagination">
-        <a href="#" class="prev_page" t-on-click="() => store.prevPage()">&lt;</a>
+        <a href="#" class="prev_page" t-on-click="() => this.store.prevPage()">&lt;</a>
         Page: <span class="current_page"><t t-esc="store.page_current" /></span> / <span class="total_page"><t t-esc="store.page_max" /></span>
-        <a href="#" class="next_page" t-on-click="() => store.nextPage()">&gt;</a>
+        <a href="#" class="next_page" t-on-click="() => this.store.nextPage()">&gt;</a>
     </div>
 
     <div class="col-4">

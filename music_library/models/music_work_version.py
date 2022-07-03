@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
+from ..common.tools.search import get_ensemble_search_key
 
 
 # Todo: Add a genre model
@@ -16,6 +17,7 @@ class MusicWorkVersion(models.Model):
     # Essential infos
     work_id = fields.Many2one(comodel_name="music.work", readonly=True, required=True, ondelete='cascade')
     instrument_ids = fields.One2many(comodel_name="music.work.version.instrument", inverse_name="work_version_id", string="Instruments")
+    search_key = fields.Char(compute="_compute_search_key", store=True)
     soloist_qty = fields.Integer(compute="_compute_performer_qty", string="Soloists", store=True)
     accompanist_qty = fields.Integer(compute="_compute_performer_qty", string="Accompanists", store=True)
 
@@ -39,6 +41,11 @@ class MusicWorkVersion(models.Model):
 
     # TODO: ajouter une action pour voir les infos d'imslp depuis la vue de ce modèle
 
+    @api.depends("instrument_ids")
+    def _compute_search_key(self):
+        for version in self:
+            version.search_key = get_ensemble_search_key({i.instrument_id.id: i.quantity for i in version.instrument_ids})
+
     @api.depends('instrument_ids')
     def _compute_performer_qty(self):
         for version in self:
@@ -49,3 +56,9 @@ class MusicWorkVersion(models.Model):
             version.accompanist_qty = sum([a.quantity*a.instrument_id.accompanist_qty for a in accompanists])
 
 
+
+
+    def search_by_key(self, key=None):
+        if not key:
+            raise ValidationError(_("You must pass a key to search_by_key"))
+        return self.search([('search_key', '=', key)])

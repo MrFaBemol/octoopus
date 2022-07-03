@@ -1,7 +1,7 @@
 /*
     OWL Imports etc...
  */
-const { Component, mount, xml, useRef, onMounted, useState, reactive, useEnv, whenReady } = owl;
+const { Component, mount, xml, useRef, onMounted, onRendered, onError, onWillStart, onPatched, useState, reactive, useEnv, whenReady } = owl;
 function useStore() {
     const env = useEnv();
     return useState(env.store);
@@ -23,8 +23,12 @@ function callApi(url, data) {
 }
 
 
+// Misc
+function enableNode(nodeName){$(nodeName).removeClass("disabled")}
+function disableNode(nodeName){$(nodeName).addClass("disabled")}
 
-Array.prototype.sorted = function(key){
+// Array helpers
+Array.prototype.sorted = function(key, reverse=false){
     let keys = key.split(".");
     if (keys.length > 0){
         let sortedArray = this.sort( (a, b) => {
@@ -32,7 +36,8 @@ Array.prototype.sorted = function(key){
                 a = a[keys[i]];
                 b = b[keys[i]];
             }
-            return (a > b) ? 1 : ((b > a) ? -1 : 0)
+            let res = (a > b) ? 1 : ((b > a) ? -1 : 0);
+            return reverse ? -1*res : res;
         });
         this.splice(0, sortedArray.length, ...sortedArray);
     }

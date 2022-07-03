@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class MusicWork(models.Model):
@@ -72,6 +73,9 @@ class MusicWork(models.Model):
     #                MISC METHODS
     # --------------------------------------------
 
+
+    def search_by_key(self, key=None):
+        return self.env['music.work.version'].search_by_key(key)
 
     def _create_version(self, instrumentation, is_original=False):
         for work in self:

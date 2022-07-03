@@ -16,11 +16,13 @@
 }
 
 .disabled{
-    opacity: 0.2;
-    pointer-events: none;
+    opacity: 0.2 !important;
+    pointer-events: none !important;
 }
 .invisible{
-    display:none;
+    display:none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 .bold{ font-weight: bold;}

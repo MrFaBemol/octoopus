@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="homepage" name="Home" inherit_id="website.homepage">
+<!--            <xpath expr="//t[@t-call='website.layout']" position="replace">-->
+<!--                <t t-call="website.layout">-->
+<!--                    <div><h1>KIKOOLOL</h1></div>-->
+<!--                </t>-->
+<!--            </xpath>-->
+        </template>
+
+
+
+
+    </data>
+</odoo>

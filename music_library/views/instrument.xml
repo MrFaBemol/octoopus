@@ -6,12 +6,10 @@
             <field name="name">instrument.tree</field>
             <field name="model">instrument</field>
             <field name="arch" type="xml">
-                <tree string="Instruments" decoration-bf="is_category" decoration-info="is_category" default_order="display_name">
+                <tree string="Instruments" decoration-bf="is_category" decoration-info="is_category" default_order="sequence,display_name">
                     <field name="is_category" invisible="1"/>
                     <field name="sequence" widget="handle" />
-<!--                    <field name="name" />-->
                     <field name="display_name" />
-<!--                    <field name="parent_id" />-->
                     <field name="key" />
                     <field name="work_version_qty" string="Works qty" />
                     <field name="is_ensemble" />
