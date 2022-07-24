@@ -1,0 +1,20 @@
+
+.disabled{
+    opacity: 0.2 !important;
+    pointer-events: none !important;
+}
+.invisible{
+    display:none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+.hidden { display: none !important; }
+
+.bold{ font-weight: bold;}
+.italic{ font-style: italic;}
+.link{ cursor: pointer; }
+
+
+.shadow{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+}

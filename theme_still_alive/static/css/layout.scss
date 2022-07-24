@@ -1,0 +1,63 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  //border: 1px solid red;
+  padding: 1.5rem 12% 1rem;
+
+  & .oo_header_logo img {
+    height: 50px;
+  }
+
+
+  & nav.oo_navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+
+    & a {
+      font-size: 1.3rem;
+      font-family: 'Montserrat', sans-serif;
+      margin-right: 3.5rem;
+      color: oo-color("primary");
+      transition: color 0.3s;
+      transition-timing-function: ease;
+      &:hover {
+        text-decoration: none;
+        color: oo-color("secondary");
+      }
+    }
+
+    & i {
+      font-size: 1.5rem;
+      color: oo-color('primary');
+      display: none;
+    }
+  }
+}
+
+
+
+@media screen and (max-width: 600px) {
+  header nav.oo_navbar {
+    & a {display: none;}
+    & i {
+      float: right;
+      display: block;
+    }
+  }
+
+  header nav.oo_navbar.responsive {
+    //position: relative;
+
+    & a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+
+  }
+
+}
+

@@ -1,0 +1,34 @@
+
+/**********************************************
+****                WORKS
+***********************************************/
+
+.oo_what_work_mode_buttons{
+    padding: 10px;
+    //background: red;
+
+    & button{
+        width: 200px;
+        margin: 5px;
+        padding: 5px;
+        border: 1px solid grey;
+        border-radius: 5px;
+
+        &:hover{
+            border: 2px solid var(--color-pink);
+            margin: 4px 5px 4px 5px;    // Anti "move" effect
+        }
+
+        &.active_mode{
+            border: 2px solid var(--color-pink);
+            background: var(--color-pink-a20);
+            margin: 4px;
+        }
+    }
+}
+
+.oo_instrument_slot {
+    //vertical-align: middle;
+    //display: grid;
+    //place-items: center;
+}

@@ -14,7 +14,7 @@
     'author': "MrFaBemol",
     'website': "http://www.octoopus.com",
 
-    'depends': ['website', 'music_library'],
+    'depends': [ 'music_library', 'material_ux'],
     "assets": {
         # "web.assets_backend": [
         #     'website_still_alive/static/src/qweb/*',
@@ -32,11 +32,11 @@
 
             'website_still_alive/static/src/css/autocomplete.scss',
 
-            # 'website_still_alive/static/src/css/color-variables.scss',
             'website_still_alive/static/src/css/global.scss',
             'website_still_alive/static/src/css/layouts.scss',
             # 'website_still_alive/static/src/css/forms.css',
-            'website_still_alive/static/src/css/what.scss',
+            'website_still_alive/static/src/css/composers.scss',
+            'website_still_alive/static/src/css/works.scss',
 
 
         ],

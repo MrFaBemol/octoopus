@@ -5,7 +5,7 @@ from collections import defaultdict
 import werkzeug
 import json
 from ..common.tools import oo_api
-from ..common.tools.search import get_search_key, get_ensemble_search_key, generate_all_ensembles
+from ..common.tools.search import get_search_key, get_ensemble_search_key, generate_all_ensembles, categories_to_instruments, get_slot_by_type
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -112,7 +112,7 @@ class ApiController(Controller):
     #                COMPOSERS
     # --------------------------------------------
 
-    @route(['/api/composer/', '/api/composer/<int:composer_id>'], type='json', auth="public", website=True, csrf=False)
+    @route(['/api/composer/', '/api/composer/<int:composer_id>'], type='json', auth="public", csrf=False)
     def api_composer(self, composer_id=0):
         """
         API Call for one or more composer by id
@@ -137,7 +137,7 @@ class ApiController(Controller):
         return success_result(data)
 
 
-    @route(['/api/composer/search'], type='json', auth="public", website=True, csrf=False)
+    @route(['/api/composer/search'], type='json', auth="public", csrf=False)
     def api_composer_search(self):
         """
         API Call to search for composers by str in name + others options like birth, etc...
@@ -196,7 +196,7 @@ class ApiController(Controller):
     #     return success_result(data)
 
 
-    @route(['/api/work/search'], type='json', auth="public", website=True, csrf=False)
+    @route(['/api/work/search'], type='json', auth="public", csrf=False)
     def api_work_search(self):
         """
         API Call to search for works by str in name + others options like period, etc...
@@ -223,7 +223,7 @@ class ApiController(Controller):
         data = dict_result(works, _FIELDS, _RELATED_FIELDS)
         return success_result(data)
 
-    @route(['/api/workversion/search'], type='json', auth="public", website=True, csrf=False)
+    @route(['/api/workversion/search'], type='json', auth="public", csrf=False)
     def api_workversion_search(self):
         """
         API Call to search for works by instrumentation
@@ -242,20 +242,25 @@ class ApiController(Controller):
         post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
 
         print("=====================================================")
+        print("jhjkj")
 
         # ------------------------------------------------- Main informations for the search:
         instrument_slots = post.get('instrument_slots')
+        # 252: bowed, 254: strings, 251 : keyboards, 198, 199
+        instrument_slots = [[251, 203]]
         if not instrument_slots:
             return ERROR_MISSING_POST_DATA
         min_soloists_qty = max(post.get('min_soloists_qty', 0), len(instrument_slots))
+        max_soloists_qty = max(min_soloists_qty, post.get('max_soloists_qty', len(instrument_slots)))
 
         # First, we create a domain for the initial search
-        domain = [('soloist_qty', '>=', min_soloists_qty)]
+        domain = [
+            ('soloist_qty', '>=', min_soloists_qty),
+            ('soloist_qty', '<=', max_soloists_qty),
+        ]
 
-        # Todo: add the max in the domain also
-        if max_soloists_qty := post.get('max_soloists_qty'):
-            max_soloists_qty = max(min_soloists_qty, max_soloists_qty)      # Anti-dumb datas
-            domain.extend([('soloist_qty', '<=', max_soloists_qty)])
+
+
 
         # ------------------------------------------------- The main request
         res = request.env['music.work.version']
@@ -264,27 +269,23 @@ class ApiController(Controller):
 
         # Recast to int
         instrument_slots = [[int(i_id) for i_id in slot] for slot in instrument_slots]
-        search_key = get_search_key(instrument_slots, min_instrument_qty=min_soloists_qty, max_instrument_qty=post.get('max_soloists_qty', 0))
-
-        fixed_slots = list()
-        variable_slots = list()
-        for slot in instrument_slots:
-            if len(slot) == 1:
-                fixed_slots.append(slot)
-            elif len(slot) > 1:
-                variable_slots.append(slot)
-
+        # Replace categories by the all_instrument_ids field
+        instrument_slots = categories_to_instruments(request, instrument_slots)
+        # Separate slots in fixed/variable
+        fixed_slots, variable_slots = get_slot_by_type(instrument_slots)
         fixed_ensemble = defaultdict(int)
         for slot in fixed_slots:
             fixed_ensemble[slot[0]] += 1
 
-        # fixed_instrument_count = {201: 2, 203: 1}
+        # Finally the search key!
+        search_key = get_search_key(instrument_slots, min_instrument_qty=min_soloists_qty, max_instrument_qty=max_soloists_qty)
 
-        print(search_key)
-        print(fixed_slots)
-        print(fixed_ensemble)
-        print(variable_slots)
-        print(generate_all_ensembles(variable_slots))
+        # print(search_key)
+        # print(fixed_slots)
+        # print(fixed_ensemble)
+        # print(variable_slots)
+        # print(generate_all_ensembles(variable_slots))
+        # print("=====================================================")
 
         """
         This is the common recordset from which we will start the filtering
@@ -292,7 +293,7 @@ class ApiController(Controller):
         """
         fixed_slots_works = work_version_with_domain.filtered(
             lambda v: all([v.instrument_ids.filtered(
-                lambda i: i_id in i.instrument_id._get_ids_with_parents() and i.quantity >= qty
+                lambda i: i_id in i.instrument_id.get_all_ids() and i.quantity >= qty
             ) for i_id, qty in fixed_ensemble.items()])
         )
 
@@ -302,6 +303,7 @@ class ApiController(Controller):
         works_by_ensemble = dict()
 
         for ensemble in generate_all_ensembles(variable_slots):
+            # Start from fixed ensemble and add variable instruments -> dict
             complete_ensemble = fixed_ensemble.copy()
             for ins_id, qty in ensemble.items():
                 complete_ensemble[ins_id] += qty
@@ -310,13 +312,14 @@ class ApiController(Controller):
 
             works_by_ensemble[ensemble_key] = fixed_slots_works.filtered(
                 lambda v: all([v.instrument_ids.filtered(
-                    lambda i: i_id in i.instrument_id._get_ids_with_parents() and i.quantity >= qty + fixed_ensemble.get(i_id, 0)
+                    lambda i: i_id in i.instrument_id.get_all_ids() and i.quantity >= qty + fixed_ensemble.get(i_id, 0)
                 ) for i_id, qty in ensemble.items()])
             )
 
         for k, w in works_by_ensemble.items():
             print(k)
             print(w.mapped('name'))
+            print(len(w.mapped('name')))
 
 
 
@@ -332,7 +335,7 @@ class ApiController(Controller):
     # --------------------------------------------
 
 
-    @route(['/api/instrument/search'], type='json', auth="public", website=True, csrf=False)
+    @route(['/api/instrument/search'], type='json', auth="public", csrf=False)
     def api_instrument_search(self):
         """
         API Call to search for instruments

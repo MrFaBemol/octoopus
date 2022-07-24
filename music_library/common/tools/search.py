@@ -85,6 +85,33 @@ def get_ensemble_search_key(ensemble_dict: dict, instrument_qty: int = 0):
 def get_ensemble_domain(ensemble_key):
     pass
 
+
+
+
+# --------------------------------------------
+#                   MISC
+# --------------------------------------------
+
+# Todo: remove self and find a way to do it somehow
+def categories_to_instruments(self, instrument_slots):
+    for i, slot in enumerate(instrument_slots):
+        all_ins = self.env['instrument'].browse(slot)
+        categories = all_ins.filtered('is_category')
+        instruments = all_ins - categories
+        instrument_slots[i] = (instruments | categories.all_instrument_ids).ids
+    return instrument_slots
+
+def get_slot_by_type(instrument_slots):
+    fixed_slots = list()
+    variable_slots = list()
+    for slot in instrument_slots:
+        if len(slot) == 1:
+            fixed_slots.append(slot)
+        elif len(slot) > 1:
+            variable_slots.append(slot)
+    return fixed_slots, variable_slots
+
+
 # ------------------------------------------
 
 

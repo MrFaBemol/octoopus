@@ -103,9 +103,14 @@ class Instrument(models.Model):
         return instrument
 
 
-    def _get_ids_with_parents(self):
+    def get_all_ids(self, with_parents=True, with_childs=True):
         self.ensure_one()
-        return [int(i) for i in self.parent_path.split("/")[:-1]]
+        ids = [self.id]
+        if with_parents:
+            ids += [int(i) for i in self.parent_path.split("/")[:-2]]
+        if with_childs:
+            ids += self.all_instrument_ids.ids
+        return ids
 
 
     # --------------------------------------------

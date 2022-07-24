@@ -1,0 +1,29 @@
+
+
+
+:root{
+  --primary: #16232b;
+  --secondary: #FC0254;
+
+  --link1: var(--secondary);
+
+
+  // Override for material ux
+  --switch-bg: #d0d0d0;
+  --switch-circle: #fff;
+  --switch-bg-active: #f8bbd0;
+  --switch-circle-active: var(--secondary);
+
+
+}
+
+
+$oo-colors: (
+        "primary": var(--primary),
+        "secondary": var(--secondary),
+        "link": var(--secondary),
+);
+
+@function oo-color($key: "primary") {
+  @return map-get($oo-colors, $key);
+}

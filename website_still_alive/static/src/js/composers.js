@@ -71,6 +71,39 @@ class ComposerCard extends Component{
         <div class="infos">#<t t-esc="props.composer.id"/> - <t t-esc="props.composer.work_count"/> works</div>
     </div>
 </div>
+
+<!--<div class="col-md-4 col-sm-6 col-xs-12">-->
+<!--    <article class="material-card Red">-->
+<!--        <h2>-->
+<!--            <span><a t-attf-href="/what/composer/{{props.composer.slug_url}}"><t t-esc="props.composer.name"/>, <t t-esc="props.composer.first_name"/></a></span>-->
+<!--            <strong>-->
+<!--                <i class="fa fa-fw fa-star"></i>-->
+<!--                The Deer Hunter-->
+<!--            </strong>-->
+<!--        </h2>-->
+<!--        <div class="mc-content">-->
+<!--            <div class="img-container" t-attf-style="background-image:url('{{props.composer.portrait_url}}');" />-->
+<!--            <div class="mc-description">-->
+<!--                He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...-->
+<!--                He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...-->
+<!--                He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <a class="mc-btn-action">-->
+<!--            <i class="fa fa-bars"></i>-->
+<!--        </a>-->
+<!--        <div class="mc-footer">-->
+<!--            <h4>-->
+<!--                Social-->
+<!--            </h4>-->
+<!--            <a class="fa fa-fw fa-facebook"></a>-->
+<!--            <a class="fa fa-fw fa-twitter"></a>-->
+<!--            <a class="fa fa-fw fa-linkedin"></a>-->
+<!--            <a class="fa fa-fw fa-google-plus"></a>-->
+<!--        </div>-->
+<!--    </article>-->
+<!--</div>-->
+
 `;
 
     static props = ["composer"];
@@ -114,7 +147,11 @@ class ComposerGrid extends Component {
 class ComposerFilter extends Component{
     static template = xml`
 <div class="col-md-auto oo_what_composers_filters">
-    <input type="text" name="name" id="name" class="validate" />
+    <div class="form-group mux">
+        <input type="text" class="form-control" id="name_search" placeholder=" " />
+        <label for="name_search">Name</label>
+    </div>
+    
 </div>
 `;
 }
@@ -149,14 +186,13 @@ class ComposerOrderingTopBar extends Component{
                 <label>Order By</label>
             </div>
 
-            <div class="col switch">
-                <label>
-                    Asc.
-                    <input type="checkbox" id="ordering" />
-                    <span class="lever" />
-                    Desc.
-                </label>
+            <div class="mux form-check double-label">
+                <span>Asc.</span>
+                <input type="checkbox" class="form-check-input" id="exampleCheck2" />
+                <label class="form-check-label" for="exampleCheck2" />
+                <span>Desc.</span>
             </div>
+            
         </div>
     </div>
 </div>

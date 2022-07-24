@@ -1,0 +1,137 @@
+// General
+
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+
+// OLD todo: check comment les adapter
+.input-min-max {
+    display: grid;
+    grid-template-columns: 40% auto auto;
+    grid-gap: 5px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.input-min-max input {
+    padding: 1px 10px;
+    height: 35px;
+}
+
+
+div.mux {
+    font-family: 'Montserrat', sans-serif;
+}
+
+// ---- Inputs
+div.mux.form-group {
+    //border: 1px solid red;
+    & > label {
+        bottom: 26px;
+        left: 15px;
+        position: relative;
+        font-size: 1.2rem;
+        color: darkgrey;
+        background-color: white;
+
+        padding: 0 5px 0;
+        transition: 0.2s;
+        pointer-events: none;
+    }
+
+    & input.form-control:focus ~ label, & input.form-control:not(:placeholder-shown) ~ label {
+        font-size: 0.8rem;
+        color: #4B4D52;
+        bottom: 46px;
+    }
+}
+
+
+// ---- Switch
+div.mux.form-check {
+    & .form-check-label {
+        position: relative;
+        display: block;
+        height: 20px;
+        width: 44px;
+        background: var(--switch-bg);
+        border-radius: 100px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:after {
+            position: absolute;
+            left: -2px;
+            top: -3px;
+            display: block;
+            width: 26px;
+            height: 26px;
+            border-radius: 100px;
+            background: var(--switch-circle);
+            outline: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05);
+            content: '';
+            transition: all 0.3s ease;
+        }
+
+        &:active:after {
+            transform: scale(1.15, 0.85);
+        }
+    }
+
+    & .form-check-input {
+        display: none;
+
+        &:checked ~ label {
+            background: var(--switch-bg-active);
+        }
+
+        &:checked ~ label:after {
+            left: 20px;
+            background: var(--switch-circle-active);
+        }
+
+        &:disabled ~ label {
+            background: #d5d5d5;
+            pointer-events: none;
+        }
+
+        &:disabled ~ label:after {
+            background: #bcbdbc;
+        }
+    }
+
+    &.double-label {
+        display: flex;
+
+        & .form-check-label {
+            margin-left: 12px;
+            margin-right: 10px;
+            background: var(--switch-bg-active);
+
+            &:after {
+                background: var(--switch-circle-active);
+            }
+        }
+
+        & span {
+            opacity: 0.65;
+
+            &.active {
+                opacity: 1;
+                font-weight: bold;
+            }
+        }
+    }
+
+}
+
+
+
+
