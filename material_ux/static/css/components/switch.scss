@@ -1,57 +1,3 @@
-// General
-
-
-input[type=number] {
-    -moz-appearance: textfield;
-}
-
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-}
-
-
-// OLD todo: check comment les adapter
-.input-min-max {
-    display: grid;
-    grid-template-columns: 40% auto auto;
-    grid-gap: 5px;
-    margin-bottom: 5px;
-    align-items: center;
-}
-
-.input-min-max input {
-    padding: 1px 10px;
-    height: 35px;
-}
-
-
-div.mux {
-    font-family: 'Montserrat', sans-serif;
-}
-
-// ---- Inputs
-div.mux.form-group {
-    //border: 1px solid red;
-    & > label {
-        bottom: 26px;
-        left: 15px;
-        position: relative;
-        font-size: 1.2rem;
-        color: darkgrey;
-        background-color: white;
-
-        padding: 0 5px 0;
-        transition: 0.2s;
-        pointer-events: none;
-    }
-
-    & input.form-control:focus ~ label, & input.form-control:not(:placeholder-shown) ~ label {
-        font-size: 0.8rem;
-        color: #4B4D52;
-        bottom: 46px;
-    }
-}
-
 
 // ---- Switch
 div.mux.form-check {
@@ -98,12 +44,12 @@ div.mux.form-check {
         }
 
         &:disabled ~ label {
-            background: #d5d5d5;
+            background: material-color("grey", "300");
             pointer-events: none;
         }
 
         &:disabled ~ label:after {
-            background: #bcbdbc;
+            background: material-color("grey", "400");
         }
     }
 
@@ -129,9 +75,4 @@ div.mux.form-check {
             }
         }
     }
-
 }
-
-
-
-

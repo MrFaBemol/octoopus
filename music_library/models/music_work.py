@@ -94,7 +94,7 @@ class MusicWork(models.Model):
 
 
     @api.model
-    def create(self, vals):
+    def create(self, vals: list):
         original_instrumentation = vals.pop('original_instrumentation', None)
         res = super(MusicWork, self).create(vals)
 

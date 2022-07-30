@@ -8,8 +8,6 @@
             <field name="arch" type="xml">
                 <tree string="Music notes">
                     <field name="name" />
-<!--                    <field name="note" />-->
-<!--                    <field name="alt" />-->
                 </tree>
             </field>
         </record>

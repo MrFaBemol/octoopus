@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <template id="layout" inherit_id="web.layout" >
+        <template id="layout" inherit_id="web.layout">
             <xpath expr="//head/meta[last()]" position="after">
-<!--                <link rel="preconnect" href="https://fonts.googleapis.com" />-->
-<!--                <link href="https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap" rel="stylesheet" />-->
-                <link href="https://fonts.googleapis.com/css2?family=Lora&amp;family=Montserrat&amp;display=swap" rel="stylesheet" />
+                <link href="https://fonts.googleapis.com/css2?family=Lora&amp;family=Montserrat&amp;display=swap" rel="stylesheet"/>
             </xpath>
         </template>
-
 
 
         <template id="header_template" inherit_id="web.frontend_layout" name="Header template" active="True">
@@ -17,98 +14,58 @@
                     <div class="oo_header_logo">
                         <a href="/"><img src="/theme_still_alive/static/img/logo.png"/></a>
                     </div>
-                    <!--                    Instead of calling website.navbar because of the weird classes / _navbar_expand_class-->
+                    <!--   Instead of calling website.navbar because of the weird classes / _navbar_expand_class  -->
                     <nav data-name="Navbar" t-attf-class="oo_navbar">
                         <a href="/what/composers/" title="Composers">Composers</a>
                         <a href="/what/works/" title="Works">Works</a>
                         <a href="/web/login/" class="btn-login">Log in</a>
                     </nav>
 
-                    <div class="mux form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                        <label class="form-check-label" for="exampleCheck1" />
-                      </div>
-
-                    <button onclick="checkState()">test</button>
-<!--                    Todo: add a mobile navbar-->
-<!--                    <i class="fa fa-bars menu-sm" />-->
-
-
-
-<div class="col-md-4 col-sm-6 col-xs-12">
-    <article class="material-card Red">
-        <h2>
-            <span>Christopher Walken</span>
-            <strong>
-                <i class="fa fa-fw fa-star"></i>
-                The Deer Hunter
-            </strong>
-        </h2>
-        <div class="mc-content">
-            <div class="img-container" t-attf-style="background-image:url('https://material-cards.s3-eu-west-1.amazonaws.com/thumb-christopher-walken.jpg');" />
-            <div class="mc-description">
-                He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...
-                He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...
-                He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...
-            </div>
-        </div>
-        <a class="mc-btn-action">
-            <i class="fa fa-bars"></i>
-        </a>
-        <div class="mc-footer">
-            <h4>
-                Social
-            </h4>
-            <a class="fa fa-fw fa-facebook"></a>
-            <a class="fa fa-fw fa-twitter"></a>
-            <a class="fa fa-fw fa-linkedin"></a>
-            <a class="fa fa-fw fa-google-plus"></a>
-        </div>
-    </article>
-</div>
-
-
-
+                    <!--                    Todo: add a mobile navbar-->
+                    <!--                    <i class="fa fa-bars menu-sm" />-->
 
                 </header>
             </xpath>
 
 
             <xpath expr="//footer" position="replace">
-                <footer class="mdl-mega-footer">
-                    <div class="mdl-mega-footer__middle-section">
 
-                        <div class="mdl-mega-footer__drop-down-section">
-                            <h1 class="mdl-mega-footer__heading">Features</h1>
-                            <ul class="mdl-mega-footer__link-list">
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Terms</a></li>
-                                <li><a href="#">Partners</a></li>
-                                <li><a href="#">Updates</a></li>
-                            </ul>
+                <!-- Footer -->
+                <footer class="page-footer font-small blue pt-4">
+                    <div class="container-fluid text-center text-md-left">
+                        <div class="row">
+                            <div class="col-md-6 mt-md-0 mt-3">
+                                <h5 class="text-uppercase">Hello!</h5>
+                                <p>That page content must have been very interesting if you are here!</p>
+                            </div>
+
+                            <hr class="clearfix w-100 d-md-none pb-3" />
+
+                            <div class="col-md-3 mb-md-0 mb-3">
+                                <h5 class="text-uppercase">Links</h5>
+                                <ul class="list-unstyled">
+                                    <li><a href="#!">Composers</a></li>
+                                    <li><a href="#!">Works</a></li>
+                                    <li><a href="#!">Instruments</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-3 mb-md-0 mb-3">
+                                <h5 class="text-uppercase">Infos</h5>
+                                <ul class="list-unstyled">
+                                    <li><a href="#!">About us</a></li>
+                                    <li><a href="#!">FAQ</a></li>
+                                    <li><a href="#!">Contact</a></li>
+                                    <li><a href="#!">Privacy &amp; Terms</a></li>
+                                </ul>
+                            </div>
+
                         </div>
-
-                        <div class="mdl-mega-footer__drop-down-section">
-                            <h1 class="mdl-mega-footer__heading">Technology</h1>
-                            <ul class="mdl-mega-footer__link-list">
-                                <li><a href="#">How it works</a></li>
-                                <li><a href="#">Patterns</a></li>
-                                <li><a href="#">Usage</a></li>
-                                <li><a href="#">Products</a></li>
-                                <li><a href="#">Contracts</a></li>
-                            </ul>
-                        </div>
-
                     </div>
 
-                    <div class="mdl-mega-footer__bottom-section">
-                        <div class="mdl-logo">Title</div>
-                        <ul class="mdl-mega-footer__link-list">
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Privacy &amp; Terms</a></li>
-                        </ul>
+                    <div class="footer-copyright text-center py-3">© 2022 Copyright:
+                        <a href="/"> Octoopus.org</a>
                     </div>
-
                 </footer>
             </xpath>
 

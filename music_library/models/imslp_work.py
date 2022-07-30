@@ -305,7 +305,7 @@ class ImslpWork(models.Model):
         # Log update
         self.next_update = fields.Datetime.now() + relativedelta.relativedelta(days=7)
 
-
+    @staticmethod
     def _parse_general_infos(self, soup):
         res = {}
         header = soup.find_all("div", attrs={'class': "wi_body"})
@@ -349,7 +349,7 @@ class ImslpWork(models.Model):
         clock = time.perf_counter()
         while time.perf_counter() - clock < 840:
             try:
-                _logger.info("Calling IMSLP api : %s" % url.replace("{{START}}", str(start))[30:])
+                _logger.info("Calling IMSLP api works : %s" % url.replace("{{START}}", str(start))[30:])
                 response = requests.get(url.replace("{{START}}", str(start)))
                 if response.status_code == 200 and response.text:
                     response = response.json()

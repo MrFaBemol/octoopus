@@ -31,10 +31,10 @@ ERROR_MISSING_POST_DATA = {
 }
 
 
-def _check_api_access(request):
+def _check_api_access(request) -> dict:
     """
         Check if the request is made using a valid API token and log the request if needed
-            :param request: the request
+            :param request
             :return: a dict with success status and an error message if needed
     """
     headers = request.httprequest.headers
@@ -55,7 +55,7 @@ def _check_api_access(request):
 
 
 
-def extract_post_data(data):
+def extract_post_data(data: dict) -> tuple:
     post = json.loads(data)
     return post, post.get('fields', []), post.get('related_fields', {})
 
@@ -69,7 +69,7 @@ EXCLUDED_FIELDS = {
     'message_partner_ids', 'message_has_error', 'activity_user_id', 'message_has_sms_error'
 }
 
-def dict_result(records, returned_fields=None, related_fields=None):
+def dict_result(records, returned_fields: list = None, related_fields: dict = None) -> list:
     """
         Shortcut for Model.read() picking only a few fields
             :param records: Any records you want
@@ -97,7 +97,7 @@ def dict_result(records, returned_fields=None, related_fields=None):
         res.append(d)
     return res
 
-def success_result(data):
+def success_result(data) -> dict:
     return {
         'success': True,
         'data': data,
@@ -113,7 +113,7 @@ class ApiController(Controller):
     # --------------------------------------------
 
     @route(['/api/composer/', '/api/composer/<int:composer_id>'], type='json', auth="public", csrf=False)
-    def api_composer(self, composer_id=0):
+    def api_composer(self, composer_id: int = 0):
         """
         API Call for one or more composer by id
         In case of multiple records, the ids must be passed as an array in POST data (key=ids)
@@ -173,28 +173,6 @@ class ApiController(Controller):
     #                   WORKS
     # --------------------------------------------
 
-    # @route(['/api/work/<int:composer_id>'], type='json', auth="public", website=True, csrf=False)
-    # def api_work(self, work_id=0):
-    #     """
-    #     API Call for precisely ONE work by id
-    #         :param work_id: the id number of the work in database
-    #         :return: dict with work infos (specific fields if 'fields' post data is passed)
-    #     """
-    #     # Access rights
-    #     check = _check_api_access(request)
-    #     if not check.get('success'):
-    #         return check
-    #     # POST data
-    #     post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
-    #
-    #     work = request.env['music.work'].sudo().browse(work_id)
-    #     if not work.exists():
-    #         return ERROR_RECORD_DOES_NOT_EXIST
-    #
-    #
-    #     data = dict_result(work, _FIELDS, _RELATED_FIELDS)
-    #     return success_result(data)
-
 
     @route(['/api/work/search'], type='json', auth="public", csrf=False)
     def api_work_search(self):
@@ -241,11 +219,10 @@ class ApiController(Controller):
         # POST data
         post, _FIELDS, _RELATED_FIELDS = extract_post_data(request.httprequest.data)
 
-        print("=====================================================")
-        print("jhjkj")
 
         # ------------------------------------------------- Main informations for the search:
         instrument_slots = post.get('instrument_slots')
+        # Temporary -> so I don't have to type instruments everytime
         # 252: bowed, 254: strings, 251 : keyboards, 198, 199
         instrument_slots = [[251, 203]]
         if not instrument_slots:
@@ -263,9 +240,7 @@ class ApiController(Controller):
 
 
         # ------------------------------------------------- The main request
-        res = request.env['music.work.version']
         work_version_with_domain = request.env['music.work.version'].search(domain)
-
 
         # Recast to int
         instrument_slots = [[int(i_id) for i_id in slot] for slot in instrument_slots]

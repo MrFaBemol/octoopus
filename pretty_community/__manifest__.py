@@ -2,6 +2,7 @@
 
 {
     'name': "Pretty community",
+    'description': "A small module for personal use because I'm used to enterprise version",
     'category': "Design",
     'version': "15.0.0.0.1",
     'installable': True,
@@ -9,7 +10,7 @@
 
     'license': "LGPL-3",
     'author': "MrFaBemol",
-    'website': "http://www.odoo.com",
+    'website': "https://www.odoo.com",
 
     'depends': ['web'],
     "assets": {
@@ -19,6 +20,4 @@
     },
 
     'data': [],
-
-    # 'qweb': [],
 }

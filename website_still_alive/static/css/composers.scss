@@ -2,6 +2,8 @@
 ****                COMPOSERS
 ***********************************************/
 
+// Todo: refactor old classes
+
 .oo_what_composers_filters {
     padding: 10px;
     min-width: auto;
@@ -129,6 +131,39 @@
 }
 
 
+
+
+// ----------------------------------------------------------------------------------------------------------------------------
+
+
+ul.oo_composer_cards_TMP {
+    //border: 1px solid blue;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.8rem;
+    list-style: none;
+    margin: 1rem;
+    margin-left: 15%;       // To remove
+    padding: 0.5rem;
+
+    border: 1px solid green;
+
+
+    li.oo_composer_card_item_TMP {
+        display: flex;
+        flex: 1 1 20%;
+        min-width: 280px;
+        max-width: 20%;
+    }
+}
+
+
+
+
+// Todo: Move this card to the material_ux module
+
 // ***********************************************
 // ****                CARDS
 // ***********************************************
@@ -138,38 +173,24 @@
     -webkit-animation: fa-spin-fast .2s infinite linear;
     animation: fa-spin-fast .2s infinite linear;
 }
-
 @-webkit-keyframes fa-spin-fast {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(359deg);
-    }
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(359deg);}
 }
-
 @keyframes fa-spin-fast {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(359deg);
-    }
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(359deg);}
 }
-
 
 
 .material-card {
     position: relative;
-
     height: 0;
     padding-bottom: calc(100% - 16px);
-    //width: calc(100% - 160px);
+    width: 100%;
     margin-bottom: 6rem;
-    border: 1px solid blue;
 
     h2 {
-        border: 1px solid green;
         position: absolute;
         top: calc(100% - 16px);
         left: 0;
@@ -180,7 +201,6 @@
         line-height: 1.6em;
         margin: 0;
         z-index: 10;
-
         transition: all 0.3s;
 
         span { display: block; }
@@ -207,34 +227,13 @@
             bottom: 0;
         }
     }
-
     &.mc-active {
-        @media screen and (max-width: 767px) {
-            padding-bottom: 0;
-            height: auto;
-        }
-
         h2 {
             top: 0;
             padding: 10px 16px 10px 90px;
-
-            &:before {
-                top: 0;
-            }
-
-            &:after {
-                bottom: -16px;
-            }
+            &:before { top: 0; }
+            &:after { bottom: -16px; }
         }
-    }
-
-    .mc-content {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 16px;
-        left: 16px;
-        transition: all 0.3s;
     }
 
     .mc-btn-action {
@@ -244,47 +243,64 @@
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;
-        border: 5px solid;
-        width: 54px;
-        height: 54px;
-        line-height: 44px;
+        border: 3px solid;
+        width: 3.4rem;
+        height: 3.4rem;
+        line-height: 2.6rem;
         text-align: center;
         color: #fff !important;
         cursor: pointer;
         z-index: 20;
-
+        padding-top:3px;
         transition: all 0.3s;
     }
+    &.mc-active .mc-btn-action { top: 62px; }
 
-    &.mc-active .mc-btn-action {
-        top: 62px;
+    .mc-content {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: -15px;
+        left: 16px;
+        transition: all 0.3s;
     }
 
     .mc-description {
         position: absolute;
         top: 100%;
-        right: 30px;
-        left: 30px;
-        bottom: 54px;
-        overflow: hidden;
+        right: 12px;
+        left: 12px;
+        bottom: 30px;
+        overflow-x: hidden;
+        overflow-y: auto ;
+        font-size: 0.9rem;
+        line-height: 1.3rem;
         opacity: 0;
         transition: all 0.7s;
+
+
+        scrollbar-width: thin;
+        &::-webkit-scrollbar{ width: 5px; }
+        &::-webkit-scrollbar-track{ background: #f1f1f1; }
+        &::-webkit-scrollbar-thumb{ background: #888; }
+        &::-webkit-scrollbar-thumb:hover{ background: #555; }
     }
 
     .mc-footer {
         height: 0;
         overflow: hidden;
         transition: all 0.3s;
+        display: flex;
+        flex-wrap: wrap;
 
         h4 {
             position: absolute;
             top: 200px;
-            left: 30px;
+            left: 16px;
             padding: 0;
             margin: 0;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 700;
-
             transition: all 0.9s;
         }
 
@@ -292,35 +308,20 @@
             display: block;
             float: left;
             position: relative;
-            width: 52px;
-            height: 52px;
             margin-left: 5px;
-            margin-bottom: 15px;
-            font-size: 28px;
+            font-size: 1.2rem;
             color: #fff;
-            line-height: 52px;
+            width: 3rem;
+            line-height: 3rem;
             text-decoration: none;
-            top: 200px;
+            top: 150px;
+            cursor: pointer;
 
-            &:nth-child(1) {
-                transition: all 0.3s;
-            }
-
-            &:nth-child(2) {
-                transition: all 0.4s;
-            }
-
-            &:nth-child(3) {
-                transition: all 0.5s;
-            }
-
-            &:nth-child(4) {
-                transition: all 0.6s;
-            }
-
-            &:nth-child(5) {
-                transition: all 0.7s;
-            }
+            &:nth-child(1) {transition: all 0.3s;}
+            &:nth-child(2) {transition: all 0.4s, color 0.3s;}
+            &:nth-child(3) {transition: all 0.5s, color 0.3s;}
+            &:nth-child(4) {transition: all 0.6s, color 0.3s;}
+            &:nth-child(5) {transition: all 0.7s, color 0.3s;}
         }
     }
 
@@ -333,7 +334,6 @@
         width: 100%;
         height: 100%;
         z-index: 3;
-
         transition: all 0.3s;
     }
 
@@ -351,141 +351,97 @@
 
         .mc-content {
             padding-top: 5.6em;
-            @media screen and (max-width: 767px) {
-                position: relative;
-                margin-right: 16px;
-            }
         }
 
         .mc-description {
             top: 50px;
-            padding-top: 5.6em;
+            padding-top: 0;
+            margin-top: 4.2rem;
             opacity: 1;
-
-            @media screen and (max-width: 767px) {
-                position: relative;
-                top: auto;
-                right: auto;
-                left: auto;
-                padding: 50px 30px 70px 30px;
-                bottom: 0;
-            }
         }
 
         .mc-footer {
             overflow: visible;
             position: absolute;
-            top: calc(100% - 16px);
+            top: 104%;
             left: 16px;
             right: 0;
-            height: 82px;
-            padding-top: 15px;
-            padding-left: 25px;
+            height: 4rem;
+            padding: 0.5rem 1rem 0.5rem;
 
-            a {
-                top: 0;
-            }
-
-            h4 {
-                top: -32px;
-            }
+            a {top: 0;}
+            h4 {top: -26px;}
         }
     }
 }
 
-:root{
-    --red-50: #FFEBEE;
-    --red-100: #FFCDD2;
-    --red-500: #F44336;
-    --red-900: #B71C1C;
-}
 
-//@gm-Red-50: #FFEBEE;
-//@gm-Red-100: #FFCDD2;
-//@gm-Red-200: #EF9A9A;
-//@gm-Red-300: #E57373;
-//@gm-Red-400: #EF5350;
-//@gm-Red-500: #F44336;
-//@gm-Red-600: #E53935;
-//@gm-Red-700: #D32F2F;
-//@gm-Red-800: #C62828;
-//@gm-Red-900: #B71C1C;
-//@gm-Red-A100: #FF8A80;
-//@gm-Red-A200: #FF5252;
-//@gm-Red-A400: #FF1744;
-//@gm-Red-A700: #D50000;
 
-.material-card.Red {
-    h2 {
-        background-color: var(--red-500);
-        &:after{
-            border-top-color: var(--red-500);
-            border-right-color: var(--red-500);
-            border-bottom-color: transparent;
-            border-left-color: transparent;
-        }
-        &:before {
-            border-top-color: transparent;
-            border-right-color: var(--red-900); // 900
-            border-bottom-color: var(--red-900); // 900
-            border-left-color: transparent;
-        }
-    }
 
-    &.mc-active {
+$card-colors: "red", "pink", "purple", "deep-purple", "indigo", "blue", "light-blue", "cyan", "teal", "green", "light-green", "amber", "orange", "deep-orange", "brown", "grey", "blue-grey";
+@each $color in $card-colors {
+    .material-card.#{$color} {
         h2 {
-            &:before {
-                border-top-color: transparent;
-                border-right-color: var(--red-500);
-                border-bottom-color: var(--red-500);
-                border-left-color: transparent;
-            }
-            &:after {
-                border-top-color: var(--red-900);
-                border-right-color: var(--red-900);
+            background-color: material-color($color, "500");
+            &:after{
+                border-top-color: material-color($color, "500");
+                border-right-color: material-color($color, "500");
                 border-bottom-color: transparent;
                 border-left-color: transparent;
             }
+            &:before {
+                border-top-color: transparent;
+                border-right-color: material-color($color, "900");
+                border-bottom-color: material-color($color, "900");
+                border-left-color: transparent;
+            }
         }
-    }
 
-    .mc-btn-action {
-        background-color: var(--red-500);
-        &:hover {
-            background-color: var(--red-900);
+        &.mc-active {
+            h2 {
+                &:before {
+                    border-top-color: transparent;
+                    border-right-color: material-color($color, "500");
+                    border-bottom-color: material-color($color, "500");
+                    border-left-color: transparent;
+                }
+                &:after {
+                    border-top-color: material-color($color, "900");
+                    border-right-color: material-color($color, "900");
+                    border-bottom-color: transparent;
+                    border-left-color: transparent;
+                }
+            }
         }
-    }
-    .mc-footer {
-        h4 {
-            color: var(--red-900);
-        }
-        a {
-            background-color: var(--red-900);
-        }
-    }
-    &.mc-active {
-        .mc-content {
-            background-color: var(--red-50);
+
+        .mc-btn-action {
+            background-color: material-color($color, "500");
+            &:hover {
+                background-color: material-color($color, "900");
+            }
         }
         .mc-footer {
-            background-color: var(--red-100);
+            h4 {
+                color: material-color($color, "900");
+            }
+            a {
+                background-color: material-color($color, "900");
+                &:hover{
+                    background-color: material-color($color, "500");
+                }
+            }
         }
-        .mc-btn-action {
-            border-color: var(--red-50);
+        &.mc-active {
+            .mc-content {
+                background-color: material-color($color, "50");
+            }
+            .mc-footer {
+                background-color: material-color($color, "100");
+            }
+            .mc-btn-action {
+                border-color: material-color($color, "50");
+            }
         }
     }
 }
 
-
-
-body {
-    background-color: #ECEFF1;
-    color: #37474F;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-}
-
-h1, h2, h3 {
-    font-weight: 200;
-}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': "Still alive (website addon)",
+    'name': "Still alive (Octoopus website)",
     'description': """
         A portal extension for Octoopus. Depends on music_library module 
     """,
@@ -12,48 +12,35 @@
 
     'license': 'LGPL-3',
     'author': "MrFaBemol",
-    'website': "http://www.octoopus.com",
+    'website': "https://www.octoopus.com",
 
     'depends': [ 'music_library', 'material_ux'],
     "assets": {
-        # "web.assets_backend": [
-        #     'website_still_alive/static/src/qweb/*',
-        # ],
         "web.assets_frontend": [
-            'website_still_alive/static/src/js/owl.iife.min.js',
-            'website_still_alive/static/src/js/tools.js',
-            'website_still_alive/static/src/js/material.min.js',
-            'website_still_alive/static/src/js/composers.js',
-            'website_still_alive/static/src/js/works.js',
+            'website_still_alive/static/js/owl.iife.min.js',
+            'website_still_alive/static/js/__init__.js',
+            'website_still_alive/static/js/tools.js',
+            'website_still_alive/static/js/composers.js',
+            'website_still_alive/static/js/works.js',
 
 
-            'website_still_alive/static/src/css/material.min.css',
-            'website_still_alive/static/src/css/material_extended.scss',
+            'website_still_alive/static/css/material_extended.scss',
 
-            'website_still_alive/static/src/css/autocomplete.scss',
-
-            'website_still_alive/static/src/css/global.scss',
-            'website_still_alive/static/src/css/layouts.scss',
-            # 'website_still_alive/static/src/css/forms.css',
-            'website_still_alive/static/src/css/composers.scss',
-            'website_still_alive/static/src/css/works.scss',
+            'website_still_alive/static/css/colors.scss',
+            'website_still_alive/static/css/autocomplete.scss',
+            'website_still_alive/static/css/layouts.scss',
+            'website_still_alive/static/css/composers.scss',
+            'website_still_alive/static/css/works.scss',
 
 
         ],
-        # 'web.assets_qweb': [
-        #     'website_still_alive/static/src/qweb/*',
-        # ]
     },
 
     'data': [
         'data/website_menu.xml',
 
-        'static/src/xml/homepage.xml',
-        'static/src/xml/what.xml',
-        # 'static/src/qweb/*',
+        'static/xml/homepage.xml',
+        'static/xml/what.xml',
     ],
 
-    # 'qweb': [
-    #     'static/src/qweb/works.xml',
-    # ],
 }

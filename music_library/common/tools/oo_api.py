@@ -9,13 +9,13 @@ import werkzeug
 def grant_access(f):
     """
         A decorator to add before a method to grant a access to api
-        Not sure is useful............
+        Not sure if useful............
     """
     def _grant_access(*self, **kwargs):
         f(self[0].with_context(grant_api_access=True), **kwargs)
     return _grant_access
 
-def call_api(self, url, post_data=None):
+def call_api(self, url: str, post_data: dict = None) -> dict:
     """
         This method allows a user to call the api in a python method (using the @grant_access decorator)
         Not very useful for now, but can be used to check what API returns, simulate a behaviour, etc...

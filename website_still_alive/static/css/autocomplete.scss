@@ -1,5 +1,7 @@
+
+// Todo: Create an owl component (in the material_ux module)
+
 .autocomplete {
-  /*the container must be positioned relative:*/
   position: relative;
   display: inline-block;
   width: 300px;
@@ -27,7 +29,7 @@
   border-bottom: none;
   border-top: none;
   z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
+
   top: 100%;
   left: 0;
   right: 0;
@@ -44,7 +46,7 @@
   }
 
   & .autocomplete-active {
-    background-color: var(--color-dark-blue) !important;
+    background-color: #16232b !important;
     color: #ffffff;
   }
 

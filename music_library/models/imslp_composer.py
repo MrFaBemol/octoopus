@@ -85,7 +85,7 @@ class ImslpComposer(models.Model):
     # --------------------------------------------
     #                   PARSING
     # --------------------------------------------
-    def _log_exception(self, msg, level='error', state='error'):
+    def _log_exception(self, msg: str, level: str = 'error', state: str = 'error'):
         """
         Easy log system with state change
             :param msg: The message to be displayed in logger
@@ -185,7 +185,7 @@ class ImslpComposer(models.Model):
         clock = time.perf_counter()
         while time.perf_counter() - clock < 840:
             try:
-                _logger.info("Calling IMSLP api : %s" % url.replace("{{START}}", str(start)))
+                _logger.info("Calling IMSLP api composers : %s" % url.replace("{{START}}", str(start)))
                 response = requests.get(url.replace("{{START}}", str(start)))
                 if response.status_code == 200 and response.text:
                     response = response.json()

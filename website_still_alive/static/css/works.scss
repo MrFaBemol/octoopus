@@ -5,24 +5,23 @@
 
 .oo_what_work_mode_buttons{
     padding: 10px;
-    //background: red;
 
     & button{
         width: 200px;
         margin: 5px;
         padding: 5px;
-        border: 1px solid grey;
-        border-radius: 5px;
 
-        &:hover{
-            border: 2px solid var(--color-pink);
-            margin: 4px 5px 4px 5px;    // Anti "move" effect
+        border:none;
+        border-radius: 5px;
+        outline: 1px solid grey;
+
+        &:hover, &:active, &:focus{
+            outline-color: material-color("pink");
         }
 
         &.active_mode{
-            border: 2px solid var(--color-pink);
-            background: var(--color-pink-a20);
-            margin: 4px;
+            outline-color: material-color("pink");
+            background: material-color("pink", "50");
         }
     }
 }

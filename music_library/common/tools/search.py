@@ -7,7 +7,7 @@ SEPARATOR_MAIN = "@"
 SEPARATOR_SECOND = "-"
 SEPARATOR_THIRD = ":"
 
-def generate_all_ensembles(instruments_slots: list):
+def generate_all_ensembles(instruments_slots: list) -> list:
     """
         Generate all possible combinations with instruments slots
         :return: list[] of dict{}: instrument_id: qty
@@ -26,7 +26,7 @@ def generate_all_ensembles(instruments_slots: list):
             all_ensembles.append(ensemble_dict)
     return all_ensembles
 
-def get_search_key(instrument_slots: list, min_instrument_qty: int = 0, max_instrument_qty: int = 0):
+def get_search_key(instrument_slots: list, min_instrument_qty: int = 0, max_instrument_qty: int = 0) -> str:
     """
         Generated a search key as follow :
             performers_quantity@
@@ -56,7 +56,7 @@ def get_search_key(instrument_slots: list, min_instrument_qty: int = 0, max_inst
     )
     return key
 
-def get_ensemble_search_key(ensemble_dict: dict, instrument_qty: int = 0):
+def get_ensemble_search_key(ensemble_dict: dict, instrument_qty: int = 0) -> str:
     """
         Generated an ensemble search key as follow :
             performers_quantity@
@@ -113,21 +113,5 @@ def get_slot_by_type(instrument_slots):
 
 
 # ------------------------------------------
-
-
-
-# instruments2 = [[1], [2, 3], [0], [2, 3], [2, 4]]
-# a = instruments2.copy()
-#
-# print(get_search_key(a, 6))
-#
-# print()
-# ensembles = get_all_ensembles(a)
-# print(ensembles)
-# print(len(ensembles))
-# print()
-# #
-# for e in ensembles:
-#     print("%s => %s" % (get_ensemble_search_key(e), e))
 
 

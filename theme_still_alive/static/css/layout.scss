@@ -2,34 +2,30 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  //border: 1px solid red;
   padding: 1.5rem 12% 1rem;
 
-  & .oo_header_logo img {
+  .oo_header_logo img {
     height: 50px;
   }
 
 
-  & nav.oo_navbar {
+  nav.oo_navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 1rem;
 
-    & a {
+    a {
       font-size: 1.3rem;
       font-family: 'Montserrat', sans-serif;
       margin-right: 3.5rem;
-      color: oo-color("primary");
-      transition: color 0.3s;
-      transition-timing-function: ease;
+      color: oo-color("link");
       &:hover {
-        text-decoration: none;
-        color: oo-color("secondary");
+        color: oo-color("link-hover");
       }
     }
 
-    & i {
+    i {
       font-size: 1.5rem;
       color: oo-color('primary');
       display: none;
@@ -49,7 +45,6 @@ header {
   }
 
   header nav.oo_navbar.responsive {
-    //position: relative;
 
     & a {
       float: none;
@@ -60,4 +55,19 @@ header {
   }
 
 }
+
+
+
+footer {
+  background-color: oo-color("primary");
+  color: white;
+
+  a {
+    color: material-color("blue-grey", "300");
+    &:hover {
+      color: oo-color("secondary");
+    }
+  }
+}
+
 

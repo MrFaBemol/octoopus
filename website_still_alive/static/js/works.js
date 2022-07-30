@@ -59,7 +59,7 @@ class WorkStore {
             '/api/composer/search',
             {"fields": ['id', 'display_name']},
         );
-        console.log(res);
+        // console.log(res);
         this.composers = res.result.data;
     }
     async fetchInstrumentList(){
@@ -67,10 +67,9 @@ class WorkStore {
             '/api/instrument/search',
             {
                 "fields": ['id', 'display_name', 'name', 'is_category', 'is_ensemble', 'is_accompaniment'],
-                // "ignore_category": true,
             },
         );
-        console.log(res);
+        // console.log(res);
         this.instruments = res.result.data;
     }
 
@@ -88,7 +87,6 @@ class WorkStore {
             "min_soloists_qty": this.instrument_slots.length,
             // "max_soloists_qty": this.instrument_slots.length,
         });
-        console.log(res);
         enableNode("div.oo_what_work_search_panel");
     }
 

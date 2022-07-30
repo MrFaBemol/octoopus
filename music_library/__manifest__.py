@@ -13,7 +13,7 @@
     'sequence': 1,
     
     'author': "MrFaBemol",
-    'website': "http://www.octoopus.com",
+    'website': "https://www.octoopus.com",
     
     'depends': ['web', 'mail', 'portal'],
     'external_dependencies': {'python': ['beautifulsoup4', 'unidecode']},

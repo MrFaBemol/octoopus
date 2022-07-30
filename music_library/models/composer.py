@@ -8,8 +8,6 @@ import base64
 from unidecode import unidecode
 
 
-# Todo: Add an action to update values with OpenOpus API + Get popular/essential composers
-
 class Composer(models.Model):
     _name = "composer"
     _description = "A music composer"
@@ -91,18 +89,22 @@ class Composer(models.Model):
 
     @api.depends('oo_id')
     def _compute_oo_infos_url(self):
+        open_opus_api = self.env['ir.config_parameter'].sudo().get_param('open.opus.api')
+        open_opus_composer_by_id = self.env['ir.config_parameter'].sudo().get_param('oo.api.composer.by.id')
         for composer in self:
             composer.oo_infos_url = "%s%s" % (
-                self.env['ir.config_parameter'].sudo().get_param('open.opus.api'),
-                self.env['ir.config_parameter'].sudo().get_param('oo.api.composer.by.id').replace("{{ID}}", str(composer.oo_id)),
+                open_opus_api,
+                open_opus_composer_by_id.replace("{{ID}}", str(composer.oo_id)),
             )
 
     @api.depends('oo_id')
     def _compute_oo_works_url(self):
+        open_opus_api = self.env['ir.config_parameter'].sudo().get_param('open.opus.api')
+        open_opus_works_by_composer = self.env['ir.config_parameter'].sudo().get_param('oo.api.all.works.by.composer.id')
         for composer in self:
             composer.oo_works_url = "%s%s" % (
-                self.env['ir.config_parameter'].sudo().get_param('open.opus.api'),
-                self.env['ir.config_parameter'].sudo().get_param('oo.api.all.works.by.composer.id').replace("{{ID}}", str(composer.oo_id)),
+                open_opus_api,
+                open_opus_works_by_composer.replace("{{ID}}", str(composer.oo_id)),
             )
 
     @api.depends('name', 'first_name', 'birth', 'death')
@@ -205,25 +207,11 @@ class Composer(models.Model):
 
     @grant_access
     def action_api_test(self):
+        # Method here to do some tests
         post = {
             'fields': ['name', 'first_name', 'portrait_url'],
         }
         res = call_api(self, 'composer/34', post)
-        # print(res)
+        print(res)
 
-        # response = urlopen(self.env['composer'].browse(15).imslp_url)
-        # html = response.read().decode("utf-8")
-        # soup = BeautifulSoup(html, "html.parser")
-        #
-        # header = soup.find_all("div", attrs={'class': "cp_firsth"})
-        # header[0].script.extract()
-        # header[0].h2.extract()
-        # if header[0].span:
-        #     header[0].span.extract()
-        # date_str = header[0].text.replace("\n", "").replace("(", "").replace(")", "").split(" — ")
-        #
-        # dates = [datetime.datetime.strptime(d, "%d %B %Y") for d in date_str]
-        # print("=====================================================")
-        # print(dates)
-        # print("=====================================================")
 

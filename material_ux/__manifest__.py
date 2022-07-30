@@ -7,23 +7,26 @@
     'installable': True,
     'sequence': 1,
 
-    'license': "OEEL-1",
-    'author': "Odoo PS",
-    'website': "http://www.odoo.com",
+    'license': "LGPL-3",
+    'author': "MrFaBemol",
+    'website': "https://www.odoo.com",
 
     'depends': ['website'],
     "assets": {
         "web.assets_frontend": [
+            # Javascript
+            "material_ux/static/js/__init__.js",
+
+            # Scss
+            "material_ux/static/css/colors_material.scss",
             "material_ux/static/css/colors.scss",
             "material_ux/static/css/global.scss",
-            "material_ux/static/css/form.scss",
 
+            "material_ux/static/css/components/*",
 
-            "material_ux/static/js/init.js",
         ],
     },
 
     'data': [],
-
     'qweb': [],
 }

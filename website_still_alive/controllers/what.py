@@ -7,10 +7,10 @@ from odoo.addons.website.controllers.main import Website
 
 class WhatController(Website):
     # Todo: Move this to a root controller
-    # @http.route('/', type='http', auth="public", website=True)
-    # def index(self, **kw):
-    #     res = super(WhatController, self).index(**kw)
-    #     return res
+    @http.route('/', type='http', auth="public", website=True)
+    def index(self, **kw):
+        res = super(WhatController, self).index(**kw)
+        return res
 
     """
         Composers

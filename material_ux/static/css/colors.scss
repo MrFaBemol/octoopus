@@ -1,9 +1,9 @@
 :root{
   // Can be overwritten to customize colors
-  --switch-bg: #d0d0d0;
-  --switch-circle: #fff;
-  --switch-bg-active: #6fbeb5;
-  --switch-circle-active: #179588;
+  --switch-bg: material-color("grey", "300");
+  --switch-circle: white;
+  --switch-bg-active: material-color("teal", "200");
+  --switch-circle-active: material-color("teal", "400");
 
 
 }

@@ -1,0 +1,20 @@
+div.mux.form-group {
+    & > label {
+        bottom: 26px;
+        left: 15px;
+        position: relative;
+        font-size: 1.2rem;
+        color: darkgrey;
+        background-color: white;
+
+        padding: 0 5px 0;
+        transition: 0.2s;
+        pointer-events: none;
+    }
+
+    & input.form-control:focus ~ label, & input.form-control:not(:placeholder-shown) ~ label {
+        font-size: 0.8rem;
+        color: #4B4D52;
+        bottom: 46px;
+    }
+}

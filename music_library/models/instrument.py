@@ -117,6 +117,7 @@ class Instrument(models.Model):
     #                   ACTIONS
     # --------------------------------------------
 
+
     def action_open_versions_list(self):
         self.ensure_one()
         return {

@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-from random import randint
-
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from ..common.datas import colors
+
 
 
 class Period(models.Model):
     _name = "period"
     _description = "A musical period defined by a start & an end date"
-
-    def _get_default_color(self):
-        return randint(1, 11)
 
     name = fields.Char(required=True, translate=True)
     description = fields.Char(translate=True)
@@ -18,7 +14,8 @@ class Period(models.Model):
     date_end = fields.Date()
     date_display = fields.Char(compute="_compute_date_display")
     sequence = fields.Integer()
-    color = fields.Integer(default=_get_default_color)
+    color = fields.Integer(default=colors.get_odoo_default_color)
+    color_material = fields.Char(compute="_compute_color_material")
 
     composer_ids = fields.Many2many(comodel_name="composer", relation="composer_period_rel")
     composer_qty = fields.Integer(compute="_compute_composer_qty")
@@ -34,8 +31,13 @@ class Period(models.Model):
         for rec in self:
             rec.composer_qty = len(rec.composer_ids)
 
+    @api.depends('color')
+    def _compute_color_material(self):
+        for period in self:
+            period.color_material = colors.MATERIAL_COLORS.get(period.color, colors.DEFAULT_MATERIAL_COLOR)
 
-    def search_or_create_by_name(self, name, exact_match=True):
+
+    def search_or_create_by_name(self, name: str, exact_match: bool = True):
         return self.search([('name', '=ilike' if exact_match else 'ilike', name)]) or self.create([{'name': name}])
 
 
@@ -46,7 +48,7 @@ class Period(models.Model):
             "type": 'ir.actions.act_window',
             "res_model": 'composer',
             "views": [[False, "kanban"], [False, "form"]],
-            "target": 'self',
+            "target": 'current',
             "domain": [('id', 'in', self.composer_ids.ids)],
             "context": {
                 **self.env.context,
