@@ -38,6 +38,7 @@ class ImslpWork(models.Model):
         default='new',
         required=True,
     )
+    error_message = fields.Char()
     next_update = fields.Datetime()
     infos_ids = fields.One2many(comodel_name="imslp.work.infos", inverse_name="work_id")
 
@@ -119,7 +120,7 @@ class ImslpWork(models.Model):
             :param state: record will get this state
         """
         getattr(_logger, level)(msg)
-        self.state = state
+        self.write({'state': state, 'error_message': msg})
 
     def get_info(self, key):
         return self.infos_ids.filtered(lambda i: i.key == key).value or ""
@@ -277,7 +278,7 @@ class ImslpWork(models.Model):
 
         # The key/value pairs
         vals = {}
-        self.state = 'parsed'
+        self.write({'state': 'parsed', 'error_message': ""})
 
         try:
             response = urlopen(iri2uri(self.url))
@@ -305,7 +306,7 @@ class ImslpWork(models.Model):
         # Log update
         self.next_update = fields.Datetime.now() + relativedelta.relativedelta(days=7)
 
-    @staticmethod
+
     def _parse_general_infos(self, soup):
         res = {}
         header = soup.find_all("div", attrs={'class': "wi_body"})

@@ -1,11 +1,3 @@
-/*
-    OWL Imports etc...
- */
-const { Component, mount, xml, useRef, onMounted, onRendered, onError, onWillStart, onPatched, useState, reactive, useEnv, whenReady } = owl;
-function useStore() {
-    const env = useEnv();
-    return useState(env.store);
-}
 
 /*
     Standard method to call the api
@@ -22,10 +14,6 @@ function callApi(url, data) {
     });
 }
 
-
-// Misc
-function enableNode(nodeName){$(nodeName).removeClass("disabled")}
-function disableNode(nodeName){$(nodeName).addClass("disabled")}
 
 // Array helpers
 Array.prototype.sorted = function(key, reverse=false){

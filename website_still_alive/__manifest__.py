@@ -17,7 +17,7 @@
     'depends': [ 'music_library', 'material_ux'],
     "assets": {
         "web.assets_frontend": [
-            'website_still_alive/static/js/owl.iife.min.js',
+            # 'website_still_alive/static/js/owl.iife.min.js',
             'website_still_alive/static/js/__init__.js',
             'website_still_alive/static/js/tools.js',
             'website_still_alive/static/js/composers.js',

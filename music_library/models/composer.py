@@ -23,13 +23,14 @@ class Composer(models.Model):
     search_name = fields.Char(compute='_compute_names', store=True)
     birth = fields.Date(required=True, tracking=True)
     death = fields.Date(tracking=True)
+    display_date = fields.Char(compute="_compute_display_date")
 
     portrait = fields.Binary()
     portrait_url = fields.Char(tracking=True)
     biography = fields.Text(translate=True)
     biography_short = fields.Text(compute="_compute_biography_short")
     country_ids = fields.Many2many(comodel_name="res.country")
-    period_ids = fields.Many2many(comodel_name="period", relation="composer_period_rel", string="Periods")
+    period_id = fields.Many2one(comodel_name="period", string="Period")
     is_popular = fields.Boolean(default=False)
     is_essential = fields.Boolean(default=False)
 
@@ -76,6 +77,11 @@ class Composer(models.Model):
             composer.full_name = full_name
             composer.search_name = unidecode(full_name)
             composer.display_name = "%s (%s - %s)" % (full_name, composer.birth.year if composer.birth else "", composer.death.year if composer.death else "")
+
+    @api.depends('birth', 'death')
+    def _compute_display_date(self):
+        for composer in self:
+            composer.display_date = "%s - %s" % (composer.birth.year, composer.death.year)
             
     @api.depends('biography')
     def _compute_biography_short(self):
@@ -132,6 +138,11 @@ class Composer(models.Model):
     def action_switch_published(self):
         for composer in self:
             composer.published = not composer.published
+
+    def action_auto_find_period(self):
+        for composer in self:
+            midlife_year = composer.birth.year + (composer.death.year - composer.birth.year)//2
+            composer.period_id = self.env['period'].search([('date_start', '<=', '01-01-%s' % midlife_year), ('date_end', '>', '01-01-%s' % midlife_year)])
 
     def action_show_works(self):
         self.ensure_one()

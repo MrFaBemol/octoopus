@@ -15,7 +15,11 @@
     "assets": {
         "web.assets_frontend": [
             # Javascript
+            'material_ux/static/js/owl.iife.min.js',
             "material_ux/static/js/__init__.js",
+            "material_ux/static/js/tools.js",
+
+            "material_ux/static/js/components/*",
 
             # Scss
             "material_ux/static/css/colors_material.scss",

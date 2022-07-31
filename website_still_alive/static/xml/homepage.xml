@@ -8,6 +8,7 @@
                 <ul class="oo_composer_cards_TMP">
 
                     <t t-foreach="['red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue', 'cyan', 'teal', 'green', 'light-green', 'amber', 'orange', 'deep-orange', 'brown', 'grey', 'blue-grey']" t-as="color_name">
+
                         <li class="oo_composer_card_item_TMP" >
                             <article t-attf-class="material-card {{color_name}}" >
                                 <h2>
@@ -20,9 +21,7 @@
                                 <div class="mc-content">
                                     <div class="img-container" t-attf-style="background-image:url('https://assets.openopus.org/portraits/34320620-1568084855.jpg');" />
                                     <div class="mc-description">
-                                        <p>He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...</p>
-                                        <p>He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...</p>
-                                        <p>He has appeared in more than 100 films and television shows, including The Deer Hunter, Annie Hall, The Prophecy trilogy, The Dogs of War ...</p>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
                                     </div>
                                 </div>
                                 <a class="mc-btn-action">
@@ -38,9 +37,8 @@
                                     <a class="fa fa-fw fa-google-plus"></a>
                                 </div>
                             </article>
-
-
                         </li>
+
                     </t>
                 </ul>
 

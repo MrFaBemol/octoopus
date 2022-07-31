@@ -30,5 +30,5 @@ MATERIAL_COLORS = {
 DEFAULT_MATERIAL_COLOR = 'blue-grey'
 
 
-def get_odoo_default_color():
+def get_odoo_default_color(dummy):
     return randint(1, 11)

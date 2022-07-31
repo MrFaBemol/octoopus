@@ -137,25 +137,24 @@
 
 
 ul.oo_composer_cards_TMP {
-    //border: 1px solid blue;
 
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.8rem;
+    gap: 2rem;
     list-style: none;
     margin: 1rem;
-    margin-left: 15%;       // To remove
     padding: 0.5rem;
 
-    border: 1px solid green;
-
-
-    li.oo_composer_card_item_TMP {
+    li.oo_composer_card_item {
         display: flex;
-        flex: 1 1 20%;
-        min-width: 280px;
-        max-width: 20%;
+        flex: 1 1 18%;
+        min-width: 230px;
+        max-width: 18%;
+        background-color: transparent;
+
+        // Optional, kind of weird effect for now
+        box-shadow: 7px 0 7px -6px rgba(0,0,0,0.4);
     }
 }
 
@@ -188,16 +187,17 @@ ul.oo_composer_cards_TMP {
     height: 0;
     padding-bottom: calc(100% - 16px);
     width: 100%;
-    margin-bottom: 6rem;
+    margin-bottom: 4.5rem;
 
     h2 {
         position: absolute;
         top: calc(100% - 16px);
         left: 0;
         width: 100%;
+        white-space: nowrap;
         padding: 10px 16px;
         color: #fff;
-        font-size: 1.4em;
+        font-size: 1.2em;
         line-height: 1.6em;
         margin: 0;
         z-index: 10;
@@ -230,7 +230,7 @@ ul.oo_composer_cards_TMP {
     &.mc-active {
         h2 {
             top: 0;
-            padding: 10px 16px 10px 90px;
+            padding: 10px 12px 10px 86px;
             &:before { top: 0; }
             &:after { bottom: -16px; }
         }
@@ -238,8 +238,8 @@ ul.oo_composer_cards_TMP {
 
     .mc-btn-action {
         position: absolute;
-        right: 16px;
-        top: 15px;
+        right: 6%;
+        top: 6%;
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;
@@ -254,13 +254,13 @@ ul.oo_composer_cards_TMP {
         padding-top:3px;
         transition: all 0.3s;
     }
-    &.mc-active .mc-btn-action { top: 62px; }
+    &.mc-active .mc-btn-action { top: 23%; }
 
     .mc-content {
         position: absolute;
         right: 0;
         top: 0;
-        bottom: -15px;
+        bottom: -19px;
         left: 16px;
         transition: all 0.3s;
     }
@@ -343,9 +343,9 @@ ul.oo_composer_cards_TMP {
             -moz-border-radius: 50%;
             border-radius: 50%;
             left: 0;
-            top: 12px;
-            width: 60px;
-            height: 60px;
+            top: 2.5%;
+            width: 22%;
+            height: 22%;
             z-index: 20;
         }
 
@@ -370,7 +370,7 @@ ul.oo_composer_cards_TMP {
             padding: 0.5rem 1rem 0.5rem;
 
             a {top: 0;}
-            h4 {top: -26px;}
+            h4 {top: -18px;}
         }
     }
 }

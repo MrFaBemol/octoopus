@@ -3,7 +3,6 @@ div.mux.form-group {
         bottom: 26px;
         left: 15px;
         position: relative;
-        font-size: 1.2rem;
         color: darkgrey;
         background-color: white;
 
@@ -13,7 +12,7 @@ div.mux.form-group {
     }
 
     & input.form-control:focus ~ label, & input.form-control:not(:placeholder-shown) ~ label {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: #4B4D52;
         bottom: 46px;
     }

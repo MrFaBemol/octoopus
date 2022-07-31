@@ -102,9 +102,9 @@ class MusicWork(models.Model):
         if original_instrumentation:
             res._create_version(original_instrumentation, is_original=True)
 
-        # Add work period to composer if new
-        if res.period_id and res.period_id not in res.composer_id.period_ids:
-            res.composer_id.write({'period_ids': [4, res.period_id.id]})
+        # [REMOVE because not exact] Add work period to composer if new
+        # if res.period_id and res.period_id not in res.composer_id.period_ids:
+        #     res.composer_id.write({'period_ids': [4, res.period_id.id]})
         return res
 
 

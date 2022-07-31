@@ -1,0 +1,28 @@
+div.mux.form-select {
+
+    // Variables
+    --select-background: var(--material-color-grey-200) ;
+    --select-border: var(--material-color-grey-400);
+    --select-border-active: var(--material-color-grey-800);
+
+
+    font-size: 1.2rem;
+
+    label {
+        margin-right: 10px;
+    }
+
+    select {
+        outline: none;
+        border: none;
+        border-bottom: 1px solid var(--select-border);
+        border-right: 10px solid transparent;
+        background-color: var(--select-background);
+        padding: 10px;
+
+        &:focus, &:active {
+            border-color: var(--select-border-active);
+            border-right-color: transparent;
+        }
+    }
+}

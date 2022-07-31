@@ -7,6 +7,7 @@ from ..common.datas import colors
 class Period(models.Model):
     _name = "period"
     _description = "A musical period defined by a start & an end date"
+    _order = "date_start"
 
     name = fields.Char(required=True, translate=True)
     description = fields.Char(translate=True)

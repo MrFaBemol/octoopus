@@ -30,23 +30,34 @@ class ComposerList {
     page_current = 0;
     page_max = 0;
 
-    changePage(delta){
-        this.page_current = Math.max(Math.min(this.page_current+delta, this.page_max), 1);
+
+
+    goToPage(pageNum){
+        if (pageNum < 1){ pageNum = 1;}
+        if (pageNum > this.page_max){ pageNum = this.page_max;}
+
+        this.page_current = pageNum;
         this.active_composers = this.composers.slice(this.page_limit*(this.page_current-1), this.page_limit*this.page_current);
         this.results_min = 1 + (this.page_limit * (this.page_current-1));
         this.results_max = this.results_min + this.active_composers.length - 1;
     }
-    nextPage() { this.changePage(1); }
-    prevPage() { this.changePage(-1); }
+    nextPage() { this.goToPage(this.page_current+1); }
+    prevPage() { this.goToPage(this.page_current-1); }
+
 
     async fetchComposerList(){
         let res = await callApi(
             '/api/composer/search',
-            {"fields": ['id', 'slug_url', 'name', 'first_name', 'birth', 'death', 'portrait_url', 'work_qty']},
+            {
+                "fields": ['id', 'slug_url', 'name', 'first_name', 'birth', 'display_date', 'portrait_url', 'work_qty', 'period_id'],
+                "related_fields": {"period_id": ["color_material", "date_start"]},
+            },
         );
+        console.log(res);
+
         let page_ratio = res.result.data_count/this.page_limit;
         this.page_max += Number.isInteger(page_ratio) ? page_ratio : Math.floor(page_ratio)+1;
-        this.composers = res.result.data;
+        this.composers = res.result.data.sorted('period_id.date_start');
         this.results_count = res.result.data_count;
         this.nextPage();
     }
@@ -59,22 +70,63 @@ class ComposerList {
 
 class ComposerCard extends Component{
     static template = xml`
-<div class="oo_composer_card" t-attf-style="background-image:url('{{props.composer.portrait_url}}');">
-    <a t-attf-href="/what/composer/{{props.composer.slug_url}}"><span class="oo_composer_card_link" /></a>
-    <div class="oo_composer_card_infos">
-        <div class="name" >
-            <a t-attf-href="/what/composer/{{props.composer.slug_url}}" class="oo_composer_card_link">
-                <t t-esc="props.composer.name"/>, <t t-esc="props.composer.first_name"/>
-            </a>
+<li class="oo_composer_card_item" >
+    <article t-attf-class="material-card {{props.composer.period_id.color_material}}">
+        <a t-attf-href="/what/composer/{{props.composer.slug_url}}">
+            <h2>
+                <span><t t-esc="props.composer.name"/>, <t t-esc="props.composer.first_name"/></span>
+                <strong>
+    <!--                <i class="fa fa-fw fa-star"></i>-->
+    <!--                The Spanish Guy-->
+                    (<t t-esc="props.composer.display_date"/>)
+                </strong>
+            </h2>
+        </a>
+        <div class="mc-content">
+            <div class="img-container" t-attf-style="background-image:url('{{props.composer.portrait_url}}');" />
+            <div class="mc-description">
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            </div>
         </div>
-        <div class="infos">#<t t-esc="props.composer.id"/> - <t t-esc="props.composer.work_count"/> works</div>
-    </div>
-</div>
+        <a class="mc-btn-action" t-on-click="toggleActive">
+            <i class="fa fa-bars"></i>
+        </a>
+        <div class="mc-footer">
+            <h4>
+                Social
+            </h4>
+            <a class="fa fa-fw fa-facebook"></a>
+            <a class="fa fa-fw fa-twitter"></a>
+            <a class="fa fa-fw fa-linkedin"></a>
+            <a class="fa fa-fw fa-google-plus"></a>
+        </div>
+    </article>
+</li>
 `;
 
     static props = ["composer"];
     setup(){
         this.store = useStore()
+    }
+
+    toggleActive(ev){
+        let card = $(ev.target).parentsUntil(".oo_composer_card_item").last();
+        let icon = card.find('i');
+        let removedClass = '';
+        let addedClass = '';
+        icon.addClass('fa-spin-fast');
+
+        if (card.hasClass('mc-active')) {
+            removedClass = 'fa-arrow-left';
+            addedClass = 'fa-bars';
+        } else {
+            addedClass = 'fa-arrow-left';
+            removedClass = 'fa-bars';
+        }
+        card.toggleClass('mc-active');
+        window.setTimeout(function() {
+            icon.removeClass(removedClass).removeClass('fa-spin-fast').addClass(addedClass);
+        }, 300);
     }
 }
 
@@ -85,11 +137,13 @@ class ComposerCard extends Component{
  */
 class ComposerGrid extends Component {
     static template = xml`
-<div class="oo_what_composer_grid">
+<!--<div class="oo_what_composer_grid">-->
+<ul class="oo_composer_cards_TMP">
     <t t-foreach="store.active_composers" t-as="composer" t-key="composer.id">
         <ComposerCard composer="composer" />
     </t>
-</div>
+</ul>
+<!--</div>-->
 `;
 
     static components = { ComposerCard };
@@ -133,23 +187,37 @@ class ComposerOrderingTopBar extends Component{
         <span class="results_count"><t t-esc="store.results_count" /></span>
     </div>
 
-    <div class="col oo_center_horizontal oo_what_composer_top_bar_pagination">
-        <a href="#" class="prev_page" t-on-click="() => this.store.prevPage()">&lt;</a>
-        Page: <span class="current_page"><t t-esc="store.page_current" /></span> / <span class="total_page"><t t-esc="store.page_max" /></span>
-        <a href="#" class="next_page" t-on-click="() => this.store.nextPage()">&gt;</a>
-    </div>
+    <nav aria-label="Page navigation example" class="oo_center_horizontal">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous" t-on-click="() => this.store.prevPage()">
+                    <i class="fa fa-angle-double-left" />
+                </a>
+            </li>
+            
+            <li t-foreach="Array.from({length: this.store.page_max}, (_, i) => i + 1)" t-as="i" t-key="i"
+                t-attf-class="page-item {{ store.page_current == i ? 'active' : '' }}">
+                <a class="page-link" href="#" t-on-click="() => this.store.goToPage(i)" ><t t-esc="i" /></a>
+            </li>
+            
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next" t-on-click="() => this.store.nextPage()">
+                  <i class="fa fa-angle-double-right" />
+              </a>
+            </li>
+        </ul>
+    </nav>
 
     <div class="col-4">
         <div class="row gap1 oo_center_vertical oo_center_horizontal oo_what_composer_top_bar_order_by ">
-            <div class="col input-field">
+            <div class="form-select mux">
+                <label>Order By</label>
                 <select name="order_by" id="order_by" placeholder="Sort by...">
-                    <option value="default">Default (popular first)</option>
                     <option value="name">Name</option>
                     <option value="works_quantity">Works quantity</option>
                     <option value="birth">Birth date</option>
                     <option value="death">Death date</option>
                 </select>
-                <label>Order By</label>
             </div>
 
             <div class="mux form-check double-label">
