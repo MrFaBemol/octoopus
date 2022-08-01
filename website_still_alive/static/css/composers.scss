@@ -26,10 +26,10 @@
     align-items: center;
     width: 250px;
 
-    & span:is(.results_min_page, .results_max_page) {
-        margin-left: 5px;
-        margin-right: 5px;
-    }
+    //& span:is(.results_min_page, .results_max_page) {
+    //    margin-left: 2px;
+    //    margin-right: 2px;
+    //}
 }
 
 .oo_what_composer_top_bar_pagination {

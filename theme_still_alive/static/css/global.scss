@@ -8,6 +8,8 @@ html, body{
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Source Sans Pro", "Odoo Unicode Support Noto", sans-serif;
+  //border-bottom: 1px solid var(--material-color-blue-grey-100);
+  margin-bottom: 1rem;
 }
 
 a {

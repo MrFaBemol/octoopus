@@ -167,10 +167,61 @@ class ComposerGrid extends Component {
 class ComposerFilter extends Component{
     static template = xml`
 <div class="col-md-auto oo_what_composers_filters">
-    <div class="form-group mux">
+    <h3>Filters</h3>
+
+    <div class="mux form-group">
         <input type="text" class="form-control" id="name_search" />
         <label for="name_search">Name</label>
     </div>
+    
+    <div class="mux form-check">
+        <input type="checkbox" class="form-check-input" id="is_popular" />
+        <label class="form-check-label" for="is_popular" />
+        <span>Popular</span>
+    </div>
+    
+    <div class="mux form-check">
+        <input type="checkbox" class="form-check-input" id="is_essential" />
+        <label class="form-check-label" for="is_essential" />
+        <span>Essential</span>
+    </div>
+    
+        
+    
+
+    <fieldset>
+        <legend>Dates</legend>
+            <div class="label-input-double">
+                <span>
+                    <i class="material-icons prefix">child_care</i>
+                    <label>Birth</label>
+                </span>
+                <div class="input-field inline small">
+                    <input id="min_birth" type="text" class="validate" maxlength="4" size="1" />
+                    <label for="min_birth">Min</label>
+                </div>
+                <div class="input-field inline small">
+                    <input id="max_birth" type="text" class="validate" maxlength="4" size="1" />
+                    <label for="max_birth">Max</label>
+                </div>
+            </div>
+
+            <div class="label-input-double">
+                <span>
+                    <i class="material-icons prefix">elderly</i>
+                    <label>Death</label>
+                </span>
+                <div class="input-field inline small">
+                    <input id="min_death" type="text" class="validate" maxlength="4" size="1" />
+                    <label for="min_death">Min</label>
+                </div>
+                <div class="input-field inline small">
+                    <input id="max_death" type="text" class="validate" maxlength="4" size="1" />
+                    <label for="max_death">Max</label>
+                </div>
+            </div>
+    </fieldset>
+    
     
 </div>
 `;
@@ -183,7 +234,7 @@ class ComposerOrderingTopBar extends Component{
     <div class="oo_what_composer_top_bar_results col-2">
         Results: 
         <span class="results_min_page"><t t-esc="store.results_min" /></span> -
-        <span class="results_max_page"><t t-esc="store.results_max" /></span> /
+        <span class="results_max_page"><t t-esc="store.results_max" /></span>/
         <span class="results_count"><t t-esc="store.results_count" /></span>
     </div>
 
@@ -222,8 +273,8 @@ class ComposerOrderingTopBar extends Component{
 
             <div class="mux form-check double-label">
                 <span>Asc.</span>
-                <input type="checkbox" class="form-check-input" id="exampleCheck2" />
-                <label class="form-check-label" for="exampleCheck2" />
+                <input type="checkbox" class="form-check-input" id="order_direction" />
+                <label class="form-check-label" for="order_direction" />
                 <span>Desc.</span>
             </div>
             

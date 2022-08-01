@@ -1,0 +1,11 @@
+
+// Pagination
+.page-item {
+    a.page-link {
+        color: var(--oo-primary);
+    }
+    &.active a.page-link {
+        background-color: var(--oo-primary);
+        border-color: var(--oo-primary);
+    }
+}

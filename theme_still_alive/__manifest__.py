@@ -18,6 +18,7 @@
 
             # Scss
             "theme_still_alive/static/css/colors.scss",
+            "theme_still_alive/static/css/bootstrap_extended.scss",
             "theme_still_alive/static/css/global.scss",
             "theme_still_alive/static/css/layout.scss",
 

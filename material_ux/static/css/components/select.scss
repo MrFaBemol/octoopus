@@ -7,9 +7,17 @@ div.mux.form-select {
 
 
     font-size: 1.2rem;
+    position: relative;
+    background-color: var(--select-background);
+    //border: 1px solid red;
+    padding-top: 0px;
 
     label {
-        margin-right: 10px;
+        //margin-right: 10px;
+        position: absolute;
+        top: -1.1rem;
+        left: 0.1rem;
+        font-size: 0.9rem;
     }
 
     select {
@@ -17,7 +25,6 @@ div.mux.form-select {
         border: none;
         border-bottom: 1px solid var(--select-border);
         border-right: 10px solid transparent;
-        background-color: var(--select-background);
         padding: 10px;
 
         &:focus, &:active {
