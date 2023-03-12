@@ -22,7 +22,7 @@ class MusicWorkVersion(models.Model):
     accompanist_qty = fields.Integer(compute="_compute_performer_qty", string="Accompanists", store=True)
 
     is_original = fields.Boolean(default=True)
-    arranger_id = fields.Many2one(comodel_name="composer", ondelete="set null")
+    arranger_id = fields.Many2one(comodel_name="music.composer", ondelete="set null")
 
     # Alt infos (optional)
     alt_name = fields.Char(translate=True)
@@ -54,8 +54,6 @@ class MusicWorkVersion(models.Model):
             soloists = instruments - accompanists
             version.soloist_qty = sum(soloists.mapped('quantity'))
             version.accompanist_qty = sum([a.quantity*a.instrument_id.accompanist_qty for a in accompanists])
-
-
 
 
     def search_by_key(self, key=None):

@@ -28,7 +28,7 @@ def generate_all_ensembles(instruments_slots: list) -> list:
 
 def get_search_key(instrument_slots: list, min_instrument_qty: int = 0, max_instrument_qty: int = 0) -> str:
     """
-        Generated a search key as follow :
+        Generated a search key as follows :
             performers_quantity@
             slot possibilities separated by ":" (ex "1:2:3:4:5")
             all slots separated by "-"
@@ -46,7 +46,7 @@ def get_search_key(instrument_slots: list, min_instrument_qty: int = 0, max_inst
     max_instrument_qty = max(min_instrument_qty, max_instrument_qty)
 
 
-    # We sort the id of possible instruments for each slot, then the slots themself
+    # We sort the id of possible instruments for each slot, then the slots themselves
     instruments_slots = sorted(map(lambda slot: sorted(slot), instrument_slots))
 
     key = "%s%s%s" % (
@@ -58,10 +58,9 @@ def get_search_key(instrument_slots: list, min_instrument_qty: int = 0, max_inst
 
 def get_ensemble_search_key(ensemble_dict: dict, instrument_qty: int = 0) -> str:
     """
-        Generated an ensemble search key as follow :
+        Generated an ensemble search key as follows :
             performers_quantity@
-            => instrument_id ":" quantity         for each entry
-            each entry separated by "-"
+            => instrument_id ":" quantity for each entry separated by "-"
 
         Example:
             Input  :    {0: 2, 1: 1, 2: 2, 4: 1}

@@ -17,12 +17,12 @@
 
                     <field name="id" optional="hide"/>
                     <field name="name" />
-                    <button name="action_open_url" type="object" icon="fa-external-link" />
+                    <button name="action_open_url" type="object" icon="fa-external-link"  title="Open URL" />
                     <field name="url" />
                     <field name="composer_id" />
-                    <button name="action_view_imslp_works" attrs="{'invisible': [('imslp_work_qty', '=', 0)]}" type="object" string="View works" icon="fa-edit" class="btn-primary" />
-                    <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" class="btn-primary" />
-                    <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" class="btn-secondary" />
+                    <button name="action_view_imslp_works" attrs="{'invisible': [('imslp_work_qty', '=', 0)]}" type="object" string="View works" icon="fa-edit" title="View works" class="btn-primary" />
+                    <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" title="Get infos" class="btn-primary" />
+                    <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" title="See infos" class="btn-secondary" />
 
                     <field name="imslp_work_qty" optional="hide" />
                 </tree>
@@ -52,10 +52,10 @@
             <field name="context">{"search_default_has_linked_composer":1}</field>
         </record>
 
-        <record id="get_webpage_infos_action" model="ir.actions.server">
+        <record id="action_get_webpage_infos_imslp_composer" model="ir.actions.server">
             <field name="name">Get webpage infos</field>
-            <field name="model_id" ref="music_library.model_imslp_composer"/>
-            <field name="binding_model_id" ref="music_library.model_imslp_composer"/>
+            <field name="model_id" ref="music_library_imslp.model_imslp_composer"/>
+            <field name="binding_model_id" ref="music_library_imslp.model_imslp_composer"/>
             <field name="state">code</field>
             <field name="code">action = records.action_get_webpage_infos()</field>
         </record>

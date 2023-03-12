@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="music_work_tree" model="ir.ui.view">
+            <field name="name">music_work_tree</field>
+            <field name="model">music.work</field>
+            <field name="inherit_id" ref="music_library.music_work_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="imslp_work_id" optional="hide" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -8,7 +8,7 @@ import werkzeug
 
 def grant_access(f):
     """
-        A decorator to add before a method to grant a access to api
+        A decorator to add before a method to grant access to api
         Not sure if useful............
     """
     def _grant_access(*self, **kwargs):

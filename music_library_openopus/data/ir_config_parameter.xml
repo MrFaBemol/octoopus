@@ -16,29 +16,11 @@
             <field name="key">oo.api.composer.by.id</field>
             <field name="value">/composer/list/ids/{{ID}}.json</field>
         </record>
-        
+
         <record id="oo_api_all_works_by_composer_id" model="ir.config_parameter">
             <field name="key">oo.api.all.works.by.composer.id</field>
             <field name="value">/work/list/composer/{{ID}}/genre/all.json</field>
         </record>
-
-
-
-        <record id="imslp_api" model="ir.config_parameter">
-            <field name="key">imslp.api</field>
-            <field name="value">https://imslp.org/imslpscripts/API.ISCR.php?account=worklist/disclaimer=accepted/sort=id/type={{TYPE}}/start={{START}}/retformat=json</field>
-        </record>
-
-        <record id="imslp_composer_start" model="ir.config_parameter">
-            <field name="key">imslp.composer.start</field>
-            <field name="value">0</field>
-        </record>
-
-        <record id="imslp_work_start" model="ir.config_parameter">
-            <field name="key">imslp.work.start</field>
-            <field name="value">0</field>
-        </record>
-
 
     </data>
 </odoo>

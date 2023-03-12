@@ -4,8 +4,8 @@ from ..common.datas import colors
 
 
 
-class Period(models.Model):
-    _name = "period"
+class MusicPeriod(models.Model):
+    _name = "music.period"
     _description = "A musical period defined by a start & an end date"
     _order = "date_start"
 
@@ -18,7 +18,7 @@ class Period(models.Model):
     color = fields.Integer(default=colors.get_odoo_default_color)
     color_material = fields.Char(compute="_compute_color_material")
 
-    composer_ids = fields.Many2many(comodel_name="composer", relation="composer_period_rel")
+    composer_ids = fields.Many2many(comodel_name="music.composer", relation="composer_period_rel")
     composer_qty = fields.Integer(compute="_compute_composer_qty")
 
     @api.depends('date_start', 'date_end')
@@ -47,7 +47,7 @@ class Period(models.Model):
         return {
             "name": _("All composers from %s period" % self.name),
             "type": 'ir.actions.act_window',
-            "res_model": 'composer',
+            "res_model": 'music.composer',
             "views": [[False, "kanban"], [False, "form"]],
             "target": 'current',
             "domain": [('id', 'in', self.composer_ids.ids)],

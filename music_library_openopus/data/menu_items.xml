@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <menuitem name="Ask OpenOpus for composers" id="technical_menu_oo_get_composers"
+                  sequence="20"
+                  parent="music_library.technical_menu_sub_batch_actions"
+                  action="oo_get_composers_action" />
+
+    </data>
+</odoo>

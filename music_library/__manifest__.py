@@ -8,8 +8,9 @@
 
     'license': 'LGPL-3',
     'category': "Uncategorized",
-    'version': "15.0.0.1.5",
+    'version': "16.0.0.1.5",
     'installable': True,
+    'application': True,
     'sequence': 1,
     
     'author': "MrFaBemol",
@@ -25,34 +26,31 @@
     },
     
     'data': [
-        'datas/ir_config_parameter.xml',
-        'datas/scheduled_actions.xml',
-        'datas/music_note.xml',
-        'datas/instrument.xml',
-        'datas/api_token.xml',
 
-        'views/composer.xml',
+        # Views
+        'views/api_token.xml',
+        'views/api_request.xml',
+        'views/music_composer.xml',
+        'views/music_instrument.xml',
+        'views/music_note.xml',
+        'views/music_period.xml',
         'views/music_work.xml',
         'views/music_work_version.xml',
         'views/music_work_version_instrument.xml',
-        'views/instrument.xml',
-        'views/music_note.xml',
-        'views/period.xml',
 
-        'views/api_token.xml',
-        'views/api_request.xml',
-        'views/imslp_composer.xml',
-        'views/imslp_composer_infos.xml',
-        'views/imslp_work.xml',
-        'views/imslp_work_infos.xml',
-
-        'wizards/oo_get_composers_wizard.xml',
-        'wizards/oo_get_works_wizard.xml',
-        'wizards/update_tonality_wizard.xml',
+        # Wizards
         'wizards/create_work_version_wizard.xml',
+        'wizards/update_tonality_wizard.xml',
 
-        'views/menu_items.xml',
+        # Data
+        'data/api_token.xml',
+        'data/music_note.xml',              # Need music note before to be used in music_instrument
+        'data/music_instrument.xml',
+        'data/menu_items.xml',
+
+        # Security
         'security/security.xml',
         'security/ir.model.access.csv',
     ],
+
 }

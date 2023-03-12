@@ -12,6 +12,7 @@ class CreateWorkVersionWizard(models.TransientModel):
 
     is_original = fields.Boolean(default=True)
 
+    # Todo: refactor, use music.work._create_version() method
     def action_create_versions(self):
         self.ensure_one()
         if not self.performer_ids:
@@ -34,7 +35,7 @@ class CreateWorkVersionWizardPerformer(models.TransientModel):
     _description = "An instrument used in the version"
 
     wizard_id = fields.Many2one(comodel_name="create.work.version.wizard")
-    instrument_id = fields.Many2one(comodel_name="instrument", required=True)
+    instrument_id = fields.Many2one(comodel_name="music.instrument", required=True)
     quantity = fields.Integer(default=1)
 
 

@@ -14,8 +14,6 @@
                     <field name="date_composition" />
                     <field name="is_popular" invisible="1"/>
                     <field name="is_essential" invisible="1"/>
-                    <field name="imslp_work_id" optional="hide" />
-                    <field name="oo_id" optional="hide" />
                 </tree>
             </field>
         </record>
@@ -31,15 +29,21 @@
                                 <field name="version_qty" widget="statinfo" string="Versions" />
                             </button>
                             <button class="oe_stat_button" type="object" name="action_open_version_form" icon="fa-file-text-o" attrs="{'invisible': [('version_qty', '!=', 1)]}">
-                                Go to version
+                                See version
                             </button>
                         </div>
                         <group>
-                            <field name="title" />
-                            <field name="composer_id" />
+                            <label for="title"/>
+                            <h1>
+                                <field name="title" />
+                            </h1>
+                            <label for="composer_id"/>
+                            <h1>
+                                <field name="composer_id" options="{'no_create': True}" />
+                            </h1>
                         </group>
 
-                        <group>
+                        <group string="Extra informations">
                             <group>
                                 <field name="sub_title" />
                                 <field name="catalogue" placeholder="Opus" />

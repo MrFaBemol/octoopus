@@ -9,7 +9,7 @@ class OOGetComposers(models.TransientModel):
     _name = "oo.get.composers.wizard"
     _description = "A wizard to import composers from OpenOpus API"
 
-    composer_ids = fields.One2many(comodel_name="open.opus.new.composer", inverse_name="wizard_id")
+    composer_ids = fields.One2many("oo.new.composer", "wizard_id")
 
     def get_new_composers(self):
         api_url = self.env['ir.config_parameter'].sudo().get_param('open.opus.api')
@@ -22,8 +22,8 @@ class OOGetComposers(models.TransientModel):
                 response = response.json()
                 if response['status']['success'] == 'true':
                     for composer in response['composers']:
-                        if not self.env['composer'].search([('oo_id', '=', composer['id'])]):
-                            self.env['open.opus.new.composer'].create({
+                        if not self.env['music.composer'].search([('oo_id', '=', composer['id'])]):
+                            self.env['oo.new.composer'].create({
                                 'wizard_id': self.id,
                                 'oo_id': composer['id'],
                                 'full_name': composer['complete_name'],
@@ -53,7 +53,7 @@ class OOGetComposers(models.TransientModel):
 
 
 class OpenOpusNewComposer(models.TransientModel):
-    _name = "open.opus.new.composer"
+    _name = "oo.new.composer"
     _description = "A composer suggestion"
 
     wizard_id = fields.Many2one(comodel_name="oo.get.composers.wizard")
@@ -71,7 +71,7 @@ class OpenOpusNewComposer(models.TransientModel):
 
             first_name = rec.full_name.replace(rec.name, "").strip()
 
-            self.env['composer'].create({
+            self.env['music.composer'].create({
                 'oo_id': rec.oo_id,
                 'name': rec.name,
                 'first_name': first_name,

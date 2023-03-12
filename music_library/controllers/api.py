@@ -88,7 +88,7 @@ def dict_result(records, returned_fields: list = None, related_fields: dict = No
                 data = rec[f].ids if f[-4:] == "_ids" else rec[f].id
                 if rf := related_fields.get(f):
                     rf.append("id")
-                    rf_res = dict_result(rec[f], set(rf))
+                    rf_res = dict_result(rec[f], list(set(rf)))
                     data = rf_res if f[-4:] == "_ids" else rf_res[0]
             else:
                 data = rec[f]
@@ -222,7 +222,7 @@ class ApiController(Controller):
 
         # ------------------------------------------------- Main informations for the search:
         instrument_slots = post.get('instrument_slots')
-        # Temporary -> so I don't have to type instruments everytime
+        # Temporary -> so I don't have to type instruments everytime. Todo: remove this part
         # 252: bowed, 254: strings, 251 : keyboards, 198, 199
         instrument_slots = [[251, 203]]
         if not instrument_slots:

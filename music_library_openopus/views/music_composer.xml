@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="music_composer_tree" model="ir.ui.view">
+            <field name="name">music_composer_tree</field>
+            <field name="model">music.composer</field>
+            <field name="inherit_id" ref="music_library.music_composer_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="oo_id" optional="show" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="music_composer_form" model="ir.ui.view">
+            <field name="name">music_composer_form</field>
+            <field name="model">music.composer</field>
+            <field name="inherit_id" ref="music_library.music_composer_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//page[name='music_composer_web']/group" position="inside">
+                    <group string="OpenOpus">
+                        <field name="oo_infos_url" widget="url" />
+                        <field name="oo_works_url" widget="url" />
+                    </group>
+                </xpath>
+
+                <xpath expr="//page[name='music_composer_works']//field[@name='work_ids']/tree" position="inside">
+                    <field name="oo_id" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+
+        <record id="oo_get_composers_action" model="ir.actions.server">
+            <field name="name">Ask OpenOpus for composers</field>
+            <field name="model_id" ref="music_library.model_music_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_oo_get_composers()</field>
+        </record>
+
+        <record id="oo_get_works_action" model="ir.actions.server">
+            <field name="name">Ask OpenOpus for works</field>
+            <field name="model_id" ref="music_library.model_music_composer"/>
+            <field name="binding_model_id" ref="music_library.model_music_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_oo_get_works()</field>
+        </record>
+
+        <record id="oo_get_portrait" model="ir.actions.server">
+            <field name="name">Get OpenOpus portrait</field>
+            <field name="model_id" ref="music_library.model_music_composer"/>
+            <field name="binding_model_id" ref="music_library.model_music_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_oo_get_portrait()</field>
+        </record>
+
+    </data>
+</odoo>

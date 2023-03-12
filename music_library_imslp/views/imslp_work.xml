@@ -16,13 +16,14 @@
                     <field name="next_update" invisible="1" />
                     <field name="id" optional="hide"/>
                     <field name="name" />
-                    <button name="action_open_url" type="object" icon="fa-external-link" />
+                    <button name="action_open_url" type="object" icon="fa-external-link" title="Open URL" />
                     <field name="url" optional="hide" />
+                    <field name="composer_name" optional="hide" />
                     <field name="imslp_composer_id" />
                     <field name="composer_id" optional="hide" />
                     <field name="work_id" />
-                    <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" class="btn-primary" />
-                    <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" class="btn-secondary" />
+                    <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" title="Get infos"  class="btn-primary" />
+                    <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" title="See infos" class="btn-secondary" />
 
                 </tree>
             </field>
@@ -34,6 +35,7 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name" />
+                    <field name="composer_name" />
                     <field name="imslp_composer_id"  />
                     <field name="work_id" />
 
@@ -46,20 +48,36 @@
             </field>
         </record>
 
-        <record id="get_webpage_infos_action" model="ir.actions.server">
+        <record id="action_get_webpage_infos_imslp_work" model="ir.actions.server">
             <field name="name">Get webpage infos</field>
-            <field name="model_id" ref="music_library.model_imslp_work"/>
-            <field name="binding_model_id" ref="music_library.model_imslp_work"/>
+            <field name="model_id" ref="music_library_imslp.model_imslp_work"/>
+            <field name="binding_model_id" ref="music_library_imslp.model_imslp_work"/>
             <field name="state">code</field>
             <field name="code">action = records.action_get_webpage_infos()</field>
         </record>
-        <record id="create_update_work_action" model="ir.actions.server">
+        <record id="action_create_update_work" model="ir.actions.server">
             <field name="name">Create/update work in database</field>
-            <field name="model_id" ref="music_library.model_imslp_work"/>
-            <field name="binding_model_id" ref="music_library.model_imslp_work"/>
+            <field name="model_id" ref="music_library_imslp.model_imslp_work"/>
+            <field name="binding_model_id" ref="music_library_imslp.model_imslp_work"/>
             <field name="state">code</field>
             <field name="code">action = records.action_create_update_work()</field>
         </record>
+
+        <record id="action_link_imslp_composer" model="ir.actions.server">
+            <field name="name">Link IMSLP composer</field>
+            <field name="model_id" ref="music_library_imslp.model_imslp_work"/>
+            <field name="binding_model_id" ref="music_library_imslp.model_imslp_work"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_link_imslp_composer()</field>
+        </record>
+        <record id="action_link_music_work" model="ir.actions.server">
+            <field name="name">Link music work</field>
+            <field name="model_id" ref="music_library_imslp.model_imslp_work"/>
+            <field name="binding_model_id" ref="music_library_imslp.model_imslp_work"/>
+            <field name="state">code</field>
+            <field name="code">action = records.action_link_music_work()</field>
+        </record>
+
 
 
         <record id="imslp_work_action" model="ir.actions.act_window">

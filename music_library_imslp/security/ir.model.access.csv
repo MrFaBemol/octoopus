@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+imslp_composer_rule_access,imslp_composer_rule_access,model_imslp_composer,music_library.music_library_group_user,1,1,1,1
+imslp_composer_infos_rule_access,imslp_composer_infos_rule_access,model_imslp_composer_infos,music_library.music_library_group_user,1,1,1,1
+imslp_work_rule_access,imslp_work_rule_access,model_imslp_work,music_library.music_library_group_user,1,1,1,1
+imslp_work_infos_rule_access,imslp_work_infos_rule_access,model_imslp_work_infos,music_library.music_library_group_user,1,1,1,1

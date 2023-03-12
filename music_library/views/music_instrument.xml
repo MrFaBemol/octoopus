@@ -2,9 +2,9 @@
 <odoo>
     <data>
 
-        <record id="instrument_tree" model="ir.ui.view">
+        <record id="music_instrument_tree" model="ir.ui.view">
             <field name="name">instrument.tree</field>
-            <field name="model">instrument</field>
+            <field name="model">music.instrument</field>
             <field name="arch" type="xml">
                 <tree string="Instruments" decoration-bf="is_category" decoration-info="is_category" default_order="sequence,display_name">
                     <field name="is_category" invisible="1"/>
@@ -18,9 +18,9 @@
             </field>
         </record>
 
-        <record id="instrument_form" model="ir.ui.view">
+        <record id="music_instrument_form" model="ir.ui.view">
             <field name="name">instrument.form</field>
-            <field name="model">instrument</field>
+            <field name="model">music.instrument</field>
             <field name="arch" type="xml">
                 <form string="Instrument">
                     <sheet>
@@ -71,9 +71,9 @@
             </field>
         </record>
 
-        <record id="instrument_search" model="ir.ui.view">
+        <record id="music_instrument_search" model="ir.ui.view">
             <field name="name">instrument.search</field>
-            <field name="model">instrument</field>
+            <field name="model">music.instrument</field>
             <field name="arch" type="xml">
                 <search>
                     <field name="name" />
@@ -83,9 +83,9 @@
         </record>
 
 
-        <record id="instrument_action" model="ir.actions.act_window">
+        <record id="music_instrument_action" model="ir.actions.act_window">
             <field name="name">Instruments</field>
-            <field name="res_model">instrument</field>
+            <field name="res_model">music.instrument</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
         </record>

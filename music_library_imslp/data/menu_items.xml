@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <menuitem name="IMSLP" id="technical_menu_sub_imslp" parent="music_library.technical_menu" sequence="15">
+            <menuitem name="Composers" id="technical_menu_imslp_composers" sequence="10" action="imslp_composer_action" />
+            <menuitem name="Works" id="technical_menu_imslp_works" sequence="20" action="imslp_work_action" />
+        </menuitem>
+
+    </data>
+</odoo>

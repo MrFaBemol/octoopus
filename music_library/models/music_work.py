@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
 
 
 class MusicWork(models.Model):
@@ -16,12 +15,7 @@ class MusicWork(models.Model):
     to_check = fields.Boolean(default=False)
     to_check_reason = fields.Char()
 
-    oo_id = fields.Integer(default=-1)
-    oo_genre = fields.Char()
-
-    imslp_work_id = fields.Many2one(comodel_name="imslp.work")
-
-    composer_id = fields.Many2one(comodel_name="composer", required=True, ondelete='restrict')
+    composer_id = fields.Many2one(comodel_name="music.composer", required=True, ondelete='restrict')
     title = fields.Char(required=True, translate=True)
     sub_title = fields.Char(translate=True)
     nickname = fields.Char(translate=True)
@@ -34,7 +28,7 @@ class MusicWork(models.Model):
     # Stored as a string because it's more convenient. Sometimes we have to write "1849-1852" because composer was lazy
     date_composition = fields.Char(string="Composition date")
     date_first_publication = fields.Char(string="First publication date")
-    period_id = fields.Many2one(comodel_name="period")
+    period_id = fields.Many2one(comodel_name="music.period")
     duration = fields.Char()
     dedication = fields.Char()
 
@@ -82,7 +76,7 @@ class MusicWork(models.Model):
             new_version = self.env['music.work.version'].create({'work_id': work.id, 'is_original': is_original})
             vals_list = [{
                 'work_version_id': new_version.id,
-                'instrument_id': instrument.id if instrument._name == 'instrument' else False,
+                'instrument_id': instrument.id if instrument._name == 'music.instrument' else False,
                 'quantity': qty,
             } for instrument, qty in instrumentation.items()]
             self.env['music.work.version.instrument'].create(vals_list)
@@ -94,7 +88,7 @@ class MusicWork(models.Model):
 
 
     @api.model
-    def create(self, vals: list):
+    def create(self, vals: dict):
         original_instrumentation = vals.pop('original_instrumentation', None)
         res = super(MusicWork, self).create(vals)
 
@@ -102,9 +96,6 @@ class MusicWork(models.Model):
         if original_instrumentation:
             res._create_version(original_instrumentation, is_original=True)
 
-        # [REMOVE because not exact] Add work period to composer if new
-        # if res.period_id and res.period_id not in res.composer_id.period_ids:
-        #     res.composer_id.write({'period_ids': [4, res.period_id.id]})
         return res
 
 

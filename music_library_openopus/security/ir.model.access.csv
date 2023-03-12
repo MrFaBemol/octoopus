@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+oo_new_composer_rule_access,oo_new_composer_rule_access,model_oo_new_composer,music_library.music_library_group_user,1,1,1,1
+oo_get_composers_wizard_rule_access,oo_get_composers_wizard_rule_access,model_oo_get_composers_wizard,music_library.music_library_group_user,1,1,1,1
+oo_new_work_rule_access,oo_new_work_rule_access,model_oo_new_work,music_library.music_library_group_user,1,1,1,1
+oo_get_works_wizard_rule_access,oo_get_works_wizard_rule_access,model_oo_get_works_wizard,music_library.music_library_group_user,1,1,1,1

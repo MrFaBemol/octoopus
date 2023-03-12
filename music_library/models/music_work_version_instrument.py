@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 
 class MusicWorkVersionInstrument(models.Model):
@@ -8,7 +8,7 @@ class MusicWorkVersionInstrument(models.Model):
 
     name = fields.Char(compute="_compute_name", store=True)
     work_version_id = fields.Many2one(comodel_name="music.work.version", required=True, ondelete="cascade")
-    instrument_id = fields.Many2one(comodel_name="instrument", required=True, ondelete="restrict")
+    instrument_id = fields.Many2one(comodel_name="music.instrument", required=True, ondelete="restrict")
     quantity = fields.Integer(default=1)
 
     _sql_constraints = [

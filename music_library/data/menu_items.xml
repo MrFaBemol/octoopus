@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <menuitem name="Music library" id="music_library_app_menu" web_icon="music_library,static/description/icon.png" groups="music_library.music_library_group_user">
+            <!--    Composers-->
+            <menuitem name="Composers" id="composers_menu" sequence="10" action="music_composer_action" />
+
+            <!--    Works-->
+            <menuitem name="Works" id="works_menu" sequence="20">
+                <menuitem name="Works list" id="works_menu_works_list" sequence="10" action="music_work_action" />
+                <menuitem name="Versions list" id="works_menu_versions" sequence="20" action="music_work_version_action" />
+            </menuitem>
+            <!--    Instruments -->
+            <menuitem name="Instruments" id="instrument_menu" sequence="30">
+                <menuitem name="Instruments list" id="instrument_menu_instruments_list" sequence="10" action="music_instrument_action"/>
+            </menuitem>
+
+            <!-- Settings -->
+            <menuitem name="Settings" id="config_menu" sequence="90">
+                <menuitem name="Periods" id="config_menu_periods" sequence="10" action="music_period_action" />
+                <menuitem name="Countries" id="config_menu_countries" sequence="20" action="base.action_country" />
+                <menuitem name="Music notes" id="config_menu_music_note" sequence="30" action="music_note_action" />
+            </menuitem>
+
+            <!--    Technical-->
+            <menuitem name="Technical" id="technical_menu" sequence="100" groups="base.group_no_one">
+                <menuitem name="API" id="technical_menu_sub_api" sequence="10">
+                    <menuitem name="Tokens" id="technical_menu_api_tokens" sequence="10" action="api_token_action" />
+                    <menuitem name="Requests" id="technical_menu_api_requests" sequence="20" action="api_request_action" />
+                    <menuitem name="TEST DECORATOR" id="test_api_requests" sequence="30" action="api_test_action" />
+                </menuitem>
+
+                <menuitem name="Batch actions" id="technical_menu_sub_batch_actions" sequence="10">
+                    <menuitem name="Auto-fill tonality for works" id="technical_menu_auto_fill_tonality" sequence="20" action="auto_fill_tonality_action" />
+                </menuitem>
+
+            </menuitem>
+        </menuitem>
+    </data>
+</odoo>

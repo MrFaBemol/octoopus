@@ -3,7 +3,7 @@ from odoo import api, fields, models, _
 
 
 class Instrument(models.Model):
-    _name = "instrument"
+    _name = "music.instrument"
     _description = "An instrument"
     _parent_store = True
     _order = 'display_name'
@@ -12,18 +12,18 @@ class Instrument(models.Model):
 
     name = fields.Char(required=True, translate=True)
     display_name = fields.Char(compute="_compute_display_name", store=True)
-    extra_name_ids = fields.One2many(comodel_name="instrument.extra.name", inverse_name="instrument_id")
+    extra_name_ids = fields.One2many(comodel_name="music.instrument.extra.name", inverse_name="instrument_id")
     icon = fields.Binary()
     parent_path = fields.Char(index=True)
-    parent_id = fields.Many2one(comodel_name="instrument", string="Category", ondelete='restrict')
-    child_ids = fields.One2many(comodel_name="instrument", inverse_name="parent_id", string="Instruments")
+    parent_id = fields.Many2one(comodel_name="music.instrument", string="Category", ondelete='restrict')
+    child_ids = fields.One2many(comodel_name="music.instrument", inverse_name="parent_id", string="Instruments")
     is_category = fields.Boolean(compute="_compute_is_category", store=True)
 
-    all_instrument_ids = fields.Many2many(comodel_name="instrument", compute="_compute_all_instrument_ids")
+    all_instrument_ids = fields.Many2many(comodel_name="music.instrument", compute="_compute_all_instrument_ids")
     instrument_qty = fields.Integer(compute="_compute_all_instrument_ids")
 
     def _get_default_key(self):
-        return self.env.ref('music_library.music_note_c').id or False
+        return self.env.ref('music_library.music_note_c', raise_if_not_found=False) or False
 
     key = fields.Many2one(comodel_name="music.note", required=True, default=_get_default_key)
     is_default = fields.Boolean(help="When 2 results are found on automatic creation, take the default instrument")
@@ -71,7 +71,7 @@ class Instrument(models.Model):
 
 
     # --------------------------------------------
-    #                   STANDARD
+    #                   CRUD
     # --------------------------------------------
 
 
@@ -95,7 +95,7 @@ class Instrument(models.Model):
     # --------------------------------------------
 
 
-    def get_from_string(self, string, check_plural=True):
+    def get_from_string(self, string: str, check_plural: bool = True):
         instrument = self.search(['|', ('name', '=ilike', string), ('extra_name_ids.name', '=ilike', string)]).exists()
         if not instrument and check_plural:
             pl_string = string[:-1] if string[-1].lower() == "s" else string + "s"

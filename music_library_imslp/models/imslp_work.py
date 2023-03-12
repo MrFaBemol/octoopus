@@ -7,7 +7,7 @@ from dateutil import relativedelta
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
-from ..common.tools.misc import iri2uri
+from odoo.addons.music_library.common.tools.misc import iri2uri
 from collections import defaultdict
 import time
 import re
@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 
 class ImslpWork(models.Model):
     _name = "imslp.work"
-    _description = "A line with name + link to an imslp work (+m2o to imslp composer)"
+    _description = "Imslp work"
 
     name = fields.Char(required=True, readonly=True)
     url = fields.Char(required=True, readonly=True)
@@ -67,11 +67,12 @@ class ImslpWork(models.Model):
             }
 
     def action_get_webpage_infos(self):
-        for composer in self:
-            composer._get_webpage_infos()
+        for work in self:
+            work._get_webpage_infos()
 
     def action_create_update_work(self):
         keys = set(self.infos_ids.mapped('key'))
+        print(keys)
 
         # Todo: GET ALL KEYS
         # print("=====================================================")
@@ -98,13 +99,40 @@ class ImslpWork(models.Model):
         # print("\n".join(["%s => %s" % (i.value, i.work_id.name) for i in res]))
         # print("=====================================================")
 
+        parsed_works = self.filtered(lambda w: w.state == 'parsed')
+        _logger.info(_("Creating/Updating %s (/%s) works", len(parsed_works), len(self)))
+
         # print("=====================================================")
-        for work in self:
+        for work in parsed_works:
             work._create_update_work()
         # print("=====================================================")
 
 
 
+    def action_link_imslp_composer(self):
+        """ Link work to an existing IMSLP composer ONLY if existing (else keep the value) """
+        for work in self.filtered('composer_name'):
+            if existing_composer := self.env['imslp.composer'].search([('name', '=', work.composer_name)]):
+                work.imslp_composer_id = existing_composer
+
+    def action_link_music_work(self):
+        """ Link work to an existing work ONLY if existing (else keep the value) """
+        for work in self.filtered('imslp_composer_id'):
+            if music_work := self.env['music.work'].search([('composer_id', '=', work.imslp_composer_id.id), ('title', '=', work.name)]):
+                work.work_id = music_work
+
+
+    # --------------------------------------------
+    #                  CRUD
+    # --------------------------------------------
+
+
+    @api.model_create_multi
+    def create(self, vals):
+        res = super(ImslpWork, self).create(vals)
+        res.action_link_imslp_composer()
+        res.action_link_music_work()
+        return res
 
 
     # --------------------------------------------
@@ -161,13 +189,15 @@ class ImslpWork(models.Model):
                     'title': self.name,
                     **self._get_instrumentation(),
                 })
-                self.write({'work_id': self.env['music.work'].create(vals).id})
+                new_music_work = self.env['music.work'].create(vals)
+                self.write({'work_id': new_music_work.id})
             else:
                 self.work_id.write(vals)
 
             return self.work_id
         except Exception as e:
             self._log_exception("[%s] Create/update error for %s: %s" % (type(e).__name__, self.name, e))
+            raise e
 
 
     def _get_tonality(self):
@@ -307,6 +337,7 @@ class ImslpWork(models.Model):
         self.next_update = fields.Datetime.now() + relativedelta.relativedelta(days=7)
 
 
+    @api.model
     def _parse_general_infos(self, soup):
         res = {}
         header = soup.find_all("div", attrs={'class': "wi_body"})
@@ -325,25 +356,15 @@ class ImslpWork(models.Model):
 
 
 
-    # --------------------------------------------
-    #                   STANDARD
-    # --------------------------------------------
 
-
-    @api.model
-    def create(self, vals):
-        # We try to get matching composer and work in the database, just in case...
-        if existing_composer := self.env['imslp.composer'].search([('name', '=', vals.get("composer_name", ""))]):
-            vals.update({'imslp_composer_id': existing_composer.id})
-            if existing_work := self.env['music.work'].search([('composer_id', '=', existing_composer.id), ('title', '=', vals.get("name", ""))]):
-                vals.update({'work_id': existing_work.id})
-        return super(ImslpWork, self).create(vals)
 
     # --------------------------------------------
     #                   CRON
     # --------------------------------------------
 
+
     def _cron_fetch_imslp_works(self):
+        """ Get IMSLP works list from API (basically only indexing) """
         url = self.env['ir.config_parameter'].sudo().get_param('imslp.api').replace("{{TYPE}}", "2")
         first_request_start = start = int(self.env['ir.config_parameter'].sudo().get_param('imslp.work.start'))
 

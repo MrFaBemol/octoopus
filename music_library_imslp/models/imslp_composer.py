@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 from dateutil import relativedelta
 
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
-from ..common.tools.misc import iri2uri
+from odoo.addons.music_library.common.tools.misc import iri2uri
 import requests
 import time
 import logging
+import datetime
+import re
+
 _logger = logging.getLogger(__name__)
+
 
 class ImslpComposer(models.Model):
     _name = "imslp.composer"
-    _description = "A line with name + link to an imslp composer"
+    _description = "Imslp composer"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True, readonly=True)
@@ -29,7 +34,7 @@ class ImslpComposer(models.Model):
         required=True,
     )
     next_update = fields.Datetime()
-    composer_id = fields.Many2one(comodel_name="composer", tracking=True)
+    composer_id = fields.Many2one(comodel_name="music.composer", tracking=True)
     imslp_work_ids = fields.One2many(comodel_name="imslp.work", inverse_name="imslp_composer_id")
     imslp_work_qty = fields.Integer(compute="_compute_imslp_work_qty", store=True)
     infos_ids = fields.One2many(comodel_name="imslp.composer.infos", inverse_name="composer_id")
@@ -78,13 +83,81 @@ class ImslpComposer(models.Model):
                 "domain": [('id', 'in', self.infos_ids.ids)],
             }
 
+
+    def action_link_composer(self):
+        for composer in self:
+            name_split = composer.name.split(", ")
+            if len(name_split) > 1 and (existing_composer := self.env['music.composer'].search([('name', 'ilike', name_split[0]), ('first_name', 'ilike', name_split[1])], limit=1)):
+                composer.composer_id = existing_composer
+
     def action_get_webpage_infos(self):
         for composer in self:
             composer._get_webpage_infos()
 
+
+    def action_create_update_composer(self):
+        parsed_composers = self.filtered(lambda c: c.state == 'parsed')
+        _logger.info(_("Creating/Updating %s (/%s) composers", len(parsed_composers), len(self)))
+
+        for composer in parsed_composers:
+            composer._create_update_composer()
+
+
     # --------------------------------------------
-    #                   PARSING
+    #            CREATE/UPDATE COMPOSER
     # --------------------------------------------
+
+
+    def _create_update_composer(self):
+        try:
+            self.ensure_one()
+            _logger.info("Creating new composer from imslp (%s)" % self.name)
+
+            vals = {
+                'imslp_work_id': self.id,
+                **self._get_dates(),
+                # Todo: add name
+                # Todo: add portrait
+                # **self._get_date_composition(),
+                # **self._get_sub_title(),
+                # **self._get_catalogue(),
+                # **self._get_duration(),
+                # **self._get_dedication(),
+                # **self._get_date_first_publication(),
+                # **self._get_composer_period(),
+            }
+
+
+            if not self.composer_id:
+                new_music_composer = self.env['music.composer'].create(vals)
+                self.write({'composer_id': new_music_composer.id})
+            else:
+                self.composer_id.write(vals)
+            return self.composer_id
+
+        except Exception as e:
+            self._log_exception("[%s] Create/update error for %s: %s" % (type(e).__name__, self.name, e))
+            raise e
+
+
+    def _get_dates(self):
+        vals = {}
+        date_re = r"\d{1,2} [A-Za-z]* \d{4}"
+        birth = self.get_info("birth")
+        death = self.get_info("death")
+        if res := re.match(date_re, birth):
+            vals.update({'birth': datetime.datetime.strptime(res.group(), "%d %B %Y")})
+        if res := re.match(date_re, death):
+            vals.update({'death': datetime.datetime.strptime(res.group(), "%d %B %Y")})
+        return vals
+
+
+
+    # --------------------------------------------
+    #                   MISC
+    # --------------------------------------------
+
+
     def _log_exception(self, msg: str, level: str = 'error', state: str = 'error'):
         """
         Easy log system with state change
@@ -94,6 +167,14 @@ class ImslpComposer(models.Model):
         """
         getattr(_logger, level)(msg)
         self.state = state
+
+    def get_info(self, key):
+        return self.infos_ids.filtered(lambda i: i.key == key).value or ""
+
+    # --------------------------------------------
+    #                   PARSING
+    # --------------------------------------------
+
 
     def _get_webpage_infos(self):
         self.ensure_one()
@@ -127,7 +208,6 @@ class ImslpComposer(models.Model):
         # Log update
         self.next_update = fields.Datetime.now() + relativedelta.relativedelta(days=7)
 
-
     def _parse_portrait(self, soup):
         res = {}
         try:
@@ -137,7 +217,6 @@ class ImslpComposer(models.Model):
         except Exception as e:
             self._log_exception("Wrong parsing of url portrait for %s" % self.name)
         return res
-
 
     def _parse_dates(self, soup):
         res = {}
@@ -160,23 +239,19 @@ class ImslpComposer(models.Model):
 
 
     # --------------------------------------------
-    #                   STANDARD
+    #                   CRUD
     # --------------------------------------------
 
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        name = vals.get('name').split(", ")
-        if len(name) > 1:
-            if existing_composer := self.env['composer'].search([('name', 'ilike', name[0]), ('first_name', 'ilike', name[1])], limit=1):
-                vals.update({'composer_id': existing_composer.id})
-        return super(ImslpComposer, self).create(vals)
-
+        res = super(ImslpComposer, self).create(vals)
+        res.action_link_composer()
+        return res
 
     # --------------------------------------------
     #                   CRON
     # --------------------------------------------
-
 
     def _cron_fetch_imslp_composers(self):
         url = self.env['ir.config_parameter'].sudo().get_param('imslp.api').replace("{{TYPE}}", "1")
@@ -197,7 +272,6 @@ class ImslpComposer(models.Model):
                         "url": composer.get('permlink')
                     } for composer in response.values() if composer.get('permlink') not in existing_composers_urls]
 
-
                     if metadata.get('moreresultsavailable'):
                         start += metadata.get('limit')
                     else:
@@ -215,4 +289,3 @@ class ImslpComposer(models.Model):
             except Exception as e:
                 self.env.cr.rollback()
                 _logger.error("Error on cron _cron_fetch_imslp_composers : Exception: %s" % e)
-
