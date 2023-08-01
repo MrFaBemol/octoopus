@@ -109,24 +109,17 @@ class ImslpComposer(models.Model):
 
 
     def _create_update_composer(self):
+        """ Get data from imslp.composer.infos and create a composer or update the linked one """
         try:
             self.ensure_one()
             _logger.info("Creating new composer from imslp (%s)" % self.name)
 
             vals = {
-                'imslp_work_id': self.id,
+                'imslp_composer_id': self.id,
                 **self._get_dates(),
                 # Todo: add name
                 # Todo: add portrait
-                # **self._get_date_composition(),
-                # **self._get_sub_title(),
-                # **self._get_catalogue(),
-                # **self._get_duration(),
-                # **self._get_dedication(),
-                # **self._get_date_first_publication(),
-                # **self._get_composer_period(),
             }
-
 
             if not self.composer_id:
                 new_music_composer = self.env['music.composer'].create(vals)
@@ -245,6 +238,7 @@ class ImslpComposer(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
+        """ When creating an imslp composer, we try to find an existing composer to link the 2 records """
         res = super(ImslpComposer, self).create(vals)
         res.action_link_composer()
         return res

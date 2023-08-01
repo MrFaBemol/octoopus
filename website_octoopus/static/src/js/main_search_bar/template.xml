@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="website_octoopus.MainSearchBar" owl="1">
+
+        <div class="flex items-center">
+            <DynamicSearchBar class="w-full"/>
+            <button type="submit" class="p-2.5 text-sm font-medium text-white bg-sky-900 rounded-r-lg border border-sky-900 hover:bg-sky-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <span class="inline mr-1">Search</span>
+            </button>
+        </div>
+
+    </t>
+</templates>

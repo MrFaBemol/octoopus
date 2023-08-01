@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
 
         <record id="ir_cron_imslp_composer" model="ir.cron">
             <field name="name">Check IMSLP api for composers</field>
@@ -10,6 +10,7 @@
             <field name="interval_type">days</field>
             <field name="interval_number">1</field>
             <field name="numbercall">-1</field>
+            <field name="active">False</field>
         </record>
 
         <record id="ir_cron_imslp_work" model="ir.cron">
@@ -20,6 +21,7 @@
             <field name="interval_type">days</field>
             <field name="interval_number">1</field>
             <field name="numbercall">-1</field>
+            <field name="active">False</field>
         </record>
 
     </data>

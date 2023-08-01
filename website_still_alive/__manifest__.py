@@ -14,7 +14,7 @@
     'author': "MrFaBemol",
     'website': "https://www.octoopus.com",
 
-    'depends': [ 'music_library', 'material_ux'],
+    'depends': ['music_library', 'material_ux'],
     "assets": {
         "web.assets_frontend": [
             # 'website_still_alive/static/js/owl.iife.min.js',
