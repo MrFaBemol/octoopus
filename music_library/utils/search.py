@@ -2,10 +2,13 @@ import itertools
 import logging
 _logger = logging.getLogger(__name__)
 
+
+# Todo: clean this shit
+
 # Constants
 SEPARATOR_MAIN = "@"
 SEPARATOR_SECOND = "-"
-SEPARATOR_THIRD = ":"
+SEPARATOR_THIRD = ":"       # Todo: change to comma ,
 
 def generate_all_ensembles(instruments_slots: list) -> list:
     """

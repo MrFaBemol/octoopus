@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 {
     'name': "Music Library",
     'description': """
@@ -17,7 +15,7 @@
     'website': "https://www.octoopus.org",
     
     'depends': ['web', 'mail'],
-    'external_dependencies': {'python': ['beautifulsoup4', 'unidecode']},
+    'external_dependencies': {'python': ['unidecode']},
 
     "assets": {
         "web.assets_common": [

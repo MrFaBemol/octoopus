@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 {
     'name': "IMSLP integration for Music Library module",
@@ -12,6 +12,7 @@
     'website': "https://www.octoopus.org",
 
     'depends': ['music_library'],
+    'external_dependencies': {'python': ['beautifulsoup4']},
     "assets": {},
 
     'data': [

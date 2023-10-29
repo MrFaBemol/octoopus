@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from dateutil import relativedelta
@@ -6,7 +6,7 @@ from dateutil import relativedelta
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
-from odoo.addons.music_library.common.tools.misc import iri2uri
+from odoo.addons.music_library.utils.misc import iri2uri
 import requests
 import time
 import logging

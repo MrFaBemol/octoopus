@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="api_test_action" model="ir.actions.server">
+            <field name="name">TEST DECORATOR</field>
+            <field name="model_id" ref="music_library.model_music_composer"/>
+            <field name="binding_model_id" ref="music_library.model_music_composer"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_api_test()</field>
+        </record>
+
+    </data>
+</odoo>

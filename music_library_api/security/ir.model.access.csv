@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+api_token_rule_access,api_token_rule_access,model_api_token,music_library.music_library_group_admin,1,1,1,1
+api_request_rule_access,api_request_rule_access,model_api_request,music_library.music_library_group_admin,1,1,1,1

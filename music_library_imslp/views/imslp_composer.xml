@@ -20,9 +20,9 @@
                     <button name="action_open_url" type="object" icon="fa-external-link"  title="Open URL" />
                     <field name="url" />
                     <field name="composer_id" />
-                    <button name="action_view_imslp_works" attrs="{'invisible': [('imslp_work_qty', '=', 0)]}" type="object" string="View works" icon="fa-edit" title="View works" class="btn-primary" />
-                    <button name="action_get_webpage_infos" attrs="{'invisible': ['|', ('url', '=', False), ('state', '=', 'deleted')]}" type="object" string="Get infos" icon="fa-search" title="Get infos" class="btn-primary" />
-                    <button name="action_view_imslp_infos" attrs="{'invisible': [('infos_ids', '=', [])]}" type="object" string="See infos" icon="fa-list" title="See infos" class="btn-secondary" />
+                    <button name="action_view_imslp_works" invisible="imslp_work_qty == 0" type="object" string="View works" icon="fa-edit" title="View works" class="btn-primary" />
+                    <button name="action_get_webpage_infos" invisible="not url or state == 'deleted'" type="object" string="Get infos" icon="fa-search" title="Get infos" class="btn-primary" />
+                    <button name="action_view_imslp_infos" invisible="not infos_ids" type="object" string="See infos" icon="fa-list" title="See infos" class="btn-secondary" />
 
                     <field name="imslp_work_qty" optional="hide" />
                 </tree>

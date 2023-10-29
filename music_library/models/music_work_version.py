@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
-from ..common.tools.search import get_ensemble_search_key
+from odoo.addons.music_library.utils.search import get_ensemble_search_key
 
 
 # Todo: Add a genre model

@@ -1,9 +1,8 @@
 from urllib.parse import urlsplit, urlunsplit, quote
 
+
 def iri2uri(iri: str) -> str:
-    """
-    Convert an IRI to a URI (Python 3).
-    """
+    """ Convert an IRI to a URI (Python 3) """
     uri = ''
     if isinstance(iri, str):
         (scheme, netloc, path, query, fragment) = urlsplit(iri)

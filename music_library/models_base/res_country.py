@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 from odoo import fields, models
-from ..common.datas import colors
+from odoo.addons.music_library.utils import colors
 
 
 class ResCountry(models.Model):

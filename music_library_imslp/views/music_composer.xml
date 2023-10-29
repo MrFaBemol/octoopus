@@ -9,13 +9,13 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_show_works']" position="after">
                     <button type="object" name="action_show_imslp_pending_works" icon="fa-clock-o"
-                        attrs="{'invisible': [('imslp_pending_works_qty', '=', 0)]}" class="oe_stat_button">
+                        invisible="imslp_pending_works_qty == 0" class="oe_stat_button">
                         <field name="imslp_pending_works_qty" string="Pending works" widget="statinfo" />
                     </button>
                 </xpath>
                 <xpath expr="//page[@name='music_composer_web']//field[@name='slug_url']" position="after">
                     <field name="imslp_composer_id" invisible="1" />
-                    <field name="imslp_url" widget="url" attrs="{'invisible': [('imslp_composer_id', '=', False)]}" />
+                    <field name="imslp_url" widget="url" invisible="not imslp_composer_id" />
                 </xpath>
             </field>
         </record>

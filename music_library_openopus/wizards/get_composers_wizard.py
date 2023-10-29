@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from odoo import api, fields, models, _
 from string import ascii_lowercase

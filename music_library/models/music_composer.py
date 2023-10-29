@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 from odoo.addons.http_routing.models.ir_http import slug
-
-from ..common.tools.oo_api import grant_access, call_api
 from unidecode import unidecode
 
 
@@ -99,7 +96,7 @@ class Composer(models.Model):
     def action_auto_find_period(self):
         for composer in self:
             midlife_year = composer.birth.year + (composer.death.year - composer.birth.year)//2
-            composer.period_id = self.env['period'].search([('date_start', '<=', '01-01-%s' % midlife_year), ('date_end', '>', '01-01-%s' % midlife_year)])
+            composer.period_id = self.env['music.period'].search([('date_start', '<=', '01-01-%s' % midlife_year), ('date_end', '>', '01-01-%s' % midlife_year)])
 
     def action_show_works(self):
         self.ensure_one()
@@ -113,18 +110,6 @@ class Composer(models.Model):
 
 
 
-    # --------------------------------------------
-    #                   API
-    # --------------------------------------------
 
-
-    @grant_access
-    def action_api_test(self):
-        # Method here to do some tests
-        post = {
-            'fields': ['name', 'first_name', 'portrait_url'],
-        }
-        res = call_api(self, 'composer/34', post)
-        print(res)
 
 

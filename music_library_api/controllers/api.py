@@ -1,13 +1,15 @@
-# -*- coding: utf-8 -*-
 from odoo.http import content_disposition, Controller, request, route, Response
 from odoo import api, fields, models, _
 from collections import defaultdict
 import werkzeug
 import json
-from ..common.tools import oo_api
-from ..common.tools.search import get_search_key, get_ensemble_search_key, generate_all_ensembles, categories_to_instruments, get_slot_by_type
+from odoo.addons.music_library_api.utils import api
+from odoo.addons.music_library.utils.search import get_search_key, get_ensemble_search_key, generate_all_ensembles, categories_to_instruments, get_slot_by_type
 import logging
 _logger = logging.getLogger(__name__)
+
+
+# Todo: clean also this shit and add a method "ask_orm(model, domain)" with a sudo search
 
 # Some success / error messages
 SUCCESS_VALID_TOKEN = {
@@ -129,7 +131,7 @@ class ApiController(Controller):
 
         # POST data has the priority
         ids = post.get('ids', [composer_id])
-        composer = request.env['composer'].sudo().browse(ids)
+        composer = request.env['music.composer'].sudo().browse(ids)
         if not composer.exists():
             return ERROR_RECORD_DOES_NOT_EXIST
 
@@ -162,7 +164,7 @@ class ApiController(Controller):
 
         _logger.info("Search composers via api with domain: %s" % domain)
         try:
-            composers = request.env['composer'].sudo().search(domain)
+            composers = request.env['music.composer'].sudo().search(domain)
             data = dict_result(composers, _FIELDS, _RELATED_FIELDS)
             return success_result(data)
         except Exception as e:
@@ -340,7 +342,7 @@ class ApiController(Controller):
         if post.get('ignore_category', False):
             domain.extend([('is_category', '=', False)])
 
-        works = request.env['instrument'].sudo().search(domain)
+        works = request.env['music.instrument'].sudo().search(domain)
         data = dict_result(works, _FIELDS, _RELATED_FIELDS)
         return success_result(data)
 
