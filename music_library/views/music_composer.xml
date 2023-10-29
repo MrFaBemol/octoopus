@@ -28,21 +28,21 @@
                         <div class="oe_button_box" name="button_box">
                             <!-- WORKS -->
                             <button type="object" name="action_show_works" icon="fa-music"
-                                attrs="{'invisible': [('work_qty', '=', 0)]}" class="oe_stat_button">
+                                    invisible="work_qty == 0" class="oe_stat_button">
                                 <field name="work_qty" string="Works" widget="statinfo" />
                             </button>
 
                             <!-- PUBLISHED -->
                             <button type="object" name="action_switch_published" icon="fa-globe" string="Unpublished"
-                                attrs="{'invisible': [('published', '=', True)]}" class="oe_stat_button danger text-danger text-bf"  />
+                                    invisible="published" class="oe_stat_button danger text-danger text-bf"  />
                             <button type="object" name="action_switch_published" icon="fa-globe" string="Published"
-                                attrs="{'invisible': [('published', '=', False)]}" class="oe_stat_button success text-success"  />
+                                invisible="not published" class="oe_stat_button success text-success"  />
                         </div>
 
                         <group class="oe_read_only">
                             <group><h1> <field name="display_name" /> </h1></group>
                             <group><field name="image_1920" widget="image" class="oe_avatar" nolabel="1"/></group>
-                            <field name="biography_short" nolabel="1" colspan="2" attrs="{'invisible': [('biography', '=', False)]}"/>
+                            <field name="biography_short" nolabel="1" colspan="2" invisible="not biography" />
                         </group>
 
                         <group class="oe_edit_only" >
@@ -132,7 +132,6 @@
                                     <div class="o_kanban_tags_section oe_kanban_partner_categories" />
                                     <ul>
                                         <t t-esc="console.log(record.period_id)" />
-<!--                                        <t t-esc="', '.join(['lol', 'mdr'])" />-->
 <!--                                        Todo: check si on peut utiliser la couleur material pour colorer les périodes-->
                                         <li t-if="record.work_qty"><b><field name="work_qty"/> works</b></li>
                                         <li t-if="record.period_id" t-attf-style="background-color: var(--material-color-#{record.period_id.color_material});" ><field name="period_id" widget="badge" /></li>

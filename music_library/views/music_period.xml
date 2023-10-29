@@ -24,7 +24,7 @@
                 <form string="Period">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="object" name="action_open_composers_kanban" icon="fa-users" attrs="{'invisible': [('composer_qty', '=', 0)]}">
+                            <button class="oe_stat_button" type="object" name="action_open_composers_kanban" icon="fa-users" invisible="composer_qty == 0">
                                 <field name="composer_qty" widget="statinfo" string="Composers" />
                             </button>
                         </div>

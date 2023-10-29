@@ -4,7 +4,7 @@
     'name': "Pretty community",
     'description': "A small module for personal use because I'm used to enterprise version",
     'category': "Design",
-    'version': "15.0.0.0.1",
+    'version': "17.0.0.0.1",
     'installable': True,
     'sequence': 1,
 

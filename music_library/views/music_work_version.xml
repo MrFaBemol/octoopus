@@ -36,7 +36,7 @@
                                 <field name="soloist_qty" />
                                 <field name="search_key" />
                             </group>
-                            <group attrs="{'invisible': [('accompanist_qty', '=', 0)]}"><field name="accompanist_qty" /></group>
+                            <group invisible="accompanist_qty == 0"><field name="accompanist_qty" /></group>
                             <separator />
                             <field name="instrument_ids" nolabel="1" colspan="2" />
                         </group>

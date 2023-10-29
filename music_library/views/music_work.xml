@@ -25,10 +25,10 @@
                 <form string="Work">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="object" name="action_open_versions_list" icon="fa-copy" attrs="{'invisible': [('version_qty', '&lt;', 2)]}">
+                            <button class="oe_stat_button" type="object" name="action_open_versions_list" icon="fa-copy" invisible="version_qty &lt; 2">
                                 <field name="version_qty" widget="statinfo" string="Versions" />
                             </button>
-                            <button class="oe_stat_button" type="object" name="action_open_version_form" icon="fa-file-text-o" attrs="{'invisible': [('version_qty', '!=', 1)]}">
+                            <button class="oe_stat_button" type="object" name="action_open_version_form" icon="fa-file-text-o" invisible="version_qty != 1">
                                 See version
                             </button>
                         </div>

@@ -25,7 +25,7 @@
                 <form string="Instrument">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="object" name="action_open_versions_list" icon="fa-copy" attrs="{'invisible': [('work_version_qty', '=', 0)]}">
+                            <button class="oe_stat_button" type="object" name="action_open_versions_list" icon="fa-copy" invisible="work_version_qty == 0">
                                 <field name="work_version_qty" widget="statinfo" string="See works" />
                             </button>
                         </div>
@@ -47,7 +47,7 @@
                             <group>
                                 <field name="key" />
                                 <field name="is_ensemble" />
-                                <field name="accompanist_qty" attrs="{'invisible': [('is_accompaniment', '!=', True)], 'required': [('is_accompaniment', '=', True)]}"/>
+                                <field name="accompanist_qty" invisible="not is_accompaniment" required="is_accompaniment" />
                             </group>
                             <group>
                                 <field name="is_default" />

@@ -3,13 +3,13 @@
 {
     'name': "IMSLP integration for Music Library module",
     'category': "Extra Tools",
-    'version': "16.0.0.0.1",
+    'version': "17.0.0.0.1",
     'installable': True,
     'sequence': 1,
 
-    'license': "OEEL-1",
-    'author': "MrFaBemol",
-    'website': "https://www.mrfabemol.com",
+    'license': "AGPL-3",
+    'author': "Gautier « MrFaBemol » Casabona",
+    'website': "https://www.octoopus.org",
 
     'depends': ['music_library'],
     "assets": {},
