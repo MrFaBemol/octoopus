@@ -39,7 +39,21 @@ export function setupAndMount(component) {
     return Promise.all(promisesList);
 }
 
-$(document).ready(function(){
 
+export function loadScript(src, onload) {
+  let script = document.createElement('script');
+  script.onload = onload ? onload : function(e) {
+      console.log(e.target.src + ' is loaded.');
+    };
+  script.src = src;
+  script.async = false;
+  document.body.appendChild(script);
+}
+
+
+
+$(document).ready(function(){
+    console.log("Document ready");
+    // loadScript('/website_octoopus/static/lib/flowbite.min.js');
 
 });

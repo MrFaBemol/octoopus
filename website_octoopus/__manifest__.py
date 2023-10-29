@@ -11,7 +11,7 @@
     'installable': True,
     'sequence': 1,
 
-    'license': 'OPL-1',
+    'license': 'AGPL-3',
     'author': "MrFaBemol",
     'website': "https://www.mrfabemol.com",
 
@@ -20,18 +20,26 @@
         "web.assets_frontend": [
             # External libraries
             'website_octoopus/static/lib/tailwind-3.3.0.js',
+            'website_octoopus/static/src/lib/flowbite.js',
             # 'website_octoopus/static/lib/tailwind_build.css',
-            'website_octoopus/static/lib/flowbite.min.css',
-            # 'website_octoopus/static/lib/flowbite.min.js',
 
             # 'website_octoopus/static/css/main.css',
             'website_octoopus/static/src/js/owl.js',
             'website_octoopus/static/src/js/tools.js',
 
+            # Owl Components
+            'website_octoopus/static/src/js/footer_main/component.js',
+            'website_octoopus/static/src/js/footer_main/template.xml',
+            'website_octoopus/static/src/js/header_main/component.js',
+            'website_octoopus/static/src/js/header_main/template.xml',
+
             'website_octoopus/static/src/js/dynamic_placeholder_input/component.js',
             'website_octoopus/static/src/js/dynamic_placeholder_input/template.xml',
             'website_octoopus/static/src/js/main_search_bar/component.js',
             'website_octoopus/static/src/js/main_search_bar/template.xml',
+
+            'website_octoopus/static/src/js/flowbite_script/component.js',
+            'website_octoopus/static/src/js/flowbite_script/template.xml',
             # 'website_octoopus/static/js/composers.js',
             # 'website_still_alive/static/js/works.js',
 
@@ -42,7 +50,8 @@
             # 'website_still_alive/static/css/composers.scss',
             # 'website_still_alive/static/css/works.scss',
 
-            '/website_octoopus/static/lib/flowbite.min.js',
+            'website_octoopus/static/lib/flowbite.min.css',
+            # 'website_octoopus/static/lib/flowbite.min.js',
 
         ],
     },
