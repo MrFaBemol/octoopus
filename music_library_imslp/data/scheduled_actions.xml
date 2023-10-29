@@ -10,7 +10,7 @@
             <field name="interval_type">days</field>
             <field name="interval_number">1</field>
             <field name="numbercall">-1</field>
-            <field name="active">False</field>
+            <field name="active" eval="False" />
         </record>
 
         <record id="ir_cron_imslp_work" model="ir.cron">
@@ -21,7 +21,7 @@
             <field name="interval_type">days</field>
             <field name="interval_number">1</field>
             <field name="numbercall">-1</field>
-            <field name="active">False</field>
+            <field name="active" eval="False" />
         </record>
 
     </data>

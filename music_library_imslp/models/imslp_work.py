@@ -371,8 +371,9 @@ class ImslpWork(models.Model):
         clock = time.perf_counter()
         while time.perf_counter() - clock < 840:
             try:
-                _logger.info("Calling IMSLP api works : %s" % url.replace("{{START}}", str(start))[30:])
-                response = requests.get(url.replace("{{START}}", str(start)))
+                format_url = url.replace("{{START}}", str(start))
+                _logger.info("Calling IMSLP api works : %s" % format_url[30:])
+                response = requests.get(format_url)
                 if response.status_code == 200 and response.text:
                     response = response.json()
                     metadata = response.pop("metadata")

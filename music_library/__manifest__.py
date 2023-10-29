@@ -63,11 +63,13 @@
         'data/api_token.xml',
         'data/music_note.xml',              # Need music note before to be used in music_instrument
         'data/music_instrument.xml',
-        'data/menu_items.xml',
 
         # Security
         'security/security.xml',
         'security/ir.model.access.csv',
+
+        # Menus
+        'data/menu_items.xml',
     ],
 
 }
