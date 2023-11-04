@@ -16,7 +16,7 @@ class MusicWorkVersion(models.Model):
     # Essential infos
     work_id = fields.Many2one(comodel_name="music.work", readonly=True, required=True, ondelete='cascade')
     instrument_ids = fields.One2many(comodel_name="music.work.version.instrument", inverse_name="work_version_id", string="Instruments")
-    search_key = fields.Char(compute="_compute_search_key", store=True)
+    search_key = fields.Char(compute="_compute_search_key", store=True, index=True)
     soloist_qty = fields.Integer(compute="_compute_performer_qty", string="Soloists", store=True)
     accompanist_qty = fields.Integer(compute="_compute_performer_qty", string="Accompanists", store=True)
 

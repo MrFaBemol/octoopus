@@ -11,9 +11,9 @@
                       decoration-warning="next_update &lt; current_date"
                       decoration-danger="state == 'error'"
                       decoration-muted="state == 'deleted'" >
-                    <field name="state" invisible="0" optional="hide" />
-                    <field name="infos_ids" invisible="1" />
-                    <field name="next_update" invisible="1" />
+                    <field name="state" column_invisible="0" optional="hide" />
+                    <field name="infos_ids" column_invisible="1" />
+                    <field name="next_update" column_invisible="1" />
                     <field name="id" optional="hide"/>
                     <field name="name" />
                     <button name="action_open_url" type="object" icon="fa-external-link" title="Open URL" />

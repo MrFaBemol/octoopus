@@ -4,6 +4,7 @@ from odoo import api, fields, models, _
 class Instrument(models.Model):
     _name = "music.instrument"
     _description = "An instrument"
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'avatar.mixin']
     _parent_store = True
     _order = 'display_name'
 
@@ -12,8 +13,8 @@ class Instrument(models.Model):
     name = fields.Char(required=True, translate=True)
     display_name = fields.Char(compute="_compute_display_name", store=True)
     extra_name_ids = fields.One2many(comodel_name="music.instrument.extra.name", inverse_name="instrument_id")
-    icon = fields.Binary()
-    parent_path = fields.Char(index=True)
+    # icon = fields.Binary()
+    parent_path = fields.Char(index=True, unaccent=False)
     parent_id = fields.Many2one(comodel_name="music.instrument", string="Category", ondelete='restrict')
     child_ids = fields.One2many(comodel_name="music.instrument", inverse_name="parent_id", string="Instruments")
     is_category = fields.Boolean(compute="_compute_is_category", store=True)

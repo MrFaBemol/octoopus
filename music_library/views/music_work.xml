@@ -12,8 +12,8 @@
                     <field name="sub_title" />
                     <field name="nickname" />
                     <field name="date_composition" />
-                    <field name="is_popular" invisible="1"/>
-                    <field name="is_essential" invisible="1"/>
+                    <field name="is_popular" column_invisible="1"/>
+                    <field name="is_essential" column_invisible="1"/>
                 </tree>
             </field>
         </record>

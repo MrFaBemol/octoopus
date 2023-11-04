@@ -24,10 +24,11 @@
     },
     
     'data': [
+        # Security
+        'security/security.xml',
+        'security/ir.model.access.csv',
 
         # Views
-        'views/api_token.xml',
-        'views/api_request.xml',
         'views/music_composer.xml',
         'views/music_instrument.xml',
         'views/music_note.xml',
@@ -35,19 +36,16 @@
         'views/music_work.xml',
         'views/music_work_version.xml',
         'views/music_work_version_instrument.xml',
+        'views/res_config_settings.xml',
 
         # Wizards
         'wizards/create_work_version_wizard.xml',
         'wizards/update_tonality_wizard.xml',
 
         # Data
-        'data/api_token.xml',
         'data/music_note.xml',              # Need music note before to be used in music_instrument
         'data/music_instrument.xml',
 
-        # Security
-        'security/security.xml',
-        'security/ir.model.access.csv',
 
         # Menus
         'data/menu_items.xml',

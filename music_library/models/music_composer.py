@@ -31,7 +31,6 @@ class Composer(models.Model):
     work_ids = fields.One2many(comodel_name="music.work", inverse_name="composer_id")
     work_qty = fields.Integer(compute="_compute_work_qty")
 
-    published = fields.Boolean(default=False)
 
     # Web
     slug_url = fields.Char(compute="_compute_slug_url")
@@ -89,14 +88,11 @@ class Composer(models.Model):
     # --------------------------------------------
 
 
-    def action_switch_published(self):
-        for composer in self:
-            composer.published = not composer.published
 
-    def action_auto_find_period(self):
+    def action_auto_fill_period(self):
         for composer in self:
             midlife_year = composer.birth.year + (composer.death.year - composer.birth.year)//2
-            composer.period_id = self.env['music.period'].search([('date_start', '<=', '01-01-%s' % midlife_year), ('date_end', '>', '01-01-%s' % midlife_year)])
+            composer.period_id = self.env['music.period'].search([('date_start', '<=', '01-01-%s' % midlife_year), ('date_end', '>', '01-01-%s' % midlife_year)], limit=1)
 
     def action_show_works(self):
         self.ensure_one()

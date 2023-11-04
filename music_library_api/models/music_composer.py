@@ -7,6 +7,8 @@ _logger = logging.getLogger(__name__)
 class MusicComposer(models.Model):
     _inherit = "music.composer"
 
+    is_api_published = fields.Boolean(default=False)
+
     # --------------------------------------------
     #                   API
     # --------------------------------------------
@@ -19,3 +21,13 @@ class MusicComposer(models.Model):
         }
         res = call_api(self, 'composer/34', post)
         print(res)
+
+
+    # --------------------------------------------
+    #                   ACTIONS
+    # --------------------------------------------
+
+
+    def action_switch_is_api_published(self):
+        for composer in self:
+            composer.is_api_published = not composer.is_api_published

@@ -7,11 +7,11 @@
             <field name="model">music.instrument</field>
             <field name="arch" type="xml">
                 <tree string="Instruments" decoration-bf="is_category" decoration-info="is_category" default_order="sequence,display_name">
-                    <field name="is_category" invisible="1"/>
+                    <field name="is_category" column_invisible="1"/>
                     <field name="sequence" widget="handle" />
-                    <field name="display_name" />
+                    <field name="display_name" string="Name " />
                     <field name="key" />
-                    <field name="work_version_qty" string="Works qty" />
+                    <field name="work_version_qty" string="Works Count" />
                     <field name="is_ensemble" />
                     <field name="is_accompaniment" />
                 </tree>
@@ -29,43 +29,64 @@
                                 <field name="work_version_qty" widget="statinfo" string="See works" />
                             </button>
                         </div>
+
+                        <field name="avatar_128" invisible="1"/>
+                        <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'avatar_128'}"/>
+
+                        <div class="oe_title">
+                            <label for="name" string="Name"/>
+                            <h1><field class="text-break" options="{'line_breaks': False}" name="name" /></h1>
+                        </div>
+                        <div name="options">
+                            <span class="d-inline-block">
+                                <field name="is_ensemble"/>
+                                <label for="is_ensemble"/>
+                            </span>
+                            <span class="d-inline-block">
+                                <field name="is_accompaniment"/>
+                                <label for="is_accompaniment"/>
+                            </span>
+                            <span class="d-inline-block" invisible="not is_accompaniment">
+                                <span>(</span>
+                                <label for="accompanist_qty" string="Quantity: "/>
+                                <field name="accompanist_qty" required="is_accompaniment"/>
+                                <span>)</span>
+                            </span>
+                        </div>
+
+
                         <group>
                             <group>
-                                <field name="name" />
                                 <field name="parent_id" />
-                                <field name="extra_name_ids">
+                                <field name="key" />
+                                <field name="is_default" />
+                            </group>
+                            <group string="Alternative names">
+                                <field name="extra_name_ids" nolabel="1" colspan="2">
                                     <tree editable="bottom">
                                         <field name="name" />
                                     </tree>
                                 </field>
                             </group>
-                            <group>
-                                <field name="icon"  widget="image" class="oe_avatar oe_right" nolabel="1"/>
-                            </group>
                         </group>
-                        <group>
-                            <group>
-                                <field name="key" />
-                                <field name="is_ensemble" />
-                                <field name="accompanist_qty" invisible="not is_accompaniment" required="is_accompaniment" />
-                            </group>
-                            <group>
-                                <field name="is_default" />
-                                <field name="is_accompaniment" />
-                            </group>
 
-                        </group>
-                        <group string="Instruments">
-                            <field name="instrument_qty" string="Quantity"/>
 
-                            <field name="all_instrument_ids" colspan="2" nolabel="1">
-                                <tree editable="bottom" limit="12">
-                                    <field name="name" />
-                                    <field name="key" />
-                                    <field name="parent_id" />
-                                </tree>
-                            </field>
-                        </group>
+                        <notebook>
+                            <page name="page_instruments" string="Children" >
+                                <group>
+                                    <field name="instrument_qty" string="Quantity"/>
+                                    <separator />
+
+                                    <field name="all_instrument_ids" colspan="2" nolabel="1">
+                                        <tree editable="bottom" limit="12">
+                                            <field name="name" />
+                                            <field name="key" />
+                                            <field name="parent_id" />
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

@@ -2,6 +2,81 @@
 <odoo>
     <data>
 
+        <record id="music_composer_tree" model="ir.ui.view">
+            <field name="name">music_composer_tree</field>
+            <field name="model">music.composer</field>
+            <field name="inherit_id" ref="music_library.music_composer_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="is_api_published" column_invisible="1"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-muted">not is_api_published</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="music_composer_form" model="ir.ui.view">
+            <field name="name">music_composer_form</field>
+            <field name="model">music.composer</field>
+            <field name="inherit_id" ref="music_library.music_composer_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="before">
+                    <field name="is_api_published" invisible="1" />
+                </xpath>
+                <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                    <!-- PUBLISHED -->
+                    <button type="object" name="action_switch_is_api_published" icon="fa-code" string="Unpublished"
+                            invisible="is_api_published" class="oe_stat_button danger text-danger text-bf" />
+                    <button type="object" name="action_switch_is_api_published" icon="fa-code" string="Published"
+                        invisible="not is_api_published" class="oe_stat_button success text-success"  />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="music_composer_kanban" model="ir.ui.view">
+            <field name="name">music_composer_kanban</field>
+            <field name="model">music.composer</field>
+            <field name="inherit_id" ref="music_library.music_composer_kanban" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='id']" position="after">
+                    <field name="is_api_published" />
+                </xpath>
+                <xpath expr="//kanban//templates/t[@name='kanban-box']/div" position="attributes">
+                    <attribute name="t-attf-class" add="#{record.is_api_published.raw_value == 0 ? 'opacity-50' : ''}" separator=" " />
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <record id="music_composer_search" model="ir.ui.view">
+            <field name="name">music_composer_search</field>
+            <field name="model">music.composer</field>
+            <field name="inherit_id" ref="music_library.music_composer_search" />
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter string="Published" name="api_published" domain="[('is_api_published', '=', True)]" />
+                    <filter string="Unpublished" name="api_unpublished" domain="[('is_api_published', '=', False)]" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="music_library.music_composer_action" model="ir.actions.act_window">
+            <field name="context">{'search_default_api_published': 1}</field>
+        </record>
+
+        <record id="switch_published_action" model="ir.actions.server">
+            <field name="name">Switch API Published</field>
+            <field name="model_id" ref="music_library.model_music_composer"/>
+            <field name="binding_model_id" ref="music_library.model_music_composer"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_switch_is_api_published()</field>
+        </record>
+
         <record id="api_test_action" model="ir.actions.server">
             <field name="name">TEST DECORATOR</field>
             <field name="model_id" ref="music_library.model_music_composer"/>

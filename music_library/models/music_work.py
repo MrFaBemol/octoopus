@@ -71,6 +71,9 @@ class MusicWork(models.Model):
         return self.env['music.work.version'].search_by_key(key)
 
     def _create_version(self, instrumentation, is_original=False):
+        if not instrumentation:
+            return
+
         for work in self:
             new_version = self.env['music.work.version'].create({'work_id': work.id, 'is_original': is_original})
             vals_list = [{
@@ -86,14 +89,14 @@ class MusicWork(models.Model):
     # --------------------------------------------
 
 
-    @api.model
-    def create(self, vals: dict):
-        original_instrumentation = vals.pop('original_instrumentation', None)
-        res = super(MusicWork, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        instrumentation_list = [vals.pop('instrumentation', None) for vals in vals_list]
+        res = super(MusicWork, self).create(vals_list)
 
         # Create music.work.version if instrumentation was passed in vals
-        if original_instrumentation:
-            res._create_version(original_instrumentation, is_original=True)
+        for work, instrumentation in zip(res, instrumentation_list):
+            work._create_version(instrumentation, is_original=True)
 
         return res
 
@@ -165,6 +168,7 @@ class MusicWork(models.Model):
             },
         }
 
+    # Todo: check if I keep it as is
     def action_auto_fill_tonality(self):
         for note in self.env['music.note'].search([]):
             note_string = "%s%s" % (note.note, " "+note.alt if note.alt else "")

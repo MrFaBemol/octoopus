@@ -8,12 +8,12 @@
 
             <!--    Works-->
             <menuitem name="Works" id="works_menu" sequence="20">
-                <menuitem name="Works list" id="works_menu_works_list" sequence="10" action="music_work_action" />
-                <menuitem name="Versions list" id="works_menu_versions" sequence="20" action="music_work_version_action" />
+                <menuitem name="Works List" id="works_menu_works_list" sequence="10" action="music_work_action" />
+                <menuitem name="Versions List" id="works_menu_versions" sequence="20" action="music_work_version_action" />
             </menuitem>
             <!--    Instruments -->
             <menuitem name="Instruments" id="instrument_menu" sequence="30">
-                <menuitem name="Instruments list" id="instrument_menu_instruments_list" sequence="10" action="music_instrument_action"/>
+                <menuitem name="Instruments List" id="instrument_menu_instruments_list" sequence="10" action="music_instrument_action"/>
             </menuitem>
 
             <!-- Settings -->
