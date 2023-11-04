@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="music_work_form" model="ir.ui.view">
+            <field name="name">music_work_form</field>
+            <field name="model">music.work</field>
+            <field name="inherit_id" ref="music_library.music_work_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="before">
+                    <field name="is_api_published" invisible="1" />
+                </xpath>
+                <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                    <!-- PUBLISHED -->
+                    <button type="object" name="action_api_publish" icon="fa-code" string="Unpublished"
+                            invisible="is_api_published" class="oe_stat_button danger text-danger text-bf" />
+                    <button type="object" name="action_api_unpublish" icon="fa-code" string="Published"
+                        invisible="not is_api_published" class="oe_stat_button success text-success"  />
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <record id="action_api_publish_work" model="ir.actions.server">
+            <field name="name">API - Publish</field>
+            <field name="model_id" ref="music_library.model_music_work"/>
+            <field name="binding_model_id" ref="music_library.model_music_work"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_api_publish()</field>
+        </record>
+
+        <record id="action_api_unpublish_work" model="ir.actions.server">
+            <field name="name">API - Unpublish</field>
+            <field name="model_id" ref="music_library.model_music_work"/>
+            <field name="binding_model_id" ref="music_library.model_music_work"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_api_unpublish()</field>
+        </record>
+
+    </data>
+</odoo>

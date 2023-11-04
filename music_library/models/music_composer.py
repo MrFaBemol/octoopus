@@ -3,7 +3,7 @@ from odoo.addons.http_routing.models.ir_http import slug
 from unidecode import unidecode
 
 
-class Composer(models.Model):
+class MusicComposer(models.Model):
     _name = "music.composer"
     _description = "A music composer"
     _inherit = ['mail.thread', 'mail.activity.mixin', 'avatar.mixin']
@@ -19,9 +19,8 @@ class Composer(models.Model):
     death = fields.Date(tracking=True)
     display_date = fields.Char(compute="_compute_display_date")
 
-    # portrait = fields.Binary()
     portrait_url = fields.Char(tracking=True)
-    biography = fields.Text(translate=True)
+    biography = fields.Text(translate=True, default="")
     biography_short = fields.Text(compute="_compute_biography_short")
     country_ids = fields.Many2many(comodel_name="res.country")
     period_id = fields.Many2one(comodel_name="music.period", string="Period")

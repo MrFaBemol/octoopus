@@ -66,7 +66,7 @@
 
                         <notebook>
                             <page string="Biography" name="page_biography">
-                                 <field name="biography" colspan="2" nolabel="1" />
+                                 <field name="biography" colspan="2" nolabel="1" placeholder="Once upon a day..." />
                             </page>
                             <page string="Works" name="page_works">
                                 <group>

@@ -20,9 +20,11 @@
         # Views
         'views/api_token.xml',
         'views/api_request.xml',
+        'views/music_composer.xml',
+        'views/music_work.xml',
 
         # Data
-        'data/api_token.xml',
+        # 'data/api_token.xml',
 
         # Security
         'security/ir.model.access.csv',

@@ -1,12 +1,12 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-# from odoo.addons.music_library_api.utils.api import call_api
 import logging
 _logger = logging.getLogger(__name__)
 
-class MusicComposer(models.Model):
-    _name = "music.composer"
-    _inherit = ["music.composer", "music.api.mixin"]
+
+class MusicWork(models.Model):
+    _name = "music.work"
+    _inherit = ["music.work", "music.api.mixin"]
 
     # --------------------------------------------
     #                   API
@@ -15,36 +15,36 @@ class MusicComposer(models.Model):
     @api.model
     def _get_music_api_returned_fields(self) -> list[str]:
         return [
-            'full_name',
-            'display_name',
-            'search_name',
-            'avatar_128',
-            'birth',
-            'death',
+            'composer_id',
+            'title',
             'is_popular',
             'is_essential',
-            'work_qty'
+            'catalogue',
+
+            'date_composition',
+            'tonality_note',
+            'tonality_mode',
+            'version_qty',
         ]
 
     @api.model
     def _get_music_api_returned_fields_detailed(self) -> list[str]:
         return [
+            'sub_title',
+            'nickname',
             'name',
-            'first_name',
+            'date_first_publication',
             'period_id',
-            'display_date',
-            'portrait_url',
-            'biography',
-            'biography_short',
-            'country_ids',
-            'work_ids',
+            'duration',
+            'dedication',
+            'work_version_ids',
         ]
 
     @api.model
     def _get_music_api_related_fields(self) -> dict[str, list[str]]:
         return {
-            'country_ids': ['name', 'code'],
+            'composer_id': ['full_name', 'display_name', 'slug_url'],
             'period_id': ['name'],
-            'work_ids': ['title'],
         }
+
 

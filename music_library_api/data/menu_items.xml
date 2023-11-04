@@ -3,8 +3,6 @@
     <data>
         <menuitem name="API" id="technical_menu_sub_api" sequence="10" parent="music_library.technical_menu">
             <menuitem name="Tokens" id="technical_menu_api_tokens" sequence="10" action="api_token_action" />
-            <menuitem name="Requests" id="technical_menu_api_requests" sequence="20" action="api_request_action" />
-            <menuitem name="TEST DECORATOR" id="test_api_requests" sequence="30" action="api_test_action" />
         </menuitem>
 
 

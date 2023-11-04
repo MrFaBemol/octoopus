@@ -27,9 +27,9 @@
                 </xpath>
                 <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
                     <!-- PUBLISHED -->
-                    <button type="object" name="action_switch_is_api_published" icon="fa-code" string="Unpublished"
+                    <button type="object" name="action_api_publish" icon="fa-code" string="Unpublished"
                             invisible="is_api_published" class="oe_stat_button danger text-danger text-bf" />
-                    <button type="object" name="action_switch_is_api_published" icon="fa-code" string="Published"
+                    <button type="object" name="action_api_unpublish" icon="fa-code" string="Published"
                         invisible="not is_api_published" class="oe_stat_button success text-success"  />
                 </xpath>
             </field>
@@ -43,7 +43,7 @@
                 <xpath expr="//field[@name='id']" position="after">
                     <field name="is_api_published" />
                 </xpath>
-                <xpath expr="//kanban//templates/t[@name='kanban-box']/div" position="attributes">
+                <xpath expr="//kanban//templates/t[@t-name='kanban-box']/div" position="attributes">
                     <attribute name="t-attf-class" add="#{record.is_api_published.raw_value == 0 ? 'opacity-50' : ''}" separator=" " />
                 </xpath>
             </field>
@@ -68,22 +68,24 @@
             <field name="context">{'search_default_api_published': 1}</field>
         </record>
 
-        <record id="switch_published_action" model="ir.actions.server">
-            <field name="name">Switch API Published</field>
+        <record id="action_api_publish_composer" model="ir.actions.server">
+            <field name="name">API - Publish</field>
             <field name="model_id" ref="music_library.model_music_composer"/>
             <field name="binding_model_id" ref="music_library.model_music_composer"/>
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
-            <field name="code">action = records.action_switch_is_api_published()</field>
+            <field name="code">action = records.action_api_publish()</field>
         </record>
 
-        <record id="api_test_action" model="ir.actions.server">
-            <field name="name">TEST DECORATOR</field>
+        <record id="action_api_unpublish_composer" model="ir.actions.server">
+            <field name="name">API - Unpublish</field>
             <field name="model_id" ref="music_library.model_music_composer"/>
             <field name="binding_model_id" ref="music_library.model_music_composer"/>
+            <field name="binding_view_types">list</field>
             <field name="state">code</field>
-            <field name="code">action = model.action_api_test()</field>
+            <field name="code">action = records.action_api_unpublish()</field>
         </record>
+
 
     </data>
 </odoo>
