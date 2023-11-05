@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.addons.http_routing.models.ir_http import slug
 
 
 class MusicWork(models.Model):
@@ -46,6 +47,10 @@ class MusicWork(models.Model):
     work_version_ids = fields.One2many(comodel_name="music.work.version", inverse_name="work_id")
     version_qty = fields.Integer(compute="_compute_version_qty")
 
+    # Web
+    seo_name = fields.Char(compute="_compute_seo_name")
+    slug_url = fields.Char(compute="_compute_slug_url")
+
     # --------------------------------------------
     #                   COMPUTE
     # --------------------------------------------
@@ -59,6 +64,28 @@ class MusicWork(models.Model):
     def _compute_version_qty(self):
         for work in self:
             work.version_qty = len(work.work_version_ids)
+
+
+    # --- WEB / SEO ---
+
+
+    @api.depends('title', 'catalogue', 'sub_title', 'nickname', 'composer_id.full_name')
+    def _compute_seo_name(self):
+        for work in self:
+            name = work.title
+            if work.catalogue:
+                name += " %s" % work.catalogue
+            if work.sub_title:
+                name += " - %s" % work.sub_title
+            if work.nickname:
+                name += " (%s)" % work.nickname
+
+            work.seo_name = "%s - %s" % (name, work.composer_id.full_name) if work.id else ""
+
+    @api.depends('seo_name')
+    def _compute_slug_url(self):
+        for work in self:
+            work.slug_url = slug(work) if work.id else ""
 
     # TODO: ajouter une action pour voir les infos d'imslp depuis la vue de ce modèle
 

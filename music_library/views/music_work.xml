@@ -37,10 +37,7 @@
                             <h1>
                                 <field name="title" />
                             </h1>
-                            <label for="composer_id"/>
-                            <h1>
-                                <field name="composer_id" options="{'no_create': True}" />
-                            </h1>
+                            <field name="composer_id" options="{'no_create': True}" widget="many2one_avatar" />
                         </group>
 
                         <group string="Extra informations">
@@ -62,6 +59,7 @@
                                 <field name="nickname" />
                                 <field name="date_composition" />
                                 <field name="duration" />
+                                <field name="slug_url" force_save="1" />
                             </group>
 
                         </group>

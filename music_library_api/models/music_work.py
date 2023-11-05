@@ -17,9 +17,10 @@ class MusicWork(models.Model):
         return [
             'composer_id',
             'title',
+            'catalogue',
+            'slug_url',
             'is_popular',
             'is_essential',
-            'catalogue',
 
             'date_composition',
             'tonality_note',

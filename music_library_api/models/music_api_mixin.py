@@ -71,7 +71,8 @@ class MusicApiMixin(models.AbstractModel):
         ignored_fields = set(self._get_music_api_ignored_fields())
         returned_fields = sorted(
             list(
-                set(self._get_music_api_returned_fields() + (self._get_music_api_returned_fields_detailed() if detailed else []))
+                {'id'}
+                | set(self._get_music_api_returned_fields() + (self._get_music_api_returned_fields_detailed() if detailed else []))
                 - ignored_fields
                 - EXCLUDED_FIELDS
             )
