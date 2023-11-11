@@ -18,6 +18,7 @@ class MusicComposer(models.Model):
             'full_name',
             'display_name',
             'search_name',
+            'slug_url',
             'avatar_128',
             'birth',
             'death',

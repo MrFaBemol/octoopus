@@ -1,3 +1,7 @@
+# Mixins
+from . import website_seo_mixin
+
+# Models
 from . import music_composer
 from . import music_instrument
 from . import music_instrument_extra_name

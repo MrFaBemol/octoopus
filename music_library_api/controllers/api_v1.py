@@ -37,26 +37,45 @@ API_URL = API_ROOT_URL + '/' + API_VERSION
 class ApiControllerV1(Controller):
 
     @staticmethod
-    def search(model: str, domain):
+    def get_model(model: str):
+        """
+            Todo: instead of using .sudo(), I should create a special user with special access rights that would be archived by default
+        """
+        lang = request.httprequest.args.get('lang', 'en_US')
+        return request.env[model].with_context(lang=lang).sudo()
+
+    def search(self, model: str, domain):
         """
         Helper for ORM searches:
             - Call search with sudo()
             - Add is_api_published=True to the domain
             - Add limit and offset from request
+
+        Todo: Add a cache system where cache key is domain + limit + offset?
+        Step 1: wait for long response times
+        Step 2: do some tests to see if it's worth it
+        Step 3: consider using a cache system like redis, or simply let Next.js handle it
         """
         domain = [('is_api_published', '=', True)] + domain
         offset = int(request.httprequest.args.get('offset', 0))
-        return request.env[model].sudo().search(domain, limit=API_LIMIT, offset=offset)
+        limit = min([int(request.httprequest.args.get('limit', API_LIMIT)), API_LIMIT])
+        return self.get_model(model).search(domain, limit=limit, offset=offset)
 
-    @staticmethod
-    def browse(model: str, res_id: int):
+    def browse(self, model: str, res_id: int):
         """
         Helper for ORM browse:
             - Call browse with sudo()
             - Add filtered on is_api_published=True
             - Add an exists() call at the end
         """
-        return request.env[model].sudo().browse(res_id).filtered('is_api_published').exists()
+        try:
+            record = self.get_model(model).browse(res_id).filtered('is_api_published').exists()
+        except Exception as e:
+            _logger.error("API Error while browsing record")
+            _logger.error(e)
+            record = None
+
+        return record
 
 
 
@@ -118,7 +137,7 @@ class ApiControllerV1(Controller):
 
     @check_access_token
     @route([API_URL + '/composer/<int:composer_id>/works'], type='json', auth="public", csrf=False)
-    def composer(self, composer_id: int = 0):
+    def composer_works(self, composer_id: int = 0):
         """ Return the list of works for a composer, `is_api_published` is checked in get_music_api_data() """
         if composer := self.browse('music.composer', composer_id):
             return ApiResponse(data=composer.work_ids.get_music_api_data()).to_dict()
@@ -142,12 +161,46 @@ class ApiControllerV1(Controller):
 
     @check_access_token
     @route([API_URL + '/work/<int:work_id>'], type='json', auth="public", csrf=False)
-    def composer(self, work_id: int = 0):
+    def work(self, work_id: int = 0):
         """ Return detailed info for a work """
         if work := self.browse('music.work', work_id):
             return ApiResponse(data=work.get_music_api_data(detailed=True)[0]).to_dict()
         return ERROR_RECORD_DOES_NOT_EXIST.to_dict()
 
+
+
+
+    # --------------------------------------------
+    #                   INSTRUMENTS
+    # --------------------------------------------
+
+
+    @check_access_token
+    @route([API_URL + '/instruments'], type='json', auth="public", csrf=False, methods=["GET"])
+    def instruments(self):
+        domain = []
+        # Todo: add filters
+
+        instruments = self.search('music.instrument', domain)
+        data = instruments.get_music_api_data()
+        return ApiResponse(data=data).to_dict()
+
+    @check_access_token
+    @route([API_URL + '/instrument/<int:instrument_id>'], type='json', auth="public", csrf=False)
+    def instrument(self, instrument_id: int = 0):
+        """ Return detailed info for a work """
+        if instrument := self.browse('music.instrument', instrument_id):
+            return ApiResponse(data=instrument.get_music_api_data(detailed=True)[0]).to_dict()
+        return ERROR_RECORD_DOES_NOT_EXIST.to_dict()
+
+    @check_access_token
+    @route([API_URL + '/instrument/<int:instrument_id>/works'], type='json', auth="public", csrf=False)
+    def instrument_works(self, instrument_id: int = 0):
+        """ Return the list of works for a composer, `is_api_published` is checked in get_music_api_data() """
+        if instrument := self.browse('music.instrument', instrument_id):
+            works = instrument.work_version_ids.work_id
+            return ApiResponse(data=works.get_music_api_data()).to_dict()
+        return ERROR_RECORD_DOES_NOT_EXIST.to_dict()
 
     # --------------------------------------------
     #                   WORKS

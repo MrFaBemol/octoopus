@@ -8,12 +8,15 @@
             <field name="arch" type="xml">
                 <tree string="Instruments" decoration-bf="is_category" decoration-info="is_category" default_order="sequence,display_name">
                     <field name="is_category" column_invisible="1"/>
+                    <field name="is_ensemble" column_invisible="1" />
+                    <field name="is_accompaniment" column_invisible="1" />
+
                     <field name="sequence" widget="handle" />
                     <field name="display_name" string="Name " />
-                    <field name="key" />
+                    <button icon="fa-users" invisible="not is_ensemble" title="Ensemble" />
+                    <button icon="fa-user-plus" invisible="not is_accompaniment" title="Accompaniment" />
+                    <field name="key_id" />
                     <field name="work_version_qty" string="Works Count" />
-                    <field name="is_ensemble" />
-                    <field name="is_accompaniment" />
                 </tree>
             </field>
         </record>
@@ -58,8 +61,9 @@
                         <group>
                             <group>
                                 <field name="parent_id" />
-                                <field name="key" />
+                                <field name="key_id" />
                                 <field name="is_default" />
+                                <field name="slug_url" />
                             </group>
                             <group string="Alternative names">
                                 <field name="extra_name_ids" nolabel="1" colspan="2">
@@ -80,7 +84,7 @@
                                     <field name="all_instrument_ids" colspan="2" nolabel="1">
                                         <tree editable="bottom" limit="12">
                                             <field name="name" />
-                                            <field name="key" />
+                                            <field name="key_id" />
                                             <field name="parent_id" />
                                         </tree>
                                     </field>
@@ -97,7 +101,7 @@
             <field name="model">music.instrument</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name" />
+                    <field name="name" string="Name" filter_domain="['|', ('name', 'ilike', self), ('extra_name_ids.name', 'ilike', self)]" />
                     <filter string="Category" name="filter_group_by_parent_id" context="{'group_by': 'parent_id'}" />
                 </search>
             </field>

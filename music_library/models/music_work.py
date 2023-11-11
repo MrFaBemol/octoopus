@@ -1,11 +1,11 @@
 from odoo import api, fields, models, _
-from odoo.addons.http_routing.models.ir_http import slug
 
 
 class MusicWork(models.Model):
-    _name = "music.work"
+    _name = 'music.work'
     _description = "A music work that may have multiple versions"
-    _order = "title"
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'website.seo.mixin']
+    _order = 'title'
     
     active = fields.Boolean(default=True)
     """
@@ -16,6 +16,7 @@ class MusicWork(models.Model):
     to_check_reason = fields.Char()
 
     composer_id = fields.Many2one(comodel_name="music.composer", required=True, ondelete='restrict')
+    composer_portrait = fields.Image(related="composer_id.avatar_1920")
     title = fields.Char(required=True, translate=True)
     sub_title = fields.Char(translate=True)
     nickname = fields.Char(translate=True)
@@ -47,13 +48,11 @@ class MusicWork(models.Model):
     work_version_ids = fields.One2many(comodel_name="music.work.version", inverse_name="work_id")
     version_qty = fields.Integer(compute="_compute_version_qty")
 
-    # Web
-    seo_name = fields.Char(compute="_compute_seo_name")
-    slug_url = fields.Char(compute="_compute_slug_url")
 
     # --------------------------------------------
     #                   COMPUTE
     # --------------------------------------------
+
 
     @api.depends('title', 'composer_id')
     def _compute_name(self):
@@ -80,12 +79,7 @@ class MusicWork(models.Model):
             if work.nickname:
                 name += " (%s)" % work.nickname
 
-            work.seo_name = "%s - %s" % (name, work.composer_id.full_name) if work.id else ""
-
-    @api.depends('seo_name')
-    def _compute_slug_url(self):
-        for work in self:
-            work.slug_url = slug(work) if work.id else ""
+            work.seo_name = "%s - %s" % (work.composer_id.full_name, name) if work.id else ""
 
     # TODO: ajouter une action pour voir les infos d'imslp depuis la vue de ce modèle
 

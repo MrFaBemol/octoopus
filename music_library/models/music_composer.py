@@ -1,12 +1,11 @@
 from odoo import api, fields, models, _
-from odoo.addons.http_routing.models.ir_http import slug
 from unidecode import unidecode
 
 
 class MusicComposer(models.Model):
     _name = "music.composer"
     _description = "A music composer"
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'avatar.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'avatar.mixin', 'website.seo.mixin']
 
     active = fields.Boolean(default=True)
 
@@ -32,7 +31,6 @@ class MusicComposer(models.Model):
 
 
     # Web
-    slug_url = fields.Char(compute="_compute_slug_url")
     wikipedia_url = fields.Char()
 
 
@@ -75,17 +73,9 @@ class MusicComposer(models.Model):
             composer.work_qty = len(composer.work_ids)
 
 
-    @api.depends('name', 'first_name', 'birth', 'death')
-    def _compute_slug_url(self):
-        for composer in self:
-            composer.slug_url = slug(composer) if composer.id else ""
-
-
-
     # --------------------------------------------
     #                   ACTIONS
     # --------------------------------------------
-
 
 
     def action_auto_fill_period(self):

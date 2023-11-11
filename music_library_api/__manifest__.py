@@ -21,6 +21,7 @@
         'views/api_token.xml',
         'views/api_request.xml',
         'views/music_composer.xml',
+        'views/music_instrument.xml',
         'views/music_work.xml',
 
         # Data

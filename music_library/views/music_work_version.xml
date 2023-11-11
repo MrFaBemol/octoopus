@@ -22,14 +22,16 @@
                 <form string="Work version">
                     <sheet>
                         <group string="Version infos">
-                            <field name="work_id" />
-                            <field name="composer_id" readonly="1" />
-                            <field name="is_original" widget="boolean_toggle"/>
-                            <label for="tonality_note" string="Tonality" />
+                            <group>
+                                <field name="work_id" />
+                                <field name="composer_id" readonly="1" widget="many2one_avatar" />
+                                <field name="is_original" widget="boolean_toggle"/>
+                                <label for="tonality_note" string="Tonality" />
                                 <div class="o_row">
                                     <field name="tonality_note" class="oe_inline" options="{'no_open': True}"/>
                                     <field name="tonality_mode" class="oe_inline" />
                                 </div>
+                            </group>
                         </group>
                         <group string="Instruments">
                             <group>
@@ -37,7 +39,7 @@
                                 <field name="search_key" />
                             </group>
                             <group invisible="accompanist_qty == 0"><field name="accompanist_qty" /></group>
-                            <separator />
+
                             <field name="instrument_ids" nolabel="1" colspan="2" />
                         </group>
 

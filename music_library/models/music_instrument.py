@@ -1,16 +1,17 @@
 from odoo import api, fields, models, _
+from odoo.osv import expression
 
 
 class Instrument(models.Model):
     _name = "music.instrument"
     _description = "An instrument"
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'avatar.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'avatar.mixin', 'website.seo.mixin']
     _parent_store = True
     _order = 'display_name'
 
     sequence = fields.Integer(default=10)
 
-    name = fields.Char(required=True, translate=True)
+    name = fields.Char(required=True, translate=True, search="_search_instrument_names")
     display_name = fields.Char(compute="_compute_display_name", store=True)
     extra_name_ids = fields.One2many(comodel_name="music.instrument.extra.name", inverse_name="instrument_id")
     # icon = fields.Binary()
@@ -25,7 +26,7 @@ class Instrument(models.Model):
     def _get_default_key(self):
         return self.env.ref('music_library.music_note_c', raise_if_not_found=False) or False
 
-    key = fields.Many2one(comodel_name="music.note", required=True, default=_get_default_key)
+    key_id = fields.Many2one(comodel_name="music.note", required=True, default=_get_default_key)
     is_default = fields.Boolean(help="When 2 results are found on automatic creation, take the default instrument")
     is_ensemble = fields.Boolean(string="Is ensemble")
     is_accompaniment = fields.Boolean(string="Is accompaniment")
@@ -41,15 +42,15 @@ class Instrument(models.Model):
     # --------------------------------------------
 
 
-    @api.depends('name', 'parent_id', 'key')
+    @api.depends('name', 'parent_id', 'parent_path', 'key_id')
     def _compute_display_name(self):
         for ins in self:
-            if not ins.parent_id:
+            if not ins.parent_id or not ins.parent_path:
                 ins.display_name = ins.name
                 continue
             display_name = "/".join([self.browse(int(i)).name for i in ins.parent_path.split("/")[1:-1]])
-            if ins.key != self.env.ref('music_library.music_note_c'):
-                display_name += f" ({ins.key.name})"
+            if ins.key_id != self.env.ref('music_library.music_note_c'):
+                display_name += f" ({ins.key_id.name})"
             ins.display_name = display_name
 
     @api.depends('child_ids')
@@ -65,10 +66,18 @@ class Instrument(models.Model):
             ins.instrument_qty = len(ins.all_instrument_ids)
 
     def _compute_work_version_ids(self):
-        for rec in self:
-            rec.work_version_ids = self.env['music.work.version.instrument'].search([('instrument_id', '=', rec.id)]).work_version_id.ids
-            rec.work_version_qty = len(rec.work_version_ids)
+        for ins in self:
+            ins.work_version_ids = self.env['music.work.version.instrument'].search([('instrument_id', '=', ins.id)]).work_version_id.ids
+            ins.work_version_qty = len(ins.work_version_ids)
 
+    @api.depends('name', 'key_id')
+    def _compute_seo_name(self):
+        for ins in self:
+            name = ins.name
+            if ins.key_id != self.env.ref('music_library.music_note_c'):
+                name += f" ({ins.key_id.name})"
+
+            ins.seo_name = name
 
     # --------------------------------------------
     #                   CRUD
@@ -95,8 +104,18 @@ class Instrument(models.Model):
     # --------------------------------------------
 
 
+    @api.model
+    def _search_instrument_names(self, operator, value):
+        """ Todo: fix this shit """
+        return expression.OR([
+            [('name', operator, value)],
+            [('extra_name_ids.name', operator, value)]
+        ])
+
+
     def get_from_string(self, string: str, check_plural: bool = True):
-        instrument = self.search(['|', ('name', '=ilike', string), ('extra_name_ids.name', '=ilike', string)]).exists()
+        """ Extended search with plural """
+        instrument = self.search([('name', '=ilike', string)]).exists()
         if not instrument and check_plural:
             pl_string = string[:-1] if string[-1].lower() == "s" else string + "s"
             instrument = self.search(['|', ('name', '=ilike', pl_string), ('extra_name_ids.name', '=ilike', pl_string)]).exists()

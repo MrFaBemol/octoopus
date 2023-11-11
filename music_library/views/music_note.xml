@@ -18,24 +18,11 @@
             <field name="arch" type="xml">
                 <form string="Music note">
                     <sheet>
-                        <group class="oe_edit_only">
+                        <group>
                             <group>
-                                <label for="note"/>
-                                <h1>
-                                    <field name="note" />
-                                </h1>
+                                <field name="note" />
+                                <field name="alt" />
                             </group>
-                            <group>
-                                <h1>
-                                    <field name="alt" />
-                                </h1>
-                            </group>
-                        </group>
-                        <group class="oe_read_only">
-                            <label for="name"/>
-                            <h1>
-                                <field name="name" />
-                            </h1>
                         </group>
                     </sheet>
                 </form>
@@ -44,7 +31,7 @@
 
 
         <record id="music_note_action" model="ir.actions.act_window">
-            <field name="name">Music note action</field>
+            <field name="name">Music notes</field>
             <field name="res_model">music.note</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
