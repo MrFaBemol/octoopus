@@ -17,7 +17,7 @@
                                 class="btn oe_highlight"
                                 type="object"
                                 name="action_import_composers"
-                                attrs="{'invisible': [('composer_ids', '=', [])]}" />
+                                invisible="not composer_ids" />
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -26,14 +26,15 @@
 
 
         <record id="open_opus_new_composer_tree" model="ir.ui.view">
-            <field name="name">open.opus.new.composer.tree</field>
-            <field name="model">open.opus.new.composer</field>
+            <field name="name">oo.new.composer.tree</field>
+            <field name="model">oo.new.composer</field>
             <field name="arch" type="xml">
                 <tree string="New composers" create="0">
                     <field name="oo_id" />
                     <field name="full_name" />
                     <field name="birth" />
                     <field name="death" />
+                    <field name="existing_composer_id" widget="many2one_avatar" />
                 </tree>
             </field>
         </record>

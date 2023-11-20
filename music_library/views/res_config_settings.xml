@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="base.res_config_settings_view_form" />
             <field name="arch" type="xml">
                 <xpath expr="//form" position="inside">
-                    <app data-string="Music Library" string="Music Library" name="music_library_settings" logo="/music_library/static/description/icon.png"  groups="music_library.music_library_group_admin">
+                    <app data-string="Music Library" string="Music Library" name="music_library" logo="/music_library/static/description/icon.png"  groups="music_library.music_library_group_admin">
                         <block title="API" name="api">
                             <setting string="Activate API" help="Access music library data through an API" id="music_library_api_setting">
                                 <field name="module_music_library_api"/>
@@ -29,6 +29,16 @@
 
             </field>
         </record>
+
+
+        <record id="music_library_settings_action" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'music_library', 'bin_size': False}</field>
+        </record>
+
 
     </data>
 </odoo>

@@ -18,7 +18,7 @@
                                 class="btn oe_highlight"
                                 type="object"
                                 name="action_import_works"
-                                attrs="{'invisible': [('work_ids', '=', [])]}" />
+                                invisible="not work_ids" />
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -26,8 +26,8 @@
         </record>
 
         <record id="oo_get_works_wizard_tree" model="ir.ui.view">
-            <field name="name">open.opus.new.work.tree</field>
-            <field name="model">open.opus.new.work</field>
+            <field name="name">oo.new.work.tree</field>
+            <field name="model">oo.new.work</field>
             <field name="arch" type="xml">
                 <tree string="New works" create="0">
                     <field name="oo_id" />

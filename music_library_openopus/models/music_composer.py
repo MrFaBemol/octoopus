@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 class MusicComposer(models.Model):
     _inherit = "music.composer"
 
-    oo_id = fields.Integer(default=-1, tracking=True, string="OpenOpus ID")
+    oo_id = fields.Integer(default=0, tracking=True, string="OpenOpus ID")
     oo_infos_url = fields.Char(compute="_compute_oo_infos_url")
     oo_works_url = fields.Char(compute="_compute_oo_works_url")
 
@@ -19,20 +19,30 @@ class MusicComposer(models.Model):
         open_opus_api = self.env['ir.config_parameter'].sudo().get_param('open.opus.api')
         open_opus_composer_by_id = self.env['ir.config_parameter'].sudo().get_param('oo.api.composer.by.id')
         for composer in self:
-            composer.oo_infos_url = "%s%s" % (
-                open_opus_api,
-                open_opus_composer_by_id.replace("{{ID}}", str(composer.oo_id)),
-            )
+            if not composer.oo_id:
+                url = ""
+            else:
+                url = "%s%s" % (
+                    open_opus_api,
+                    open_opus_composer_by_id.replace("{{ID}}", str(composer.oo_id)),
+                )
+
+            composer.oo_infos_url = url
 
     @api.depends('oo_id')
     def _compute_oo_works_url(self):
         open_opus_api = self.env['ir.config_parameter'].sudo().get_param('open.opus.api')
         open_opus_works_by_composer = self.env['ir.config_parameter'].sudo().get_param('oo.api.all.works.by.composer.id')
         for composer in self:
-            composer.oo_works_url = "%s%s" % (
-                open_opus_api,
-                open_opus_works_by_composer.replace("{{ID}}", str(composer.oo_id)),
-            )
+            if not composer.oo_id:
+                url = ""
+            else:
+                url = "%s%s" % (
+                    open_opus_api,
+                    open_opus_works_by_composer.replace("{{ID}}", str(composer.oo_id)),
+                )
+
+            composer.oo_works_url = url
 
 
 

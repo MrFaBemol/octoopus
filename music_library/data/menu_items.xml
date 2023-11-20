@@ -17,7 +17,8 @@
             </menuitem>
 
             <!-- Settings -->
-            <menuitem name="Settings" id="config_menu" sequence="90">
+            <menuitem name="Configuration" id="config_menu" sequence="90">
+                <menuitem name="Settings" id="config_menu_settings" sequence="5" action="music_library_settings_action" />
                 <menuitem name="Periods" id="config_menu_periods" sequence="10" action="music_period_action" />
                 <menuitem name="Countries" id="config_menu_countries" sequence="20" action="base.action_country" />
                 <menuitem name="Music notes" id="config_menu_music_note" sequence="30" action="music_note_action" />

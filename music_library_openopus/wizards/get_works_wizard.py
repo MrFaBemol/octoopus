@@ -7,7 +7,7 @@ class OOGetWorks(models.TransientModel):
     _name = "oo.get.works.wizard"
     _description = "A wizard to import works from OpenOpus API"
 
-    composer_ids = fields.Many2many("composer")
+    composer_ids = fields.Many2many("music.composer")
     work_ids = fields.One2many("oo.new.work", "wizard_id")
     works_count = fields.Integer(compute="_compute_work_count")
 

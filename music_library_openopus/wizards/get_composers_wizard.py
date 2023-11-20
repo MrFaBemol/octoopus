@@ -23,9 +23,12 @@ class OOGetComposers(models.TransientModel):
                 if response['status']['success'] == 'true':
                     for composer in response['composers']:
                         if not self.env['music.composer'].search([('oo_id', '=', composer['id'])]):
+                            # Todo: search on name of existing composer to make matches
+                            existing_composer = self.env['music.composer'].search([('full_name', 'ilike', composer['complete_name'])], limit=1)
                             self.env['oo.new.composer'].create({
                                 'wizard_id': self.id,
                                 'oo_id': composer['id'],
+                                'existing_composer_id': existing_composer.id,
                                 'full_name': composer['complete_name'],
                                 'name': composer['name'],
                                 'birth': composer['birth'],
@@ -58,6 +61,7 @@ class OpenOpusNewComposer(models.TransientModel):
 
     wizard_id = fields.Many2one(comodel_name="oo.get.composers.wizard")
     oo_id = fields.Integer()
+    existing_composer_id = fields.Many2one("music.composer")
     full_name = fields.Char()
     name = fields.Char()
     birth = fields.Char()
@@ -65,17 +69,26 @@ class OpenOpusNewComposer(models.TransientModel):
     portrait_url = fields.Char()
 
     def import_composer(self):
+        vals_list = []
+
         for rec in self:
             birth = datetime.strptime(rec.birth, '%Y-%m-%d').date()
             death = datetime.strptime(rec.death, '%Y-%m-%d').date() if rec.death else False
 
             first_name = rec.full_name.replace(rec.name, "").strip()
 
-            self.env['music.composer'].create({
+            vals = {
                 'oo_id': rec.oo_id,
                 'name': rec.name,
                 'first_name': first_name,
                 'birth': birth,
                 'death': death,
                 'portrait_url': rec.portrait_url,
-            })
+            }
+
+            if rec.existing_composer_id:
+                rec.existing_composer_id.write(vals)
+            else:
+                vals_list.append(vals)
+
+        self.env['music.composer'].create(vals_list)

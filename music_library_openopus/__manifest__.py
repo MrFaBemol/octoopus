@@ -25,6 +25,9 @@
         # Wizards
         'wizards/get_composers_wizard.xml',
         'wizards/get_works_wizard.xml',
+
+        # Security
+        'security/ir.model.access.csv'
     ],
 
     'qweb': [],
